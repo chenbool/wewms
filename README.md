@@ -178,3 +178,18 @@ All rights reserved。
 ThinkPHP® 商标和著作权所有者为上海顶想信息科技有限公司。
 
 更多细节参阅 [LICENSE.txt](LICENSE.txt)
+
+
+
+…or create a new repository on the command line
+ echo "# wewms" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/chenbool/wewms.git
+git push -u origin master
+…or push an existing repository from the command line
+ git remote add origin https://github.com/chenbool/wewms.git
+git push -u origin master
+…or import code from another repository
+You can initialize this repository with code from a Subversion, Mercurial, or TFS project.
