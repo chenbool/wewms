@@ -2,7 +2,7 @@
 <div class=" create">
    
     <!-- 表单 -->   
-    <section class="panel" >
+    <section class="panel-body" >
             <form role="form" class="form-create">
 
                 <div class="form-group col-sm-12">
@@ -12,7 +12,7 @@
 
                 <div class="form-group col-sm-6">
                     <lable>产品分类</lable>
-                    <select name="cate_id" class="form-control">
+                    <select name="cate_id" class="form-control cate">
                         <option value="0">顶级</option>
                         {volist name="list" id="vo"}
                             {if($vo.level<2) }
@@ -26,19 +26,39 @@
                 </div>
 
                 <div class="form-group col-sm-6">
-                    <lable>分类名称</lable>
-                    <input type="text" class="form-control" placeholder="分类名称" name="name">
+                    <lable>产品名称</lable>
+                    <input type="text" class="form-control" placeholder="产品名称" name="name">
                 </div>
 
-                <div class="form-group col-sm-12">
-                    <lable>状态</lable>
-                    <div class="radio">
-                        <label><input type="radio" name="status" value="0" checked="checked">正常</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="radio" name="status" value="1" >禁用</label>
-                    </div>
+                <div class="form-group col-sm-6">
+                    <lable>品牌</lable>
+                    <input type="text" class="form-control" placeholder="品牌" name="name">
                 </div>
+
+                <div class="form-group col-sm-6">
+                    <lable>型号</lable>
+                    <input type="text" class="form-control" placeholder="型号" name="model">
+                </div>        
+
+                <div class="form-group col-sm-6">
+                    <lable>规格</lable>
+                    <input type="text" class="form-control" placeholder="规格" name="spec">
+                </div>                         
+
+                <div class="form-group col-sm-6">
+                    <lable>计量单位</lable>
+                    <input type="text" class="form-control" placeholder="规格" name="unit">
+                </div>    
+
+                <div class="form-group col-sm-6">
+                    <lable>颜色</lable>
+                    <input type="text" class="form-control" placeholder="规格" name="color">
+                </div> 
+                
+                <div class="form-group col-sm-6">
+                    <lable>净重</lable>
+                    <input type="text" class="form-control" placeholder="规格" name="weight">
+                </div> 
 
                 <div class="form-group col-sm-12">
                     <lable>备注</lable>
@@ -57,17 +77,59 @@
 <!-- create end-->
 
 <script>
-function save(){
-    var param = $(".form-create").serializeArray();
-    $.post("{:url('save')}", param, function(data) {
-        if( data.error >0 ){
-          toastr.error(data.msg);
-        }else{
-            show_loading_bar(100);
-            toastr.success(data.msg);
-            Table.methods.refresh();
-            layer.closeAll('page');
+
+// seajs
+seajs.use(['vendor/comboSelect/jquery.combo.select'],function() {
+
+    var create = new Vue({
+        el: '.form-create',
+        data: {},
+        data: {
+            type: 0,
+        },
+        mounted: function(){
+            $('.cate').comboSelect();
+        },
+        methods: {
+            save: function () {
+                var param = $('.form-create').serializeArray();
+                $.ajax({
+                    url: "{:url('save')}",
+                    method: 'POST',
+                    dataType: 'json',
+                    data: param,
+                    success: this.callback
+                });
+            },
+            callback:function (data) {
+                if( data.error >0 ){
+                    toastr.error(data.msg);
+                }else{
+                    toastr.success(data.msg);
+                    Table.methods.refresh();
+                    layer.closeAll('page');
+                }
+            }
         }
-    },'json');
-}
+
+    });
+
+});
+
+
+// function save(){
+//     var param = $(".form-create").serializeArray();
+//     $.post("{:url('save')}", param, function(data) {
+//         if( data.error >0 ){
+//           toastr.error(data.msg);
+//         }else{
+//             toastr.success(data.msg);
+//             Table.methods.refresh();
+//             layer.closeAll('page');
+//         }
+//     },'json');
+// }
+
+
+
 </script>
