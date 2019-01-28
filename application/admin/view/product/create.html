@@ -6,12 +6,12 @@
             <form role="form" class="form-create">
 
                 <div class="form-group col-sm-12">
-                    <lable>产品编号</lable>
+                    <span>产品编号</span>
                     <input type="text" class="form-control" placeholder="产品编号" name="sn">
                 </div>
 
                 <div class="form-group col-sm-6">
-                    <lable>产品分类</lable>
+                    <span>产品分类</span>
                     <select name="cate_id" class="form-control cate">
                         <option value="0">顶级</option>
                         {volist name="list" id="vo"}
@@ -26,42 +26,50 @@
                 </div>
 
                 <div class="form-group col-sm-6">
-                    <lable>产品名称</lable>
+                    <span>产品名称</span>
                     <input type="text" class="form-control" placeholder="产品名称" name="name">
                 </div>
 
                 <div class="form-group col-sm-6">
-                    <lable>品牌</lable>
-                    <input type="text" class="form-control" placeholder="品牌" name="name">
+                    <span>品牌</span>
+                    <select name="brand" class="form-control brand">
+                        {volist name="brand" id="vo"}
+                            <option value="{$vo.id}" > {$vo.name} </option>
+                        {/volist}
+                    </select>
                 </div>
 
                 <div class="form-group col-sm-6">
-                    <lable>型号</lable>
+                    <span>型号</span>
                     <input type="text" class="form-control" placeholder="型号" name="model">
                 </div>        
 
                 <div class="form-group col-sm-6">
-                    <lable>规格</lable>
+                    <span>规格</span>
                     <input type="text" class="form-control" placeholder="规格" name="spec">
                 </div>                         
 
                 <div class="form-group col-sm-6">
-                    <lable>计量单位</lable>
-                    <input type="text" class="form-control" placeholder="规格" name="unit">
+                    <span>计量单位</span>
+                    <select name="unit" class="form-control unit">
+                        {volist name="unit" id="vo"}
+                            <option value="{$vo.id}" > {$vo.name} </option>
+                        {/volist}
+                    </select>
                 </div>    
 
                 <div class="form-group col-sm-6">
-                    <lable>颜色</lable>
+                    <span>颜色</span>
                     <input type="text" class="form-control" placeholder="规格" name="color">
                 </div> 
                 
                 <div class="form-group col-sm-6">
-                    <lable>净重</lable>
+                    <span>净重</span>
                     <input type="text" class="form-control" placeholder="规格" name="weight">
                 </div> 
 
                 <div class="form-group col-sm-12">
-                    <lable>备注</lable>
+                    <span>备注</span>
                     <textarea class="form-control" cols="5" name="desc"></textarea>
                 </div>
 
@@ -89,6 +97,8 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'],function() {
         },
         mounted: function(){
             $('.cate').comboSelect();
+            $('.unit').comboSelect();
+            $('.brand').comboSelect();
         },
         methods: {
             save: function () {

@@ -63,6 +63,13 @@
             sortable: true
         },
         {
+            field: 'status',
+            title: '状态',
+            sortable: true,
+            formatter: Table.formatter.status,
+            printFormatter: Table.formatter.status
+        },
+        {
             field: 'create_time',
             title: '添加时间',
             sortable: true,

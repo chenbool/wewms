@@ -43,7 +43,9 @@ class Product extends Base
 		$list = model('cate')->select();
 		$list = $this->_tree($list);
 		return [
-			'list'	=>	$list
+			'list'	=>	$list,
+			'unit'	=>	model('unit')->where([ 'status'=>0 ])->select(),
+			'brand'	=>	model('brand')->where([ 'status'=>0 ])->select()
 		];
 	}
 
