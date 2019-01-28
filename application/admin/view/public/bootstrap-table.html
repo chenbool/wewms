@@ -1,0 +1,97 @@
+    <!-- bootstrap-table -->
+    <!-- <link href="/static/admin/vendor/bootstrap-table/bootstrap-table.min.css" rel="stylesheet"> -->
+    <script src="/static/admin/vendor/bootstrap-table/bootstrap-table.min.js"></script>
+
+    <!-- 汉化包 -->
+    <script src="/static/admin/vendor/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+
+    <!-- moment 时间处理 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
+    
+    <!-- tableExport 导出插件 -->
+    <script src="/static/admin/vendor/bootstrap-table/extensions/bootstrap-table-export.min.js"></script>
+    <script src="/static/admin/vendor/bootstrap-table/extensions/tableExport/tableExport.min.js"></script>
+
+    <!-- 导出插件 -->
+    <script src="/static/admin/vendor/bootstrap-table/extensions/tableExport/libs/FileSaver/FileSaver.min.js"></script>
+    <script src="/static/admin/vendor/bootstrap-table/extensions/tableExport/libs/js-xlsx/xlsx.core.min.js"></script>
+    <script src="/static/admin/vendor/bootstrap-table/extensions/tableExport/libs/jsPDF/jspdf.min.js"></script>
+    <script src="/static/admin/vendor/bootstrap-table/extensions/tableExport/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+    <script src="/static/admin/vendor/bootstrap-table/extensions/tableExport/libs/es6-promise/es6-promise.auto.min.js"></script>
+    <script src="/static/admin/vendor/bootstrap-table/extensions/tableExport/libs/html2canvas/html2canvas.min.js"></script>
+
+    <!-- 跳到指定页数 jumpto -->
+    <link rel="stylesheet" href="/static/admin/vendor/bootstrap-table/extensions/page-jumpto/bootstrap-table-jumpto.css">
+    <script src="/static/admin/vendor/bootstrap-table/extensions/page-jumpto/bootstrap-table-jumpto.js"></script>
+
+    <!-- 手机 -->
+    <script src="/static/admin/vendor/bootstrap-table/extensions/bootstrap-table-mobile.js"></script>
+
+    <!-- 打印插件 -->
+    <script src="/static/admin/vendor/bootstrap-table/extensions/bootstrap-table-print.js"></script>
+
+    <!-- 拷贝行数 copy-rows -->
+    <script src="/static/admin/vendor/bootstrap-table/extensions/bootstrap-table-copy-rows.js"></script>
+
+    <!-- bootstrap-table 初始化 -->
+    <script src="/static/admin/vendor/bootstrap_table_init.js"></script>
+<script>
+    Table.urls = {
+        "index": "{:url('index')}",
+        "create": "{:url('create')}",
+        "edit": "{:url('edit')}",
+        "delete": "{:url('delete')}"
+    };
+
+    // 表格请求头
+    tableData.url = "{:url('index')}";
+
+    // 设置搜索条件
+    tableData.queryParams = function (params) {
+        //这里的键的名字和控制器的变量名必须一致，这边改动，控制器也需要改成一样的
+        var data = $(".form-search").serializeArray();
+        var temp = {   
+            rows: params.limit,                         //页面大小
+            page: (params.offset / params.limit) + 1,   //页码
+            sort: params.sort,      //排序列名  
+            sortOrder: params.order, //排位命令（desc，asc）
+            data: arrayToJson(data),
+            keyword: params.search
+        };
+        return temp;
+    };
+</script>
+
+<!-- bootstrap-table工具栏 -->
+<div class="row">
+    <!-- 工具栏 -->
+    <div class="" id="toolbar">
+        <button type="button" class="btn btn-sm btn-info" onclick="Table.methods.add()" >
+            <i class="fa fa-plus"></i> 
+            <span class="hidden-xs">添 加</span> 
+        </button>
+        <button type="button" class="btn btn-sm btn-danger hidden-xs" onclick="Table.methods.dels()" > 
+            <i class="fa fa-trash"></i>
+            <span class="hidden-xs">删 除</span> 
+        </button>
+    </div>
+</div>
+<style>
+.fixed-table-toolbar{
+    padding: 5px;
+}
+#toolbar{
+    line-height:45px;
+}
+.columns{
+    margin-right: 10px;
+}
+/* .columns.btn-group .btn {
+    line-height:10px;
+    width: 32px;
+}
+.fixed-table-pagination{
+    padding: 0 5px;
+    font-size: 12px;
+} */
+</style>

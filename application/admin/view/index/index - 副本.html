@@ -1,0 +1,49 @@
+{extend name="base" /}
+
+{block name="title"} 首页 {/block}
+
+
+{block name="body"}
+
+    <div class="app">
+
+		<!-- header navbar -->
+		{include file="public/navbar" /}
+		
+        <section class="layout">
+			<!-- sidebar left  -->
+			{include file="public/sidebar" /}
+
+            <section class="main-content">
+                <div class="content-wrap">
+					<h1>123</h1>
+				</div>
+            </section>
+        </section>
+    </div>
+
+{/block}
+
+
+{block name="js"}
+<script>
+    var app = new Vue({
+        el: '.app',
+        data: {},
+        mounted: function (){
+        },
+        methods: {
+            _load: function (event) {
+				var _this = $(event.currentTarget);
+				// 点击效果
+				$('.main-navigation .active').removeClass('active');
+				_this.parent().addClass('active');
+				$.get( _this.attr('url'), function(data){
+					$('.content-wrap').html(data);
+				});
+            }
+        }
+
+    });
+</script>
+{/block}

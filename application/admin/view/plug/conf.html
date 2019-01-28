@@ -1,0 +1,48 @@
+<!--body wrapper start-->
+<div class=" conf">                    
+    <!-- 表单 -->   
+
+        <div class="panel-body">
+
+            <form role="form" class="form-conf">
+
+                <!-- <input type="hidden" name="id" value=""> -->
+                <input type="hidden" name="path" value="{$path}">
+
+                {foreach $conf as $key=>$vo } 
+                    <div class="form-group col-sm-12">
+                        <lable>{$key}</lable>
+                        {if strlen($vo) > 60 }
+                            <textarea class="form-control" rows="{:strlen($vo)/40}" name="{$key}">{$vo}</textarea>
+                        {else /} 
+                            <input type="text" class="form-control" placeholder="{$key}" name="{$key}" value="{$vo}" autocomplete="off">
+                        {/if}
+                    </div>
+                {/foreach}
+
+                <div class="form-group col-sm-12">
+                    <button type="button" class="btn btn-sm btn-primary " onclick="save()"> 保 存 </button>
+                    <button type="reset" class="btn btn-sm btn-success "> 重 置 </button>
+                </div>
+
+            </form>
+
+        </div>
+
+</div>
+<!--body wrapper end-->
+
+<script>
+    function save() {
+        var param = $(".form-conf").serializeArray();
+        $.post("{:url('conf')}", param, function (data) {
+            
+            if (data.error > 0) {
+                toastr.error(data.msg);
+            } else {
+                toastr.success(data.msg);
+                layer.closeAll('page');
+            }
+        }, 'json');
+    }
+</script>

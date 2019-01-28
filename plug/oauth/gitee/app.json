@@ -1,0 +1,12 @@
+{
+	"name": "码云",
+	"code": "gitee",
+	"dir": "oauth",
+	"type": "登陆",
+	"author": "bool",
+	"email": "30024167@qq.com",
+	"version": "1.0",
+	"logo": "",
+	"time": "1540259058",
+	"desc": "码云授权登陆插件"
+}

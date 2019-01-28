@@ -1,0 +1,88 @@
+<!-- create begin -->
+<div class=" create">
+   
+    <!-- 表单 -->   
+    <section class="panel-body" >
+            <form role="form" class="form-create">
+
+                <div class="form-group col-sm-12">
+                    <lable>上级分类</lable>
+                    <select name="pid" class="form-control">
+                        <option value="0">顶级</option>
+                        {volist name="list" id="vo"}
+                            {if($vo.level<2) }
+                                <option value="{$vo.id}" {:input('pid')==$vo.id ? 'selected="selected"' : null } >
+                                    {:$vo.level>0? '|' : null }{:str_repeat('--',$vo.level)}{$vo.name}
+                                </option>
+                            {else /} {/if}
+
+                        {/volist}
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <lable>分类名称</lable>
+                    <input type="text" class="form-control" placeholder="分类名称" name="name">
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <lable>状态</lable>
+                    <div class="radio">
+                        <label><input type="radio" name="status" value="0" checked="checked">正常</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="status" value="1" >禁用</label>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <lable>备注</lable>
+                    <textarea class="form-control" cols="5" name="desc"></textarea>
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <button type="button" class="btn btn-sm btn btn-primary" @click="save">  保 存 </button>
+                    <button type="reset" class="btn btn-sm btn-success ">  重 置 </button> 
+                </div>
+
+            </form>
+    </section>
+
+</div>
+<!-- create end-->
+
+<script>
+
+// seajs
+seajs.use([],function() {
+
+    var create = new Vue({
+        el: '.form-create',
+        data: {},
+        methods: {
+            save: function () {
+                var param = $('.form-create').serializeArray();
+                $.ajax({
+                    url: "{:url('save')}",
+                    method: 'POST',
+                    dataType: 'json',
+                    data: param,
+                    success: this.callback
+                });
+            },
+            callback:function (data) {
+                if( data.error >0 ){
+                    toastr.error(data.msg);
+                }else{
+                    toastr.success(data.msg);
+                    Table.methods.refresh();
+                    layer.closeAll('page');
+                }
+            }
+        }
+
+    });
+
+});
+
+</script>

@@ -1,0 +1,106 @@
+<!-- create begin -->
+<div class=" create">
+   
+    <!-- 表单 -->   
+    <section class="panel-body" >
+            <form role="form" class="form-create">
+
+                <div class="form-group col-sm-6">
+                    <span>仓库名称</span>
+                    <input type="text" class="form-control" placeholder="仓库名称" name="name">
+                </div>
+             
+                <div class="form-group col-sm-6">
+                    <span>联系人</span>
+                    <input type="text" class="form-control" placeholder="联系人" name="contact">
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <span>手机号</span>
+                    <input type="text" class="form-control" placeholder="手机号" name="phone">
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <span>邮箱</span>
+                    <input type="text" class="form-control" placeholder="邮箱" name="email">
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <span>状态</span>
+                    <div class="radio">
+                        <label><input type="radio" name="status" value="0" checked="checked">正常</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="status" value="1" >禁用</label>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <span>地区</span>
+                    <div data-toggle="distpicker" class="distpicker col-sm-12">
+                        <select class="form-control col-sm-3" name="province" style="width:auto;"></select>
+                        <select class="form-control col-sm-2" name="city" style="width:auto;"></select>
+                        <select class="form-control col-sm-2" name="district" style="width:auto;"></select>
+                    </div>
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <span>街道地址</span>
+                    <input type="text" class="form-control" placeholder="街道地址" name="street">
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <span>备注</span>
+                    <textarea class="form-control" cols="5" name="desc"></textarea>
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <button type="button" class="btn btn-sm btn btn-primary" @click="save">  保 存 </button>
+                    <button type="reset" class="btn btn-sm btn-success ">  重 置 </button> 
+                </div>
+
+            </form>
+    </section>
+
+</div>
+<!-- create end-->
+
+<script>
+
+// seajs
+seajs.use(['js/distpicker.min'],function() {
+
+    var create = new Vue({
+        el: '.form-create',
+        data: {},
+        mounted: function(){
+            $(".distpicker").distpicker(); 
+        },
+        methods: {
+            save: function () {
+                var param = $('.form-create').serializeArray();
+                $.ajax({
+                    url: "{:url('save')}",
+                    method: 'POST',
+                    dataType: 'json',
+                    data: param,
+                    success: this.callback
+                });
+            },
+            callback:function (data) {
+                if( data.error >0 ){
+                    toastr.error(data.msg);
+                }else{
+                    toastr.success(data.msg);
+                    Table.methods.refresh();
+                    layer.closeAll('page');
+                }
+            }
+        }
+
+    });
+
+
+});
+
+</script>

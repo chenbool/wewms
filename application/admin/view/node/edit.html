@@ -1,0 +1,107 @@
+<!-- start-->
+<div class=" edit">
+
+    <!-- 表单 -->   
+    <section class="panel-body">
+        <form role="form" class="form-edit">
+        
+            <input type="hidden" name="id" value="{:$row.id}">
+
+            <div class="form-group col-sm-6">
+                <span>名称</span>
+                <input type="text" class="form-control" placeholder="名称" name="name" value="{$row.name}" autocomplete="off">
+            </div>
+
+            <div class="form-group col-sm-6">
+                <span>图标</span>  <a href="http://fontawesome.dashgame.com" target="_blank"> 查看图标 </a>
+                <input type="text" class="form-control" placeholder="图标" name="ico" value="{$row.ico}" autocomplete="off">
+            </div>
+
+            <div class="form-group col-sm-12">
+                <span>上级</span>
+                <!-- <input type="text" class="form-control" name="pid" value="{$row.pid}" autocomplete="off"> -->
+                <select class="form-control" name="pid" placeholder="上级">
+                    <option value="0">顶级</option>
+                    {volist name="list" id="vo"}
+                        {if($vo.level<2) }
+                        <option value="{$vo.id}" {$row->pid== $vo->id ? 'selected="selected"' : null } >
+                            {:$vo.level>0? '|' : null }{:str_repeat('--',$vo.level)}{$vo.name}
+                        </option>
+                        {else /} {/if}
+                    {/volist}
+                </select>
+            </div>
+
+            <div class="form-group col-sm-6">
+                <span>控制器</span>
+                <input type="text" class="form-control" placeholder="控制器" name="controller" value="{$row.controller}" autocomplete="off">
+            </div>
+
+            <div class="form-group col-sm-6">
+                <span>方法</span>
+                <input type="text" class="form-control" placeholder="方法" name="action" value="{$row.action}" autocomplete="off">
+            </div>
+
+            <div class="form-group col-sm-12">
+                <span>状态</span>
+                <div class="radio">
+                    <label><input type="radio" name="status" value="0" {$row->status== 0 ? 'checked="checked"' : null } >正常</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio" name="status" value="1" {$row->status== 1 ? 'checked="checked"' : null } >禁用</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <span>备注</span>
+                <textarea class="form-control" cols="5" name="desc">{$row.desc}</textarea>
+            </div>
+
+            <div class="form-group">
+                <button type="button" class="btn btn-sm btn-primary " @click="save"> 保 存 </button>
+                <button type="reset" class="btn btn-sm btn-success "> 重 置 </button>
+            </div>
+
+        </form>
+
+    </section>
+</div>
+<!-- end -->
+
+
+<script>
+
+// seajs
+seajs.use([], function() {
+    // vue
+    var edit = new Vue({
+        el: '.edit',
+        data: {},
+        mounted: function (){
+        },
+        methods: {
+            save: function () {
+                var param = $('.form-edit').serializeArray();
+                $.ajax({
+                    url: "{:url('update')}",
+                    method: 'POST',
+                    dataType: 'json',
+                    data: param,
+                    success: this.callback
+                });
+            },
+            callback:function (data) {
+                if( data.error >0 ){
+                    toastr.error(data.msg);
+                }else{
+                    toastr.success(data.msg);
+                    Table.methods.refresh();
+                    layer.closeAll('page');
+                }
+            }
+        }
+
+    });    
+        
+});
+</script>

@@ -1,0 +1,166 @@
+{extend name="base" /}
+
+{block name="title"} 仓库管理 {/block}
+
+{block name="body"}
+
+<!-- search -->
+<div class="row">      
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">查询</h3>
+            <div class="panel-options">
+                <a href="#" data-toggle="panel">
+                    <span class="collapse-icon">–</span>
+                    <span class="expand-icon">+</span>
+                </a>
+                <a href="#" data-toggle="remove">×</a>
+            </div>
+        </div>
+        <div class="panel-body">
+            
+            <form role="form" class="form-inline form-search">
+                
+                <div class="form-group">
+                    <input type="text" class="form-control" size="25" name="name" placeholder="仓库名称">
+                </div>
+                
+                <div class="form-group">
+                    <input type="text" class="form-control" size="25" name="contact" placeholder="联系人">
+                </div>
+                
+                <div class="form-group">
+                    <input type="email" class="form-control" size="25" name="phone" placeholder="手机号">
+                </div>
+
+            </form>
+
+                <div class="form-group pull-right">
+                    <button class="btn btn-secondary btn-single" onclick="Table.methods.refresh()">查询</button>
+                </div>
+        
+        </div>
+    </div>   
+</div>
+
+<!-- main -->
+<div class="row"> 
+    <div class="panel panel-default">
+
+        <div class="panel-heading btn-toolbar">
+            <h3 class="panel-title">仓库管理</h3>
+            <div class="panel-options pull-right">
+                <a href="#" data-toggle="reload" onclick="Table.methods.refresh()">
+                    <i class="fa-rotate-right"></i>
+                </a>
+                <a href="#" data-toggle="panel">
+                    <span class="collapse-icon">–</span>
+                    <span class="expand-icon">+</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <table class="table table-bordered table-striped" id="table"> </table>
+        </div>
+    </div>
+</div>
+
+    {include file="public/bootstrap-table" /}
+
+{/block}
+
+
+<!-- js -->
+{block name="js"}
+<script src="/static/assets/js/distpicker.min.js"></script>
+<script>
+
+    Table.formatter.address = function(value, row, index){
+        return row.province+'-'+row.city+'-'+row.district;
+    }
+
+    tableData.columns = [
+        {
+            checkbox: true,  
+            visible: true,
+            printIgnore: true
+        }, 
+        {
+            field: 'id',
+            title: 'ID',
+            sortable: true,
+            titleTooltip: 'ID',
+            printIgnore: true
+        }, 
+        {
+            field: 'name',
+            title: '仓库名称',
+            sortable: true,
+            titleTooltip: '仓库名称'
+        },
+        {
+            field: 'contact',
+            title: '联系人',
+            sortable: true
+        }, 
+        {
+            field: 'phone',
+            title: '手机',
+            sortable: true
+        }, 
+        {
+            field: 'email',
+            title: '邮箱',
+            sortable: true
+        },       
+        {
+            field: 'address',
+            title: '地址',
+            sortable: true,
+            formatter: Table.formatter.address,
+            printFormatter: Table.formatter.address
+        },
+        {
+            field: 'street',
+            title: '街道地址',
+            sortable: true,
+            class: "hidden-xs hidden-sm"
+        },
+        {
+            field: 'desc',
+            title: '备注',
+            sortable: true,
+            class: "hidden-xs hidden-sm"
+        },
+        {
+            field: 'create_time',
+            title: '添加时间',
+            sortable: true,
+            formatter: Table.formatter.time,
+            printFormatter: Table.formatter.time,
+            class: "hidden-xs hidden-sm"
+        },
+        {
+            title: '操作',
+            formatter: Table.formatter.operate,
+            printIgnore: true
+        }
+     ];
+
+    // 导出表格名称
+    tableData.exportOptions.fileName = "仓库列表";
+    tableData.exportOptions.tableName = "仓库列表";
+
+    // 忽略导出列
+    tableData.exportOptions.ignoreColumn = [0,-1];
+
+    // 设置弹窗大小
+    layer_area = {
+        create: ['550px', '460px'],
+        edit:['550px', '460px']
+    };
+
+    Table.table = $('#table').bootstrapTable(tableData);
+</script>
+{/block}

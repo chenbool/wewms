@@ -1,0 +1,76 @@
+
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>名称</th>
+                                <th>作者</th>
+                                <th>版本</th>
+                                <th>描述</th>
+                                <th>发布时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {volist name="list.oauth" id="vo" key="k"}
+                                <tr>
+                                    <td>#{$k}</td>
+                                    <td>{$vo.name}</td>
+                                    <td>{$vo.author}</td>
+                                    <td>{$vo.version}</td>
+                                    <td>{$vo.desc}</td>
+                                    <td>{:date('Y-m-d H:i', $vo.time) }</td>
+                                    <td>
+                                        <button class="btn btn-success btn-xs" onclick="conf('{$vo.path}')"><i class="fa fa-cog"> 配置 </i></button>
+                                        {if in_array($vo.code,$install) }
+                                            <button class="btn btn-danger btn-xs" onclick="uninstall('{$vo.path}')"><i class="fa fa-trash-o "> 卸载 </i></button>
+                                        {else /}
+                                            <button class="btn btn-primary btn-xs" onclick="install('{$vo.path}')"><i class="fa fa-pencil" > 安装</i></button>
+                                        {/if}
+                                    </td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+
+<script>
+// 获取配置文件
+function conf( urls ){
+    $.get("{:url('conf')}",{"path":urls} ,function(data) {
+        layer.open({
+            type: 1,
+        　　title: "编辑",
+        　　shadeClose: true,
+        　　shade: 0.4,
+            anim: 5,
+        　　area: ['450px', '380px'],
+        　　content: data
+        });
+    });
+
+}
+
+// 安装
+function install(path){
+    $.post("{:url('install')}",{"path":path} ,function(data) {
+        layer.msg(data.msg);
+        if( data.error == 0 ){
+
+            setTimeout(function(){
+                window.location.reload();
+            },1000); 
+        }
+    });
+}
+
+// 卸载
+function uninstall(path){
+    $.post("{:url('uninstall')}",{"path":path} ,function(data) {
+        layer.msg(data.msg);
+        if( data.error == 0 ){
+            setTimeout(function(){
+                window.location.reload();
+            },1000);    
+        }
+    });
+}
+</script>

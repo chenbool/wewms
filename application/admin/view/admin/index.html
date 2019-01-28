@@ -1,0 +1,136 @@
+{extend name="base" /}
+
+{block name="title"} 管理员列表 {/block}
+
+
+{block name="body"}
+<div class="col-lg-12">
+
+    <section class="panel">
+        <header class="panel-heading">条件筛选</header>
+        <div class="panel-body">
+            <form class="form-inline form-search" role="form">
+
+                <div class="form-group mg-t-xs">
+                    <label>用户名</label>
+                    <input type="text" class="form-control" name="username" placeholder="用户名">
+                </div>
+                
+                <div class="form-group mg-t-xs">
+                    <label>昵称</label>
+                    <input type="text" class="form-control" name="nickname" placeholder="昵称">
+                </div>
+                
+                <div class="form-group mg-t-xs">
+                    <label>邮箱</label>
+                    <input type="email" class="form-control" name="email" placeholder="邮箱">
+                </div>
+
+                <div class="form-group col-xs-12 col-md-12 mg-t-xs">
+                    <button type="button" class="btn btn-success btn-sm col-xs-12 col-sm-2 col-md-1" onclick="Table.methods.refresh()">搜索</button>
+                </div>
+
+            </form>
+        </div>
+
+    </section>
+
+    <section class="panel">
+        <header class="panel-heading">列表</header>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped no-margin" id="table"> </table>
+            </div>
+        </div>
+    </section>
+
+
+</div>
+    {include file="public/bootstrap-table" /}
+{/block}
+
+<!-- js -->
+{block name="js"}
+<script>
+    tableData.columns = [
+        {
+            checkbox: true,  
+            visible: true,
+            printIgnore: true,
+            class: "hidden-xs"
+        }, 
+        {
+            field: 'id',
+            title: 'ID',
+            sortable: true,
+            titleTooltip: 'ID',
+            printIgnore: true
+        }, 
+        {
+            field: 'username',
+            title: '用户名',
+            sortable: true,
+            titleTooltip: '用户名'
+        },
+        {
+            field: 'nickname',
+            title: '昵称',
+            sortable: true
+        }, 
+        {
+            field: 'head_img',
+            title: '头像',
+            formatter: Table.formatter.head_img,
+            printIgnore: true,
+            class: "hidden-xs hidden-sm"
+        }, 
+        {
+            field: 'phone',
+            title: '手机',
+            sortable: true,
+            class: "hidden-xs"
+        },        
+        {
+            field: 'email',
+            title: '邮箱',
+            sortable: true,
+            class: "hidden-xs hidden-sm"
+        }, 
+        {
+            field: 'last_ip',
+            title: '登陆ip',
+            sortable: true,
+            class: "hidden-xs hidden-sm"
+        },
+        {
+            field: 'last_time',
+            title: '最近登陆',
+            sortable: true,
+            formatter: Table.formatter.time,
+            printFormatter: Table.formatter.time,
+            class: "hidden-xs hidden-sm"
+        },
+        {
+            field: 'create_time',
+            title: '添加时间',
+            sortable: true,
+            formatter: Table.formatter.time,
+            printFormatter: Table.formatter.time,
+            class: "hidden-xs hidden-sm"
+        },
+        {
+            title: '操作',
+            formatter: Table.formatter.operate,
+            printIgnore: true
+        }
+     ];
+    
+    // 导出表格名称
+    tableData.exportOptions.tableName = tableData.exportOptions.fileName = "管理员列表";
+
+    // 忽略导出列
+    tableData.exportOptions.ignoreColumn = [0,4,-1];
+
+    Table.table = $('#table').bootstrapTable(tableData);
+</script>
+{/block}

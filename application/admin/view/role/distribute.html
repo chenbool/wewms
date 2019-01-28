@@ -1,0 +1,90 @@
+<!-- create begin -->
+<div class=" distribute">
+
+    <!-- 表单 -->
+    <section class="panel-body">
+        <form role="form" class="form-create">
+            <div class="form-group col-sm-12">
+                <div id="jstree"></div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <button type="button" class="btn btn-sm btn btn-primary" onclick="save()"> 保 存 </button>
+                <button type="reset" class="btn btn-sm btn-success"> 重 置 </button>
+            </div>
+
+        </form>
+    </section>
+
+</div>
+<!-- create end-->
+
+<script>
+    // seajs
+    seajs.use(['vendor/jstree/jstree.min'], function () {
+
+        var jstree = $('#jstree').jstree({
+            'core': {
+                'data': {
+                    'url': "{:url('getTree')}?id={$row->id}",
+                    'dataType': 'json'
+                }
+            },
+            "force_text": true,
+            plugins: ["types", "checkbox", "themes"],
+            "checkbox": {
+                "keep_selected_style": false, //是否默认选中
+                "three_state": true, //父子级别级联选择
+                "tie_selection": false
+            },
+        });
+
+        function save() {
+            var ids = $('#jstree').jstree().get_checked();
+            var param = {
+                ids: ids,
+                id: '{$row.id}'
+            };
+
+            $.post("{:url('distribute')}", param, function (data) {
+                if (data.error > 0) {
+                    toastr.error(data.msg);
+                } else {
+                    toastr.success(data.msg);
+                    layer.closeAll('page');
+                }
+            }, 'json');
+        }
+
+
+    })
+
+    // seajs
+    // seajs.use([], function() {
+    //     // vue
+    //     var create = new Vue({
+    //         el: '.distribute',
+    //         data: {},
+    //         mounted: function (){
+    //         },
+    //         methods: {
+    //             save: function () {
+    //                 var ids = $('#jstree').jstree().get_checked();
+    //                 var param = {ids:ids,id: '{$row.id}'};
+    //                 $.post("{:url('distribute')}",param,this.callback);
+    //             },
+    //             callback:function (data) {
+    //                 if( data.error >0 ){
+    //                     toastr.error(data.msg);
+    //                 }else{
+    //                     toastr.success(data.msg);
+    //                     Table.methods.refresh();
+    //                     layer.closeAll('page');
+    //                 }
+    //             }
+    //         }
+
+    //     });    
+
+    // });
+</script>

@@ -1,0 +1,93 @@
+<!-- start-->
+<div class=" edit">
+
+    <!-- 表单 -->   
+    <section class="panel-body">
+        <form role="form" class="form-edit">
+            <input type="hidden" name="id" value="{:$row.id}">
+
+            <div class="form-group col-sm-6">
+                <span>名称</span>
+                <input type="text" class="form-control" placeholder="名称" name="name" value="{$row.name}">
+            </div>
+
+            <div class="form-group col-sm-6">
+                <span>电话</span>
+                <input type="text" class="form-control" placeholder="电话" name="tel" value="{$row.tel}">
+            </div>
+
+            <div class="form-group col-sm-12">
+                <span>网址</span>
+                <input type="text" class="form-control" placeholder="网址" name="url" value="{$row.url}">
+            </div>
+
+            <div class="form-group col-sm-12">
+                <span>状态</span>
+                <div class="radio">
+                    <label><input type="radio" name="status" value="0" {$row->status== 0 ? 'checked="checked"' : null } >正常</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio" name="status" value="1" {$row->status== 1 ? 'checked="checked"' : null } >禁用</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <button type="button" class="btn btn-sm btn-primary " @click="save"> 保 存 </button>
+                <button type="reset" class="btn btn-sm btn-success "> 重 置 </button>
+            </div>
+
+        </form>
+
+    </section>
+</div>
+<!-- end -->
+
+
+<script>
+
+// seajs
+seajs.use([], function() {
+    // vue
+    var edit = new Vue({
+        el: '.edit',
+        data: {},
+        mounted: function (){
+            this.__init();
+        },
+        methods: {
+            save: function () {
+                var param = $('.form-edit').serializeArray();
+                $.ajax({
+                    url: "{:url('update')}",
+                    method: 'POST',
+                    dataType: 'json',
+                    data: param,
+                    success: this.callback
+                });
+            },
+            callback:function (data) {
+                if( data.error >0 ){
+                    toastr.error(data.msg);
+                }else{
+                    toastr.success(data.msg);
+                    Table.methods.refresh();
+                    layer.closeAll('page');
+                }
+            } ,
+            __init: function () {
+                $(".form-create input:first").focus();
+            },
+            changeFocus:function(event){
+                var _this = $(event.currentTarget);
+                // 判断输入框是否有内容
+                if( _this.val().length>0 ){
+                    _this.next().focus();
+                }
+            }
+        }
+
+    });    
+        
+});
+
+</script>

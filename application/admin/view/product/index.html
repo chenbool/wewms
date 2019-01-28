@@ -1,0 +1,128 @@
+{extend name="base" /}
+
+{block name="title"} 产品管理 {/block}
+
+{block name="body"}
+
+
+<div class="col-lg-12">
+
+    <section class="panel">
+        <header class="panel-heading">条件筛选</header>
+        <div class="panel-body">
+            <form class="form-inline form-search" role="form">
+
+                <div class="form-group mg-t-xs">
+                    <label>分类名称</label>
+                    <input type="text" class="form-control" name="name" placeholder="分类名称">
+                </div>
+
+                <div class="form-group mg-t-xs">
+                    <label>公司名称</label>
+                    <input type="text" class="form-control" name="title" placeholder="公司名称">
+                </div>
+                
+                <div class="form-group mg-t-xs">
+                    <label>联系人</label>
+                    <input type="text" class="form-control"name="contact" placeholder="联系人">
+                </div>
+                
+                <div class="form-group mg-t-xs">
+                    <label>邮箱</label>
+                    <input type="email" class="form-control" name="email" placeholder="邮箱">
+                </div>
+
+                <div class="form-group mg-t-xs">
+                    <label>手机</label>
+                    <input type="text" class="form-control" name="phone" placeholder="手机">
+                </div>
+
+                <div class="form-group col-xs-12 col-md-12 mg-t-xs">
+                    <button type="button" class="btn btn-success btn-sm col-xs-12 col-sm-2 col-md-1" onclick="Table.methods.refresh()">搜索</button>
+                </div>
+
+            </form>
+        </div>
+
+    </section>
+
+    <section class="panel">
+        <header class="panel-heading">列表</header>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped no-margin" id="table"> </table>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+    {include file="public/bootstrap-table" /}
+
+{/block}
+
+
+<!-- js -->
+{block name="js"}
+<script>
+
+    tableData.columns = [
+        {
+            checkbox: true,  
+            visible: true,
+            printIgnore: true
+        }, 
+        {
+            field: 'id',
+            title: 'ID',
+            sortable: true,
+            titleTooltip: 'ID',
+            printIgnore: true
+        }, 
+        {
+            field: 'name',
+            title: '名称',
+            sortable: true
+        },
+        {
+            field: 'tel',
+            title: '电话',
+            sortable: true
+        },
+        {
+            field: 'url',
+            title: '网址',
+            sortable: true,
+            titleTooltip: '网址'
+        },
+        {
+            field: 'create_time',
+            title: '添加时间',
+            sortable: true,
+            formatter: Table.formatter.time,
+            printFormatter: Table.formatter.time,
+            class: "hidden-xs hidden-sm"
+        },
+        {
+            title: '操作',
+            formatter: Table.formatter.operate,
+            printIgnore: true
+        }
+     ];
+
+    // 导出表格名称
+    tableData.exportOptions.fileName = "产品列表";
+    tableData.exportOptions.tableName = "产品列表";
+
+    // 忽略导出列
+    tableData.exportOptions.ignoreColumn = [0,-1];
+
+    // 设置弹窗大小
+    layer_area = {
+        create: ['500px', '550px'],
+        edit:['500px', '550px']
+    };
+
+    Table.table = $('#table').bootstrapTable(tableData);
+</script>
+{/block}

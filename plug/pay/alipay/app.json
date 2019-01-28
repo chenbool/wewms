@@ -1,0 +1,12 @@
+{
+	"name": "支付宝",
+	"code": "alipay",
+	"dir": "pay",
+	"type": "支付",
+	"author": "bool",
+	"email": "30024167@qq.com",
+	"version": "1.0",
+	"logo": "",
+	"time": "1540259058",
+	"desc": "支付宝插件"
+}

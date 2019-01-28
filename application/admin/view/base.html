@@ -1,0 +1,59 @@
+<!doctype html>
+<html class="signin no-js" lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <title>Cameo | {block name="title"}{/block} </title>
+    <!-- css -->
+	{include file="public/css" /}
+</head>
+<body>
+    <div class="app small-sidebar">
+
+		<!-- header navbar -->
+		{include file="public/navbar" /}
+		
+        <section class="layout">
+            
+			<!-- sidebar left  -->
+			{include file="public/sidebar" /}
+
+			<!-- main-content -->
+            <section class="main-content">
+                <div class="content-wrap">
+
+					<!-- main -->				
+					<div class="row mg-l-xs mg-b-xs mg-r-xs">
+						<div class="col-xs-12">
+
+							<div class="wizard">
+								<ul class="steps" style="margin-left: 0">
+									<li class="complete">
+										<a href="{:url('index/index')}"> 首页 </a>
+									</li>
+									<li class="active">
+										{block name="title"}{/block}
+									</li>
+								</ul>
+							</div>
+							<!-- <h5 class="no-margin" >{block name="title"}{/block}</h5> -->
+						</div>
+					</div>
+
+					{block name="body"}{/block}
+					<!-- main -->
+				</div>
+			</section>
+            <!-- main-content -->
+
+		</section>
+		
+    </div>
+
+
+</body>
+</html>
+<!-- js -->
+{include file="public/js" /}
+{block name="js"}{/block}

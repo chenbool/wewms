@@ -1,0 +1,12 @@
+{
+	"name": "Coding",
+	"code": "coding",
+	"dir": "oauth",
+	"type": "登陆",
+	"author": "bool",
+	"email": "30024167@qq.com",
+	"version": "1.0",
+	"logo": "",
+	"time": "1540259058",
+	"desc": "Coding授权登陆插件"
+}

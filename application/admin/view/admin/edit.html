@@ -1,0 +1,106 @@
+<!-- start-->
+<div class=" edit">
+
+    <!-- 表单 -->   
+    <section class="panel-body">
+        <form role="form" class="form-edit">
+            <input type="hidden" name="id" value="{:$row.id}">
+
+            <div class="form-group col-sm-12">
+                <span>昵称</span>
+                <input type="text" class="form-control" placeholder="昵称" name="nickname" value="{$row.nickname}" autocomplete="off">
+            </div>
+
+            <div class="form-group col-sm-12">
+                <span>角色</span>
+                <select class="form-control" name="role_id" placeholder="角色">
+                    <option value="0">顶级</option>
+                    {volist name="list" id="vo"}
+                        <option value="{$vo.id}" {$row->role_id== $vo->id ? 'selected="selected"' : null } >
+                            {:$vo.level>0? '|' : null }{:str_repeat('--',$vo.level)}{$vo.name}
+                        </option>
+                    {/volist}
+                </select>
+            </div>
+
+
+            <div class="form-group col-sm-12">
+                <span>用户名</span>
+                <input type="text" class="form-control" placeholder="用户名" name="username" value="{$row.username}" autocomplete="off">
+            </div>
+
+            <div class="form-group col-sm-12">
+                <span>密码</span>
+                <input type="password" class="form-control" placeholder="密码" name="password" value="{$row.password}" autocomplete="off">
+            </div>
+
+            <div class="form-group col-sm-6">
+                <span>手机</span>
+                <input type="text" class="form-control" placeholder="手机" name="phone" value="{$row.phone}" autocomplete="off">
+            </div>
+
+            <div class="form-group col-sm-6">
+                <span>邮箱</span>
+                <input type="text" class="form-control" placeholder="邮箱" name="email" value="{$row.email}" autocomplete="off">
+            </div>
+
+            <div class="form-group col-sm-12">
+                <button type="button" class="btn btn-sm btn-primary " @click="save"> 保 存 </button>
+                <button type="reset" class="btn btn-sm btn-success "> 重 置 </button>
+            </div>
+
+        </form>
+
+    </section>
+</div>
+<!-- end -->
+
+
+<script>
+
+// seajs
+seajs.use([], function() {
+    // vue
+    var edit = new Vue({
+        el: '.edit',
+        data: {},
+        mounted: function (){
+            this.__init();
+        },
+        methods: {
+            save: function () {
+                var param = $('.form-edit').serializeArray();
+                $.ajax({
+                    url: "{:url('update')}",
+                    method: 'POST',
+                    dataType: 'json',
+                    data: param,
+                    success: this.callback
+                });
+            },
+            callback:function (data) {
+                if( data.error >0 ){
+                    toastr.error(data.msg);
+                }else{
+                    toastr.success(data.msg);
+                    Table.methods.refresh();
+                    layer.closeAll('page');
+                }
+            } ,
+            __init: function () {
+                $(".form-create input:first").focus();
+            },
+            changeFocus:function(event){
+                var _this = $(event.currentTarget);
+                // 判断输入框是否有内容
+                if( _this.val().length>0 ){
+                    _this.next().focus();
+                }
+            }
+        }
+
+    });    
+        
+});
+
+</script>

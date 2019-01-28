@@ -1,0 +1,110 @@
+{extend name="basic" /}
+
+{block name="title"} 登陆 {/block}
+
+{block name="body"}
+<div class="bg-color center-wrapper">
+    <div class="center-content" id="app">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                <section class="panel panel-default">
+                    <header class="panel-heading">登陆</header>
+                    <div class="bg-white user pd-md">
+                        <h6> <strong>欢迎</strong>登陆! </h6>
+                        <form role="form" action="" id="login">
+
+                            <input type="text" class="form-control mg-b-sm" placeholder="账号" @keyup.enter="changeFocus($event)"
+                                name="username" autofocus>
+                            <input type="password" class="form-control mg-b-sm" placeholder="密码" name="password"
+                                @keyup.enter="login">
+
+                            <!-- <div class="col-xs-6 pull-left">
+                                <input 
+                                    type="text" 
+                                    class="form-control col-xs-3" 
+                                    placeholder="验证码" 
+                                    name="captcha">
+                                </div>
+                                <div class="col-xs-6 pull-left">
+                                    <img 
+                                        src="{:url('verify')}" 
+                                        alt="点击更换验证码" 
+                                        width="50px"
+                                        class="col-xs-6"
+                                        onclick="javascript:this.src = this.src+'?'+Math.random()">
+                                </div> -->
+
+
+                            <label class="checkbox pull-left">
+                                <input type="checkbox" value="remember-me" checked>记住账号
+                            </label>
+                            <div class="text-right mg-b-sm mg-t-sm">
+                                <a href="javascript:;">忘记密码?</a>
+                            </div>
+                            <button class="btn btn-info btn-block" type="button" @click="login">登陆</button>
+                        </form>
+                        <p class="center-block mg-t mg-b text-center">或</p>
+                        <p>
+                            <a class="btn btn-primary btn-block mg-b-sm">
+                                <i class="fa fa-facebook mg-r-md pull-left pd-l-md pd-r-md pd-t-xs"></i> Facebook
+                            </a>
+                            <a class="btn btn-info btn-block">
+                                <i class="fa fa-twitter mg-r-md pull-left pd-l-md pd-r-md pd-t-xs"></i> Twitter
+                            </a>
+                        </p>
+                        <p class="center-block mg-t mg-b text-right">没有账号?
+                            <a href="/static/admin/signup.html">立即注册</a>
+                        </p>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {},
+        mounted: function (){
+            this.__init();
+        },
+        methods: {
+            login: function () {
+                var param = $('#login').serializeArray();
+                $.ajax({
+                    url: "{:url('login')}",
+                    method: 'POST',
+                    dataType: 'json',
+                    data: param,
+                    success: this.callback
+                });
+
+            },
+            callback:function (data) {
+                if( data.error >0 ){
+                    toastr.error(data.msg);
+                }else{
+                    toastr.success(data.msg);
+                    setTimeout(function(){ 
+                        window.location.href = "{:url('index/index')}";
+                    }, 2000);
+                }
+            } ,
+            __init: function () {
+                $("form#login input:first").focus();
+            },
+            changeFocus:function(event){
+                var _this = $(event.currentTarget);
+                // 判断输入框是否有内容
+                if( _this.val().length>0 ){
+                    _this.next().focus();
+                }
+            }
+        }
+
+    });
+</script>
+{/block}
