@@ -12,7 +12,7 @@
 
                 <div class="form-group col-sm-6">
                     <span>产品分类</span>
-                    <select name="cate_id" class="form-control cate-select">
+                    <select name="cate_id" class="form-control comboSelect">
                         <option value="0">顶级</option>
                         {volist name="list" id="vo"}
                             {if($vo.level<2) }
@@ -26,7 +26,7 @@
 
                 <div class="form-group col-sm-6">
                     <span>供应商</span>
-                    <select name="supplier" class="form-control supplier-select">
+                    <select name="supplier" class="form-control comboSelect">
                         {volist name="supplier" id="vo"}
                             <option value="{$vo.id}" >{$vo.title}</option>
                         {/volist}
@@ -40,7 +40,7 @@
 
                 <div class="form-group col-sm-6">
                     <span>品牌</span>
-                    <select name="brand" class="form-control brand-select">
+                    <select name="brand" class="form-control comboSelect">
                         {volist name="brand" id="vo"}
                             <option value="{$vo.id}" >{$vo.name}</option>
                         {/volist}
@@ -60,7 +60,7 @@
 
                 <div class="form-group col-sm-6">
                     <span>计量单位</span>
-                    <select name="unit" class="form-control unit-select">
+                    <select name="unit" class="form-control comboSelect">
                         {volist name="unit" id="vo"}
                             <option value="{$vo.id}" >{$vo.name}</option>
                         {/volist}
@@ -69,7 +69,11 @@
 
                 <div class="form-group col-sm-6">
                     <span>颜色</span>
-                    <input type="text" class="form-control" placeholder="颜色" name="color">
+                    <select name="color" class="form-control comboSelect">
+                        {volist name="color" id="vo"}
+                            <option value="{$vo.id}" >{$vo.name}</option>
+                        {/volist}
+                    </select>
                 </div>
 
                 <div class="form-group col-sm-12">
@@ -100,10 +104,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'],function() {
             type: 0,
         },
         mounted: function(){
-            $('.cate-select').comboSelect();
-            $('.unit-select').comboSelect();
-            $('.brand-select').comboSelect();
-            $('.supplier-select').comboSelect();
+            $('.comboSelect').comboSelect();
         },
         methods: {
             save: function () {
@@ -130,21 +131,5 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'],function() {
     });
 
 });
-
-
-// function save(){
-//     var param = $(".form-create").serializeArray();
-//     $.post("{:url('save')}", param, function(data) {
-//         if( data.error >0 ){
-//           toastr.error(data.msg);
-//         }else{
-//             toastr.success(data.msg);
-//             Table.methods.refresh();
-//             layer.closeAll('page');
-//         }
-//     },'json');
-// }
-
-
 
 </script>
