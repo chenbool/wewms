@@ -4,6 +4,8 @@ use app\common\service\Base,
 	app\admin\model\Sale as Model,
 	app\admin\validate\Sale as Validate;
 
+use think\facade\Hook;
+
 /**
  * 作者:bool
  * QQ  :30024167
@@ -41,6 +43,9 @@ class Sale extends Base
 	 */
 	public function save()
 	{
+		// 监听钩子函数 保存之前
+		Hook::listen('sale_begin');
+
 		$param = input();
 		$param['create_time'] = time();
 
