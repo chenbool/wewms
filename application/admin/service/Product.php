@@ -99,29 +99,36 @@ class Product extends Base
 	 * [buildPage 数据分页筛选查询 ]
 	 * @return [json] [结果集]
 	 */
-	// protected function buildPage($where=null)
-	// {
-	// 	// 接受参数
-	// 	$pageSize = input('rows/d');
-	// 	$page = input('page/d');
-	// 	$sort = input('sort/s');
-	// 	$order = input('sortOrder/s');
+	protected function buildPage($where=null)
+	{
+		// 接受参数
+		$pageSize = input('rows/d');
+		$page = input('page/d');
+		$sort = input('sort/s');
+		$order = input('sortOrder/s');
 
-	// 	//总记录数
-	// 	$count = Model::with('parent')->where($where)->count();
+		// 检查搜索字段 supplier.title
+		$res = preg_match('#^[a-z]+\.[a-z]+$#',$sort);
+		if( $res ){
+			$exp = explode(".",$sort);
+			$sort = $exp[0];
+		}
 
-	// 	// 查询
-	// 	$data = Model::with('parent')
-	// 	->where($where)
-	// 	->order($sort, $order)
-	// 	->page("{$page},{$pageSize}")
-	// 	->select();
+		//总记录数
+		$count = Model::with('cate,supplier')->where($where)->count();
 
-	// 	return json([
-	// 		// 总记录数
-	// 		'total' => $count,
-	// 		'rows'	=>	$data
-	// 	]);
-	// }	
+		// 查询
+		$data = Model::with('cate,supplier,brand,unit,color')
+		->where($where)
+		->order($sort, $order)
+		->page("{$page},{$pageSize}")
+		->select();
+
+		return json([
+			// 总记录数
+			'total' => $count,
+			'rows'	=>	$data
+		]);
+	}	
 
 }

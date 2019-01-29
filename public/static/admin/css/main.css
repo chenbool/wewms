@@ -4956,6 +4956,10 @@ canvas {
     min-width: 80px;
 }
 
+.collapse-open .dropdown-menu>li:hover {
+    background: #464C5B;
+}
+
 
 /* 地区联动 */
 .distpicker select{
