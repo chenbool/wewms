@@ -1,6 +1,6 @@
 {extend name="base" /}
 
-{block name="title"} 计量单位 {/block}
+{block name="title"} 颜色管理 {/block}
 
 
 {block name="body"}
@@ -43,6 +43,11 @@
 <!-- js -->
 {block name="js"}
 <script>
+
+    Table.formatter.color = function(value, row, index){
+        return '<input type="color" value="'+value+'" disabled="disabled" >';
+    }
+
     tableData.columns = [
         {
             checkbox: true,  
@@ -61,6 +66,13 @@
             field: 'name',
             title: '名称',
             sortable: true
+        },
+        {
+            field: 'code',
+            title: '颜色',
+            sortable: true,
+            formatter: Table.formatter.color,
+            printFormatter: Table.formatter.color
         },
         {
             field: 'status',
@@ -84,7 +96,7 @@
      ];
     
     // 导出表格名称
-    tableData.exportOptions.tableName = tableData.exportOptions.fileName = "计量单位";
+    tableData.exportOptions.tableName = tableData.exportOptions.fileName = "颜色管理";
 
     // 忽略导出列
     tableData.exportOptions.ignoreColumn = [0,4,-1];
