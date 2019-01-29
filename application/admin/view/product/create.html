@@ -5,18 +5,23 @@
     <section class="panel-body" >
             <form role="form" class="form-create">
 
-                <div class="form-group col-sm-12">
+                <div class="form-group col-sm-6">
                     <span>产品编号</span>
-                    <input type="text" class="form-control" placeholder="产品编号" name="sn">
+                    <input type="text" class="form-control" placeholder="产品编号" name="sn" value="{:date('Ymdhis').rand(100,999)}">
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <span>内部编号</span>
+                    <input type="text" class="form-control" placeholder="内部编号" name="unique_sn">
                 </div>
 
                 <div class="form-group col-sm-6">
                     <span>产品分类</span>
-                    <select name="cate_id" class="form-control comboSelect">
+                    <select name="cate" class="form-control comboSelect">
                         <option value="0">顶级</option>
                         {volist name="list" id="vo"}
                             {if($vo.level<2) }
-                                <option value="{$vo.id}" {:input('pid')==$vo.id ? 'selected="selected"' : null } >{:$vo.level>0? '|' : null }{:str_repeat('--',$vo.level)}{$vo.name}
+                                <option value="{$vo.id}">{:$vo.level>0? '|' : null }{:str_repeat('--',$vo.level)}{$vo.name}
                                 </option>
                             {else /} {/if}
 
@@ -82,7 +87,7 @@
                 </div>
 
                 <div class="form-group col-sm-12">
-                    <button type="button" class="btn btn-sm btn btn-primary" onclick="save()">  保 存 </button>
+                    <button type="button" class="btn btn-sm btn btn-primary" @click="save">  保 存 </button>
                     <button type="reset" class="btn btn-sm btn-success ">  重 置 </button> 
                 </div>
 
@@ -100,9 +105,6 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'],function() {
     var create = new Vue({
         el: '.form-create',
         data: {},
-        data: {
-            type: 0,
-        },
         mounted: function(){
             $('.comboSelect').comboSelect();
         },

@@ -76,7 +76,11 @@ class Product extends Base
 		$list = $this->_tree($list);
 		return [
 			'row'	=>	$this->model->find($id),
-			'list'	=>	$list
+			'list'	=>	$list,
+			'unit'	=>	model('unit')->where([ 'status'=>0 ])->select(),
+			'brand'	=>	model('brand')->where([ 'status'=>0 ])->select(),
+			'color'	=>	model('color')->where([ 'status'=>0 ])->select(),
+			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
 		];
 	}
 

@@ -6,43 +6,89 @@
         <form role="form" class="form-edit">
             <input type="hidden" name="id" value="{:$row.id}">
 
-            <div class="form-group col-sm-12">
-                <span>上级分类</span>
-                <select name="pid" class="form-control">
-                    <option value="0">顶级</option>
-                    {volist name="list" id="vo"}
-                        {if($vo.level<2) }
-                            <option value="{$vo.id}" {:input('pid')==$vo.id ? 'selected="selected"' : null } >
-                                {:$vo.level>0? '|' : null }{:str_repeat('--',$vo.level)}{$vo.name}
-                            </option>
-                        {else /} {/if}
-
-                    {/volist}
-                </select>
-            </div>
-
-            <div class="form-group col-sm-12">
-                <span>分类名称</span>
-                <input type="text" class="form-control" placeholder="分类名称" name="name" value="{$row.name}">
-            </div>
-
-            <div class="form-group col-sm-12">
-                <span>状态</span>
-                <div class="radio">
-                    <label><input type="radio" name="status" value="0" {$row->status== 0 ? 'checked="checked"' : null } >正常</label>
+                <div class="form-group col-sm-6">
+                    <span>产品编号</span>
+                    <input type="text" class="form-control" placeholder="产品编号" name="sn" value="{$row.sn}">
                 </div>
-                <div class="radio">
-                    <label><input type="radio" name="status" value="1" {$row->status== 1 ? 'checked="checked"' : null } >禁用</label>
+
+                <div class="form-group col-sm-6">
+                    <span>内部编号</span>
+                    <input type="text" class="form-control" placeholder="内部编号" name="unique_sn" value="{$row.unique_sn}">
                 </div>
-            </div>
+
+                <div class="form-group col-sm-6">
+                    <span>产品分类</span>
+                    <select name="cate" class="form-control comboSelect">
+                        <option value="0">顶级</option>
+                        {volist name="list" id="vo"}
+                            {if($vo.level<2) }
+                                <option value="{$vo.id}" {:$row.cate==$vo.id ? 'selected="selected"' : null } >{:$vo.level>0? '|' : null }{:str_repeat('--',$vo.level)}{$vo.name}
+                                </option>
+                            {else /} {/if}
+
+                        {/volist}
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <span>供应商</span>
+                    <select name="supplier" class="form-control comboSelect">
+                        {volist name="supplier" id="vo"}
+                            <option value="{$vo.id}" {:$row.supplier==$vo.id ? 'selected="selected"' : null } >{$vo.title}</option>
+                        {/volist}
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <span>产品名称</span>
+                    <input type="text" class="form-control" placeholder="产品名称" name="name" value="{$row.name}">
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <span>品牌</span>
+                    <select name="brand" class="form-control comboSelect">
+                        {volist name="brand" id="vo"}
+                            <option value="{$vo.id}" {:$row.brand==$vo.id ? 'selected="selected"' : null } >{$vo.name}</option>
+                        {/volist}
+                    </select>
+                </div>
+
+
+                <div class="form-group col-sm-6">
+                    <span>型号</span>
+                    <input type="text" class="form-control" placeholder="型号" name="model" value="{$row.model}">
+                </div>        
+
+                <div class="form-group col-sm-6">
+                    <span>规格</span>
+                    <input type="text" class="form-control" placeholder="规格" name="spec" value="{$row.spec}">
+                </div>                         
+
+                <div class="form-group col-sm-6">
+                    <span>计量单位</span>
+                    <select name="unit" class="form-control comboSelect">
+                        {volist name="unit" id="vo"}
+                            <option value="{$vo.id}" {:$row.unit==$vo.id ? 'selected="selected"' : null } >{$vo.name}</option>
+                        {/volist}
+                    </select>
+                </div>    
+
+                <div class="form-group col-sm-6">
+                    <span>颜色</span>
+                    <select name="color" class="form-control comboSelect">
+                        {volist name="color" id="vo"}
+                            <option value="{$vo.id}" {:$row.color==$vo.id ? 'selected="selected"' : null } >{$vo.name}</option>
+                        {/volist}
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-12">
+                    <span>备注</span>
+                    <textarea class="form-control" cols="5" name="desc">{$row.desc}</textarea>
+                </div>
 
             <div class="form-group col-sm-12">
-                <span>备注</span>
-                <textarea class="form-control" cols="5" name="desc">{$row.desc}</textarea>
-            </div>
-
-            <div class="form-group col-sm-12">
-                <button type="button" class="btn btn-sm btn-primary " onclick="save()"> 保 存 </button>
+                <button type="button" class="btn btn-sm btn-primary " @click="save"> 保 存 </button>
                 <button type="reset" class="btn btn-sm btn-success "> 重 置 </button>
             </div>
 
@@ -54,18 +100,48 @@
 
 
 <script>
+// seajs
+seajs.use(['vendor/comboSelect/jquery.combo.select'],function() {
 
-function save(){
-    var param = $(".form-edit").serializeArray();
-    $.post("{:url('update')}", param, function(data) {
-        if( data.error >0 ){
-            toastr.error(data.msg);
-        }else{
-            show_loading_bar(100);
-            toastr.success(data.msg);
-            Table.methods.refresh();
-            layer.closeAll('page');
+
+    var create = new Vue({
+        el: '.form-edit',
+        data: {},
+        mounted: function(){
+            $('.comboSelect').comboSelect();
+        },
+        methods: {
+            save: function () {
+                var param = $(".form-edit").serializeArray();
+                $.post("{:url('update')}", param, this.callback,'json');
+            },
+            callback:function (data) {
+                if( data.error >0 ){
+                    toastr.error(data.msg);
+                }else{
+                    toastr.success(data.msg);
+                    Table.methods.refresh();
+                    layer.closeAll('page');
+                }
+            }
         }
-    },'json');
-}
+
+    });
+
+/*     function save(){
+        var param = $(".form-edit").serializeArray();
+        $.post("{:url('update')}", param, function(data) {
+            if( data.error >0 ){
+                toastr.error(data.msg);
+            }else{
+                toastr.success(data.msg);
+                Table.methods.refresh();
+                layer.closeAll('page');
+            }
+        },'json');
+    } */
+
+
+
+});
 </script>
