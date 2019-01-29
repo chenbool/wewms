@@ -1,14 +1,14 @@
 <?php
 namespace app\admin\service;
 use app\common\service\Base,
-	app\admin\model\Product as Model,
-	app\admin\validate\Product as Validate;
+	app\admin\model\Color as Model,
+	app\admin\validate\Color as Validate;
 
 /**
  * 作者:bool
  * QQ  :30024167
  */
-class Product extends Base
+class Color extends Base
 {
 	/**
 	 * [__construct 构造方法]
@@ -34,21 +34,6 @@ class Product extends Base
 		return $this->buildPage($where);
 	}
 
-	/**
-	 * [create 添加创建方法]
-	 * @return [bool] [结果集]
-	 */
-	public function create()
-	{
-		$list = model('cate')->select();
-		$list = $this->_tree($list);
-		return [
-			'list'	=>	$list,
-			'unit'	=>	model('unit')->where([ 'status'=>0 ])->select(),
-			'brand'	=>	model('brand')->where([ 'status'=>0 ])->select(),
-			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
-		];
-	}
 
 	/**
 	 * [save 保存数据]
@@ -71,11 +56,8 @@ class Product extends Base
 	 */
 	public function edit($id)
 	{
-		$list = model('cate')->select();
-		$list = $this->_tree($list);
 		return [
 			'row'	=>	$this->model->find($id),
-			'list'	=>	$list
 		];
 	}
 
@@ -89,34 +71,5 @@ class Product extends Base
 		$this->validate = new Validate();
 		return $this->_save( $param, 'update' );
 	}
-
-	/**
-	 * [buildPage 数据分页筛选查询 ]
-	 * @return [json] [结果集]
-	 */
-	// protected function buildPage($where=null)
-	// {
-	// 	// 接受参数
-	// 	$pageSize = input('rows/d');
-	// 	$page = input('page/d');
-	// 	$sort = input('sort/s');
-	// 	$order = input('sortOrder/s');
-
-	// 	//总记录数
-	// 	$count = Model::with('parent')->where($where)->count();
-
-	// 	// 查询
-	// 	$data = Model::with('parent')
-	// 	->where($where)
-	// 	->order($sort, $order)
-	// 	->page("{$page},{$pageSize}")
-	// 	->select();
-
-	// 	return json([
-	// 		// 总记录数
-	// 		'total' => $count,
-	// 		'rows'	=>	$data
-	// 	]);
-	// }	
 
 }

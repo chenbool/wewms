@@ -1,0 +1,77 @@
+<!-- create begin -->
+<div class="create">
+   
+    <!-- 表单 -->   
+    <section class="panel-body" >
+        <form role="form" class="form-create">
+
+            <div class="form-group col-sm-12">
+                <span>名称</span>
+                <input type="text" class="form-control" placeholder="名称" name="name">
+            </div>
+
+            <div class="form-group col-sm-12">
+                <span>颜色</span>
+                <input type="color" class="form-control" placeholder="名称" name="code">
+            </div>
+
+            <div class="form-group col-sm-12">
+                <span>状态</span>
+                <div class="radio">
+                    <label><input type="radio" name="status" value="0" checked="checked">正常</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio" name="status" value="1" >禁用</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <button type="button" class="btn btn-sm btn btn-primary" @click="save">  保 存 </button>
+                <button type="reset" class="btn btn-sm btn-success ">  重 置 </button> 
+            </div>
+
+        </form>
+    </section>
+
+</div>
+<!-- create end-->
+
+
+<script>
+
+// seajs
+seajs.use([], function() {
+    // vue
+    var create = new Vue({
+        el: '.create',
+        data: {},
+        mounted: function (){
+        },
+        methods: {
+            save: function () {
+                var param = $('.form-create').serializeArray();
+                $.ajax({
+                    url: "{:url('save')}",
+                    method: 'POST',
+                    dataType: 'json',
+                    data: param,
+                    success: this.callback
+                });
+            },
+            callback:function (data) {
+                if( data.error >0 ){
+                    toastr.error(data.msg);
+                }else{
+                    toastr.success(data.msg);
+                    Table.methods.refresh();
+                    layer.closeAll('page');
+                }
+            }
+
+        }
+
+    });    
+        
+});
+
+</script>

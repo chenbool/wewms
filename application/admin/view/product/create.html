@@ -12,15 +12,23 @@
 
                 <div class="form-group col-sm-6">
                     <span>产品分类</span>
-                    <select name="cate_id" class="form-control cate">
+                    <select name="cate_id" class="form-control cate-select">
                         <option value="0">顶级</option>
                         {volist name="list" id="vo"}
                             {if($vo.level<2) }
-                                <option value="{$vo.id}" {:input('pid')==$vo.id ? 'selected="selected"' : null } >
-                                    {:$vo.level>0? '|' : null }{:str_repeat('--',$vo.level)}{$vo.name}
+                                <option value="{$vo.id}" {:input('pid')==$vo.id ? 'selected="selected"' : null } >{:$vo.level>0? '|' : null }{:str_repeat('--',$vo.level)}{$vo.name}
                                 </option>
                             {else /} {/if}
 
+                        {/volist}
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <span>供应商</span>
+                    <select name="supplier" class="form-control supplier-select">
+                        {volist name="supplier" id="vo"}
+                            <option value="{$vo.id}" >{$vo.title}</option>
                         {/volist}
                     </select>
                 </div>
@@ -32,12 +40,13 @@
 
                 <div class="form-group col-sm-6">
                     <span>品牌</span>
-                    <select name="brand" class="form-control brand">
+                    <select name="brand" class="form-control brand-select">
                         {volist name="brand" id="vo"}
-                            <option value="{$vo.id}" > {$vo.name} </option>
+                            <option value="{$vo.id}" >{$vo.name}</option>
                         {/volist}
                     </select>
                 </div>
+
 
                 <div class="form-group col-sm-6">
                     <span>型号</span>
@@ -51,22 +60,17 @@
 
                 <div class="form-group col-sm-6">
                     <span>计量单位</span>
-                    <select name="unit" class="form-control unit">
+                    <select name="unit" class="form-control unit-select">
                         {volist name="unit" id="vo"}
-                            <option value="{$vo.id}" > {$vo.name} </option>
+                            <option value="{$vo.id}" >{$vo.name}</option>
                         {/volist}
                     </select>
                 </div>    
 
                 <div class="form-group col-sm-6">
                     <span>颜色</span>
-                    <input type="text" class="form-control" placeholder="规格" name="color">
-                </div> 
-                
-                <div class="form-group col-sm-6">
-                    <span>净重</span>
-                    <input type="text" class="form-control" placeholder="规格" name="weight">
-                </div> 
+                    <input type="text" class="form-control" placeholder="颜色" name="color">
+                </div>
 
                 <div class="form-group col-sm-12">
                     <span>备注</span>
@@ -96,9 +100,10 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'],function() {
             type: 0,
         },
         mounted: function(){
-            $('.cate').comboSelect();
-            $('.unit').comboSelect();
-            $('.brand').comboSelect();
+            $('.cate-select').comboSelect();
+            $('.unit-select').comboSelect();
+            $('.brand-select').comboSelect();
+            $('.supplier-select').comboSelect();
         },
         methods: {
             save: function () {
