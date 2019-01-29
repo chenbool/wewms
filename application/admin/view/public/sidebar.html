@@ -40,6 +40,36 @@
 
                         <li class="dropdown show-on-hover open collapse-open">
                             <a href="javascript:;" data-toggle="dropdown">
+                                <i class="fa fa-ellipsis-h"></i>
+                                <span>仓库作业</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="active">
+                                    <a href="{:url('sale/index')}">
+                                        <span>销售订单</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:url('role/index')}">
+                                        <span>出库订单</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:url('node/index')}">
+                                        <span>采购订单</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:url('node/index')}">
+                                        <span>入库订单</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li class="dropdown show-on-hover">
+                            <a href="javascript:;" data-toggle="dropdown">
                                 <i class="fa fa-inbox"></i>
                                 <span>基本设置</span>
                             </a>
@@ -84,7 +114,7 @@
                                         <span>颜色管理</span>
                                     </a>
                                 </li>
-                                <li class="active">
+                                <li>
                                     <a href="{:url('product/index')}">
                                         <span>产品管理</span>
                                     </a>
