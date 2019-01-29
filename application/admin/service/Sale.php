@@ -27,6 +27,10 @@ class Sale extends Base
 	 */
 	public function index()
 	{
+
+		// 监听钩子函数 保存之前
+		Hook::listen('sale_begin');
+
 		if( !request()->isAjax() ) return view();
 		// 获取参数
 		$param = input('data');

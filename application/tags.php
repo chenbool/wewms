@@ -27,6 +27,8 @@ return [
     'app_end'      => [],
 
     'sale_begin'=> [
-        'app\\admin\\behavior\\Sale'
+        // 'app\\admin\\behavior\\Sale',
+        ['app\\admin\\behavior\\Sale','run']
     ]
+
 ];
