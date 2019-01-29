@@ -27,10 +27,6 @@ class Sale extends Base
 	 */
 	public function index()
 	{
-
-		// 监听钩子函数 保存之前
-		Hook::listen('sale_begin');
-
 		if( !request()->isAjax() ) return view();
 		// 获取参数
 		$param = input('data');
@@ -59,6 +55,17 @@ class Sale extends Base
 	}	
 
 	/**
+	 * [create 添加创建方法]
+	 * @return [bool] [结果集]
+	 */
+	public function create()
+	{
+		return [
+			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
+		];
+	}
+
+	/**
 	 * [edit 编辑页面]
 	 * @param  [int] $id 	[id]
 	 * @return [array]     	[结果集]
@@ -67,6 +74,7 @@ class Sale extends Base
 	{
 		return [
 			'row'	=>	$this->model->find($id),
+			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
 		];
 	}
 

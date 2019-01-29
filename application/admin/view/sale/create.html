@@ -6,19 +6,40 @@
         <form role="form" class="form-create">
 
             <div class="form-group col-sm-12">
-                <span>名称</span>
-                <input type="text" class="form-control" placeholder="名称" name="name">
+                <span>编号</span>
+                <input type="text" class="form-control" placeholder="编号" name="sn" value="{:date('Ymdhis').rand(100,999)}">
             </div>
 
+            <div class="form-group col-sm-6">
+                <span>销售人</span>
+                <input type="text" class="form-control" placeholder="名称" name="name" value="{$admin_user.nickname}">
+            </div>
+
+            <div class="form-group col-sm-6">
+                <span>客户</span>
+                <select name="supplier" class="form-control comboSelect">
+                    {volist name="supplier" id="vo"}
+                        <option value="{$vo.id}" >{$vo.title}</option>
+                    {/volist}
+                </select>
+            </div>
+
+<!-- 
             <div class="form-group col-sm-12">
                 <span>状态</span>
                 <div class="radio">
                     <label><input type="radio" name="status" value="0" checked="checked">正常</label>
                 </div>
                 <div class="radio">
-                    <label><input type="radio" name="status" value="1" >禁用</label>
+                    <label><input type="radio" name="status" value="1" >作废</label>
                 </div>
             </div>
+-->
+
+            <div class="form-group col-sm-12">   
+               {include file="public/search" /} 
+            </div>
+
 
             <div class="form-group col-sm-12">
                 <button type="button" class="btn btn-sm btn btn-primary" @click="save">  保 存 </button>
@@ -35,12 +56,30 @@
 <script>
 
 // seajs
-seajs.use([], function() {
+seajs.use(['vendor/comboSelect/jquery.combo.select'], function() {
+
+        var data = {
+            name: '产品名称',
+            model: '产品型号',
+            spec: '产品规格',
+            color: '颜色',
+            num: '数量',
+            unit: '计量单位',
+            price: '产品单价',
+        };
+
+
     // vue
     var create = new Vue({
         el: '.create',
-        data: {},
+        data: {
+            data: data,
+            list: [
+                {}
+            ]
+        },
         mounted: function (){
+            $('.comboSelect').comboSelect();
         },
         methods: {
             save: function () {
@@ -61,11 +100,19 @@ seajs.use([], function() {
                     Table.methods.refresh();
                     layer.closeAll('page');
                 }
+            },
+            addLine:function(){
+                this.list.push({});
+            },
+            delLine:function(index){
+                console.log(index);
+                this.list.splice(index,1);
+                // delete this.list[index];
             }
 
         }
 
-    });    
+    });
         
 });
 
