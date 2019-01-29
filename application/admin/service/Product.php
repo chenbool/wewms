@@ -115,7 +115,7 @@ class Product extends Base
 		}
 
 		//总记录数
-		$count = Model::with('cate,supplier')->where($where)->count();
+		$count = Model::with('cate')->where($where)->count();
 
 		// 查询
 		$data = Model::with('cate,supplier,brand,unit,color')
