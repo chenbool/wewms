@@ -5,21 +5,7 @@
 
 {block name="body"}
 
-    <div class="app">
-
-		<!-- header navbar -->
-		{include file="public/navbar" /}
-		
-        <section class="layout">
-			<!-- sidebar left  -->
-			{include file="public/sidebar" /}
-
-			<!-- main -->
-            <section class="main-content">
-                <div class="content-wrap">
-					<!-- main -->			
-					
-<!-- 						
+					<!-- main -->								
 					<div class="row mg-b">
 						<div class="col-xs-6">
 							<h3 class="no-margin">控制台</h3>
@@ -81,45 +67,11 @@
 							</section>
 						</div>
 					</div>
- -->
-
 					<!-- main -->
-				</div>
-			</section>
-			
-			<!-- footer -->
-			<section class="main-content">
-
-				<div class="content-wrap with-footer"></div>
-
-				<footer>
-					<p>© <a href="javascript:;">Cameo Admin 2014</a>
-					</p>
-					<p class="pull-right">All rights reserved
-					</p>
-				</footer>
-			</section>
-
-		</section>
-		
-
-    </div>
 
 {/block}
 
 
 {block name="js"}
-<script>
-    var app = new Vue({
-        el: '.app',
-        data: {},
-        mounted: function (){
-        },
-        methods: {
-            _load: function (event) {
-            }
-        }
 
-    });
-</script>
 {/block}
