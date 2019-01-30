@@ -18,6 +18,11 @@ class Product extends Model
         return $this->hasOne('Supplier','id','supplier')->selfRelation();
     }
 
+    public function customer()
+    {
+        return $this->hasOne('Customer','id','customer')->selfRelation();
+    }
+
     public function brand()
     {
         return $this->hasOne('Brand','id','brand')->selfRelation();

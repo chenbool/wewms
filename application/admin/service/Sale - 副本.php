@@ -74,26 +74,37 @@ class Sale extends Base
 	 */
 	public function edit($id)
 	{
+		$list = model('SaleMain')
+			->with(['product'=>['unit','brand','color'] ])
+			->where([ 'sid' => $id ])->select();
+
+		$temp = [];
+		foreach ($list as $k => $v) {
+			$temp[] = [
+				'id'	=>	$v['id'],
+				'pid'	=>	$v['pid'],
+				'sid'	=>	$v['sid'],
+				'num'	=>	$v['num'],
+				'price'	=>	$v['price'],
+				'model'	=>	$v['product']['model'],
+				'spec'	=>	$v['product']['spec'],
+				'name'	=>	$v['product']['name'],
+				'brand'	=>	$v['product']['brand']['name'],
+				'unit'	=>	$v['product']['unit']['name'],
+				'color'	=>	$v['product']['color']['name'],
+			];
+		}
+
+		dump($temp[0] );
+		dump($list[0]['product']->brand );
+		die;
 
 		return [
-			'row'		=>	$this->model->with('list')->find($id),
+			'row'	=>	$this->model->find($id),
 			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select(),
-			'list'		=>	$this->getList($id)
+			'list'	=> json($temp)
 		];
 	}
-
-	public function getList($id){
-		$list = model('SaleMain')
-			->alias('a')
-			->field('a.*,b.name,b.model,b.spec,c.name as unit,d.name as color')
-			->join('product b','a.pid = b.id')
-			->join('unit c','b.unit = c.id')
-			->join('color d','b.color = d.id')
-			->where([ 'sid' => $id ])
-			->select();
-		return json_encode($list);
-	}
-
 
 	/**
 	 * [update 更新数据]
