@@ -31,15 +31,6 @@
                 </div>
 
                 <div class="form-group col-sm-6">
-                    <span>供应商</span>
-                    <select name="supplier" class="form-control comboSelect">
-                        {volist name="supplier" id="vo"}
-                            <option value="{$vo.id}" {:$row.supplier==$vo.id ? 'selected="selected"' : null } >{$vo.title}</option>
-                        {/volist}
-                    </select>
-                </div>
-
-                <div class="form-group col-sm-6">
                     <span>产品名称</span>
                     <input type="text" class="form-control" placeholder="产品名称" name="name" value="{$row.name}">
                 </div>
@@ -63,6 +54,47 @@
                     <span>规格</span>
                     <input type="text" class="form-control" placeholder="规格" name="spec" value="{$row.spec}">
                 </div>                         
+
+                <div class="form-group col-sm-6">
+                    <span>默认价格</span>
+                    <input type="text" class="form-control" placeholder="默认价格" name="price" value="{$row.price}">
+                </div> 
+
+                <div class="form-group col-sm-6">
+                    <span>默认供应商</span>
+                    <select name="supplier" class="form-control comboSelect">
+                        {volist name="supplier" id="vo"}
+                            <option value="{$vo.id}" {:$row.supplier==$vo.id ? 'selected="selected"' : null } >{$vo.title}</option>
+                        {/volist}
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <span>默认客户</span>
+                    <select name="customer" class="form-control comboSelect">
+                        {volist name="customer" id="vo"}
+                            <option value="{$vo.id}" {:$row.customer==$vo.id ? 'selected="selected"' : null } >{$vo.title}</option>
+                        {/volist}
+                    </select>
+                </div>
+                
+                <div class="form-group col-sm-6">
+                    <span>默认仓库</span>
+                    <select name="depot" class="form-control comboSelect">
+                        {volist name="depot" id="vo"}
+                            <option value="{$vo.id}" {:$row.depot==$vo.id ? 'selected="selected"' : null } >{$vo.name}</option>
+                        {/volist}
+                    </select>
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <span>默认库位</span>
+                    <select name="location" class="form-control comboSelect">
+                        {volist name="location" id="vo"}
+                            <option value="{$vo.id}" {:$row.location==$vo.id ? 'selected="selected"' : null } >{$vo.name}</option>
+                        {/volist}
+                    </select>
+                </div>                  
 
                 <div class="form-group col-sm-6">
                     <span>计量单位</span>

@@ -47,7 +47,10 @@ class Product extends Base
 			'unit'	=>	model('unit')->where([ 'status'=>0 ])->select(),
 			'brand'	=>	model('brand')->where([ 'status'=>0 ])->select(),
 			'color'	=>	model('color')->where([ 'status'=>0 ])->select(),
-			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
+			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select(),
+			'customer'	=>	model('customer')->where([ 'status'=>0 ])->select(),
+			'depot'	=>	model('depot')->where([ 'status'=>0 ])->select(),
+			'location'	=>	model('location')->where([ 'status'=>0 ])->select(),
 		];
 	}
 
@@ -80,7 +83,10 @@ class Product extends Base
 			'unit'	=>	model('unit')->where([ 'status'=>0 ])->select(),
 			'brand'	=>	model('brand')->where([ 'status'=>0 ])->select(),
 			'color'	=>	model('color')->where([ 'status'=>0 ])->select(),
-			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
+			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select(),
+			'customer'	=>	model('customer')->where([ 'status'=>0 ])->select(),
+			'depot'	=>	model('depot')->where([ 'status'=>0 ])->select(),
+			'location'	=>	model('location')->where([ 'status'=>0 ])->select()
 		];
 	}
 
