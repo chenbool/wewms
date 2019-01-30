@@ -1,6 +1,10 @@
 <!-- create begin -->
 <div class="create">
 
+<?php
+    //dump( json_encode($row->list) );
+    //die;
+?>
 
     <!-- 表单 -->   
     <section class="panel-body" >
@@ -52,8 +56,11 @@
 <!-- create end-->
 
 
+
 <script>
-var list = JSON.parse("{$list}");
+ var list = {:json_encode($row->list) };
+
+console.log( list );
 
  var layer_index = 0;
 

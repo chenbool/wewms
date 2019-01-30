@@ -12,4 +12,19 @@ class SaleMain extends Model
         return $this->hasOne('Product','id','pid')->selfRelation();
     }
 
+    public function brand()
+    {
+        return $this->hasOne('Brand','id','brand')->selfRelation();
+    }
+
+    public function unit()
+    {
+        return $this->hasOne('Unit','id','unit')->selfRelation();
+    }
+
+    public function color()
+    {
+        return $this->hasOne('Color','id','color')->selfRelation();
+    }
+
 }

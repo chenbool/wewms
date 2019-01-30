@@ -76,9 +76,8 @@ class Sale extends Base
 	{
 
 		return [
-			'row'		=>	$this->model->with('list')->find($id),
-			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select(),
-			'list'		=>	$this->getList($id)
+			'row'		=>	$this->model->with([ 'list'=>['brand','unit','color'] ])->find($id),
+			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
 		];
 	}
 
@@ -138,10 +137,17 @@ class Sale extends Base
 						'pid' 			=> $v['id'],
 						'num' 			=> $v['num'],
 						'price' 		=> $v['price'],
+						'brand'			=>	$v['brand']['id'],
+						'color'			=>	$v['color']['id'],
+						'unit'			=>	$v['unit']['id'],
+						'depot'			=>	$v['depot'],
+						'location'		=>	$v['location'],
 						'create_time'	=>	time()
 					];
 				}
 				model('SaleMain')->insertAll($temp);
+
+				return ['error'	=>	0,'msg'	=>	'添加成功' ];
 			});
 
 			return ['error'	=>	0,'msg'	=>	'添加成功' ];
