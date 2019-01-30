@@ -76,7 +76,9 @@ class Sale extends Base
 	{
 
 		return [
-			'row'		=>	$this->model->with([ 'list'=>['brand','unit','color'] ])->find($id),
+			'row'		=>	$this->model->with([ 
+				'list' => ['brand','unit','color','product'],
+			])->find($id),
 			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
 		];
 	}
