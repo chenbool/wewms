@@ -8,7 +8,10 @@ class Sale
     public function run($params=[])
     {
         // 行为逻辑
-        dump($params);
-        die;
+        // dump($params);
+
+        // dump( input() );
+
+        // die;
     }
 }

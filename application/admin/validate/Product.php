@@ -13,7 +13,7 @@ class Product extends Validate
      * @var array
      */	
 	protected $rule = [
-
+        'name'           =>  'require|unique:sale',
     ];
     
     /**
@@ -23,6 +23,7 @@ class Product extends Validate
      * @var array
      */	
     protected $message = [
-        
+        'name.require'       =>  '名称不能为空',
+        'name.unique'        =>  '名称已经存在',
     ];
 }

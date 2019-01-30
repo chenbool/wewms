@@ -7,12 +7,12 @@
 
             <div class="form-group col-sm-12">
                 <span>编号</span>
-                <input type="text" class="form-control" placeholder="编号" name="sn" value="{:date('Ymdhis').rand(100,999)}">
+                <input type="text" class="form-control" placeholder="编号" name="sn" v-model="param.sn">
             </div>
 
             <div class="form-group col-sm-6">
                 <span>销售人</span>
-                <input type="text" class="form-control" placeholder="名称" name="name" value="{$admin_user.nickname}">
+                <input type="text" class="form-control" placeholder="名称" name="param.author">
             </div>
 
             <div class="form-group col-sm-6">
@@ -24,17 +24,20 @@
                 </select>
             </div>
 
-<!-- 
-            <div class="form-group col-sm-12">
-                <span>状态</span>
-                <div class="radio">
-                    <label><input type="radio" name="status" value="0" checked="checked">正常</label>
-                </div>
-                <div class="radio">
-                    <label><input type="radio" name="status" value="1" >作废</label>
-                </div>
+            <div class="form-group col-sm-6">
+                <span>销售渠道</span>
+                <select name="channel" class="form-control comboSelect" v-model="param.channel">
+                    <option value="默认">默认</option>
+                    <option :value="item" v-for="item in channel" v-text="item"></option>
+                </select>
             </div>
--->
+
+            <div class="form-group col-sm-6">
+                <span>销售日期</span>
+                <input type="date" class="form-control" placeholder="销售日期" name="date" v-model="param.date">
+            </div>
+
+
             <!-- select table -->
             <div class="form-group col-sm-12" style="height:350px;">           
                 <table class="table table-bordered table-striped table-condensed no-margin col-sm-12" >
@@ -97,9 +100,9 @@
 <script>
  var list = [];
  var layer_index = 0;
- 
+
 // seajs
-seajs.use(['vendor/comboSelect/jquery.combo.select'], function() {
+seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel'], function() {
 
         var data = {
             name: '名称',
@@ -116,15 +119,38 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'], function() {
         el: '.create',
         data: {
             data: data,
-            list: list
+            list: list,
+            channel:channel,
+            param:{
+                sn:"{:date('Ymdhis').rand(100,999)}",
+                author:"{$admin_user.nickname}",
+                channel: this.channel[0],
+                sale_date: "{:date('Y-m-d',time() )}",
+                data: this.list
+            }
         },
         mounted: function (){
             $('.comboSelect').comboSelect();
         },
         methods: {
             save: function () {
-                var param = $('.form-create').serializeArray();
-                this._save(param,"{:url('save')}")
+                this.param.data = this.list;
+                $.ajax({
+                    url: "{:url('save')}",
+                    method: 'POST',
+                    dataType: 'json',
+                    data: this.param,
+                    success: this.callback
+                });
+            },
+            callback:function(){
+                if( data.error >0 ){
+                    toastr.error(data.msg);
+                }else{
+                    toastr.success(data.msg);
+                    Table.methods.refresh();
+                    layer.closeAll('page');
+                }
             },
             addLine:function(){
                 $.get("{:url('product/select')}", function(data) {

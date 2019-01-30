@@ -12,7 +12,10 @@ class Sale extends Validate
      *
      * @var array
      */	
-	protected $rule = [];
+	protected $rule = [
+        'sn'           =>  'require|unique:sale',
+        'data'           =>  'require',
+    ];
     
     /**
      * 定义错误信息
@@ -20,5 +23,9 @@ class Sale extends Validate
      *
      * @var array
      */	
-    protected $message = [];
+    protected $message = [
+        'sn.require'       =>  '编号不能为空',
+        'sn.unique'        =>  '编号已经存在',
+        'data.require'     =>  '请添加产品',
+    ];
 }

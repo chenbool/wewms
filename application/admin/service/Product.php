@@ -29,7 +29,14 @@ class Product extends Base
 		// 获取参数
 		$param = input('data');
 		$where = [];
-		( isset($param['name']) && $param['name'] )  && $where[] = [ 'name', 'like','%'.$param['name'].'%' ];		
+
+		( isset($param['name']) && $param['name'] )  && $where[] = [ 'name', 'like','%'.$param['name'].'%' ];
+		( isset($param['sn']) && $param['sn'] )  && $where[] = [ 'sn', 'eq',$param['sn'] ];
+		( isset($param['cate']) && $param['cate'] )  && $where[] = [ 'cate', 'eq',$param['cate'] ];
+		( isset($param['brand']) && $param['brand'] )  && $where[] = [ 'brand', 'eq',$param['brand'] ];
+		( isset($param['color']) && $param['color'] )  && $where[] = [ 'color', 'eq',$param['color'] ];
+		( isset($param['model']) && $param['model'] )  && $where[] = [ 'model', 'like','%'.$param['model'].'%' ];
+
 		input('keyword') && $where[] = [ 'name', 'like','%'.input('keyword').'%' ];
 		return $this->buildPage($where);
 	}

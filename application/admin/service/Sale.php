@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\service;
-use app\common\service\Base,
+use think\Db,
+	app\common\service\Base,
 	app\admin\model\Sale as Model,
 	app\admin\validate\Sale as Validate;
 
@@ -47,11 +48,12 @@ class Sale extends Base
 		Hook::listen('sale_begin');
 
 		$param = input();
+		$param['sale_time'] = strtotime($param['sale_date']);
 		$param['create_time'] = time();
 
 		// 验证数据
 		$this->validate = new Validate();
-		return $this->_save( $param );
+		$this->_save($param);
 	}	
 
 	/**
@@ -88,5 +90,77 @@ class Sale extends Base
 		$this->validate = new Validate();
 		return $this->_save( $param, 'update' );
 	}
+
+
+    /**
+     * [_save 添加/更新数据 ]
+     * @param  [array]  $data [添加的数据]
+     * @param  [string] $type [默认add update是更新数据]
+     * @return [array]       [结果集]
+     */
+    public function _save($data,$type='add')
+    {
+    	// 验证数据
+		$res = $this->_validate($data);
+		if( $res['error'] > 0 ) return $res;
+		
+		//检测保存类型
+		if( $type == 'add' ){
+
+			// 事务操作
+			Db::transaction(function () use($data) {
+
+				$res = $data;
+				unset($res['data']);
+				unset($res['date']);
+				$id = $this->model->insertGetId($res);
+
+				// 组装插入的数据
+				$temp = [];
+				foreach ($data['data'] as $k => $v) {
+					$temp[] = [
+						'sid' 			=> $id,
+						'pid' 			=> $v['id'],
+						'num' 			=> $v['num'],
+						'price' 		=> $v['price'],
+						'create_time'	=>	time()
+					];
+				}
+				model('SaleMain')->insertAll($temp);
+			});
+
+			return ['error'	=>	0,'msg'	=>	'添加成功' ];
+		}else{
+			$this->model->update($data);
+			return ['error'	=>	0,'msg'	=>	'修改成功'];
+		}
+
+		// Hook::listen('sale_begin');
+    }
+
+	/**
+	 * [delete 删除数据]
+	 * @param  [int] $id [id]
+	 * @return [bool]    [结果集]
+	 */
+	public function delete($id)
+	{	
+		// 判断删除的是否是数组
+		is_array($id) || $id = [$id];
+
+		// 事务操作
+		Db::transaction(function () use($id) {
+			// 判断是否删除成功
+			if( $this->model->destroy($id) ){
+				model('SaleMain')->where([ 'sid'=>$id ])->delete();;	
+			}else{
+				return ['error'	=>	100,'msg'	=>	'删除失败'];	
+			}
+		});
+
+		return ['error'	=>	0,'msg'	=>	'删除成功'];
+	}
+
+
 
 }
