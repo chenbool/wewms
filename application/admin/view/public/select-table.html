@@ -1,0 +1,44 @@
+<!-- select table -->
+<div class="form-group col-sm-12" style="height:350px;">
+    <table class="table table-bordered table-striped table-condensed no-margin col-sm-12">
+        <thead>
+            <tr>
+                <th>
+                    <i class="fa fa-plus btn btn-xs" @click="addLine"></i>
+                </th>
+                <th v-for="item in data" v-text="item"></th>
+                <th> 删除 </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(item,k) in list">
+                <td></td>
+                <td>
+                    <span v-text="item.name"></span>
+                </td>
+                <td>
+                    <span v-text="item.model"></span>
+                </td>
+                <td>
+                    <span v-text="item.spec"></span>
+                </td>
+                <td>
+                    <span v-text="item.color.name"></span>
+                </td>
+                <td>
+                    <input type="text" class="form-control" v-model="item.num" style="height:25px;width:60px;padding:3px;">
+                </td>
+                <td>
+                    <span v-text="item.unit.name"></span>
+                </td>
+                <td>
+                    <input type="text" class="form-control" v-model="item.price" style="height:25px;width:60px;padding:3px;">
+                </td>
+
+                <td>
+                    <i class="fa fa-trash btn btn-xs" @click="delLine(k)"></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
