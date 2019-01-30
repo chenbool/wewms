@@ -9,4 +9,5 @@ class Location extends Model
     public function depot(){
         return $this->belongsTo('Depot','pid','id');
     }
+
 }

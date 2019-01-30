@@ -70,5 +70,14 @@ class Depot extends Base
 		return $this->_save( $param, 'update' );
 	}
 
+	public function getLocation(){
+		$id = $param = input('id');
+		$list = model('location')->where([ 
+			'status'=>	0,
+			'pid'	=>	$id
+		])->select();
+		return json($list);
+	}
+
 
 }

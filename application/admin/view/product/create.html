@@ -1,6 +1,6 @@
 <!-- create begin -->
 <div class=" create">
-   
+
     <!-- 表单 -->   
     <section class="panel-body" >
             <form role="form" class="form-create">
@@ -79,7 +79,7 @@
                 
                 <div class="form-group col-sm-6">
                     <span>默认仓库</span>
-                    <select name="depot" class="form-control comboSelect">
+                    <select name="depot" class="form-control comboSelect depot">
                         {volist name="depot" id="vo"}
                             <option value="{$vo.id}" >{$vo.name}</option>
                         {/volist}
@@ -88,10 +88,9 @@
 
                 <div class="form-group col-sm-6">
                     <span>默认库位</span>
-                    <select name="location" class="form-control comboSelect">
-                        {volist name="location" id="vo"}
-                            <option value="{$vo.id}" >{$vo.name}</option>
-                        {/volist}
+                    <select name="location" class="form-control" >
+                        <option value="0" >默认</option>
+                        <option :value="item.id" v-for="item in location" v-text="item.name"></option>
                     </select>
                 </div>                             
 
@@ -136,9 +135,16 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'],function() {
 
     var create = new Vue({
         el: '.form-create',
-        data: {},
+        data: {
+            location: []
+        },
         mounted: function(){
+            var _this = this;
             $('.comboSelect').comboSelect();
+            $('.depot').change(function(){
+                _this.getLocation( $(this).val() );
+            });
+            $('.depot').change();
         },
         methods: {
             save: function () {
@@ -159,6 +165,12 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'],function() {
                     Table.methods.refresh();
                     layer.closeAll('page');
                 }
+            },
+            getLocation:function(id){
+                var _this = this;
+                $.getJSON("{:url('depot/getLocation')}?id="+id, function(data){
+                    _this.location = data;
+                });
             }
         }
 
