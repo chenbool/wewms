@@ -35,10 +35,51 @@
                 </div>
             </div>
 -->
+            <!-- select table -->
+            <div class="form-group col-sm-12" style="height:350px;">           
+                <table class="table table-bordered table-striped table-condensed no-margin col-sm-12" >
+                    <thead>
+                        <tr>
+                            <th>
+                                <i class="fa fa-plus btn btn-xs" @click="addLine"></i>
+                            </th>
+                            <th v-for="item in data" v-text="item"></th>
+                            <th> 删除 </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item,k) in list">
+                            <td></td>
+                            <td> 
+                                <span v-text="item.name"></span>
+                            </td>
+                            <td> 
+                                <span v-text="item.model"></span>
+                            </td>
+                            <td> 
+                                <span v-text="item.spec"></span>
+                            </td>
+                            <td> 
+                                <span v-text="item.color.name"></span>
+                            </td>
+                            <td> 
+                                <input type="text" class="form-control num" v-model="item.num" style="height: 25px;" >
+                            </td>
+                            <td> 
+                                <span v-text="item.unit.name"></span>
+                            </td>
+                            <td> 
+                                <span v-text="item.price"></span>
+                            </td>
 
-            <div class="form-group col-sm-12">   
-               {include file="public/search" /} 
+                            <td >
+                                <i class="fa fa-trash btn btn-xs" @click="delLine(k)"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+
 
 
             <div class="form-group col-sm-12">
@@ -54,29 +95,27 @@
 
 
 <script>
-
+ var list = [];
+ var layer_index = 0;
 // seajs
 seajs.use(['vendor/comboSelect/jquery.combo.select'], function() {
 
         var data = {
-            name: '产品名称',
-            model: '产品型号',
-            spec: '产品规格',
+            name: '名称',
+            model: '型号',
+            spec: '规格',
             color: '颜色',
             num: '数量',
-            unit: '计量单位',
-            price: '产品单价',
+            unit: '单位',
+            price: '单价',
         };
-
 
     // vue
     var create = new Vue({
         el: '.create',
         data: {
             data: data,
-            list: [
-                {}
-            ]
+            list: list
         },
         mounted: function (){
             $('.comboSelect').comboSelect();
@@ -84,28 +123,23 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'], function() {
         methods: {
             save: function () {
                 var param = $('.form-create').serializeArray();
-                $.ajax({
-                    url: "{:url('save')}",
-                    method: 'POST',
-                    dataType: 'json',
-                    data: param,
-                    success: this.callback
-                });
-            },
-            callback:function (data) {
-                if( data.error >0 ){
-                    toastr.error(data.msg);
-                }else{
-                    toastr.success(data.msg);
-                    Table.methods.refresh();
-                    layer.closeAll('page');
-                }
+                this._save(param,"{:url('save')}")
             },
             addLine:function(){
-                this.list.push({});
+                $.get("{:url('product/select')}", function(data) {
+                    layer_index = layer.open({
+                        type: 1,
+                    　　title: "选择产品",
+                    　　shadeClose: true,
+                    　　shade: 0.4,
+                        anim: 5,
+                        area: ['80%','400px'],
+                    　　content: data
+                    });
+                });
+
             },
             delLine:function(index){
-                console.log(index);
                 this.list.splice(index,1);
                 // delete this.list[index];
             }
@@ -113,6 +147,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'], function() {
         }
 
     });
+
         
 });
 

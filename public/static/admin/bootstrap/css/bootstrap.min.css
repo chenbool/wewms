@@ -2420,20 +2420,23 @@ input[type=checkbox] {
     -webkit-appearance: none;
     vertical-align:middle;
     border:#2DCB73 solid 1px;
-    border-radius: 3px;
-    min-height: 15px;
-    min-width: 15px;
+    border-radius: 2px;
+    min-height: 17px;
+    min-width: 17px;
 }
 
 input[type=checkbox]:checked {
     background: #2DCB73;
+    font-size: 8px;
 }
 
 input[type=checkbox]:checked::after{
-    content: "\2714";
     /* content: "√"; */
     text-align: center;
+    vertical-align:middle;
+    content: "\2714";
     color: white;
+    padding: 2px;
 }
 
 input[type=radio]:checked{

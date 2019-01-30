@@ -1,0 +1,187 @@
+<!-- create begin -->
+<div class=" create">
+
+    <!-- 表单 -->
+    <section class="panel-body">
+        <form role="form" class="form-select">
+
+            <div class="form-group col-sm-4">
+                <span>产品编号</span>
+                <input type="text" class="form-control" placeholder="产品编号" name="sn" value="{:date('Ymdhis').rand(100,999)}">
+            </div>
+
+            <div class="form-group col-sm-4">
+                <span>内部编号</span>
+                <input type="text" class="form-control" placeholder="内部编号" name="unique_sn">
+            </div>
+
+            <div class="form-group col-sm-4">
+                <span>产品分类</span>
+                <select name="cate" class="form-control comboSelect">
+                    <option value="0">顶级</option>
+                    {volist name="list" id="vo"}
+                        {if($vo.level<2) }
+                            <option value="{$vo.id}">{:$vo.level>0? '|' : null }{:str_repeat('--',$vo.level)}{$vo.name}
+                            </option>
+                        {else /} {/if}
+
+                    {/volist}
+                </select>
+            </div>
+
+            <div class="form-group col-sm-4">
+                <span>品牌</span>
+                <select name="brand" class="form-control comboSelect">
+                    {volist name="brand" id="vo"}
+                        <option value="{$vo.id}" >{$vo.name}</option>
+                    {/volist}
+                </select>
+            </div>
+
+            <div class="form-group col-sm-4">
+                <span>仓库</span>
+                <select name="depot" class="form-control comboSelect">
+                    {volist name="depot" id="vo"}
+                        <option value="{$vo.id}" >{$vo.name}</option>
+                    {/volist}
+                </select>
+            </div>
+
+            <div class="form-group col-sm-4">
+                <span>颜色</span>
+                <select name="color" class="form-control comboSelect">
+                    {volist name="color" id="vo"}
+                        <option value="{$vo.id}" >{$vo.name}</option>
+                    {/volist}
+                </select>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <button type="button" class="btn btn-sm btn btn-primary" @click="search"> 搜索 </button>
+            </div>
+
+            <!-- select table -->
+            <div class="form-group col-sm-12" style="height:350px;">           
+                <table class="table table-bordered table-striped table-condensed no-margin col-sm-12" >
+                    <thead>
+                        <tr>
+                            <th>
+                            </th>
+                            <th v-for="item in data" v-text="item"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(item,k) in list">
+                            <td>
+                                <button type="button" class="btn btn-xs btn btn-primary" @click="addLine(k)"> 选择 </button>
+                            </td>
+                            <td> 
+                                <span v-text="item.name"></span>
+                            </td>
+                            <td> 
+                                <span v-text="item.model"></span>
+                            </td>
+                            <td> 
+                                <span v-text="item.spec"></span>
+                            </td>
+                            <td> 
+                                <span v-text="item.color.name"></span>
+                            </td>
+                            <td> 
+                                <input type="text" class="form-control" v-model="item.num" style="height: 25px;" >
+                            </td>
+                            <td> 
+                                <span v-text="item.unit.name"></span>
+                            </td>
+                            <td> 
+                                <span v-text="item.price"></span>
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </form>
+    </section>
+
+</div>
+<!-- create end-->
+
+<script>
+// seajs
+seajs.use(['vendor/comboSelect/jquery.combo.select'], function () {
+
+    var data = {
+        name: '名称',
+        model: '型号',
+        spec: '规格',
+        color: '颜色',
+        num: '数量',
+        unit: '单位',
+        price: '单价',
+    };
+
+    var select = new Vue({
+        el: '.form-select',
+        data: {
+                data: data,
+            list: []
+        },
+        mounted: function () {
+            $('.comboSelect').comboSelect();
+        },
+        methods: {
+            search: function () {
+                var _this = this;
+                var data = $(".form-select").serializeArray();
+                var param = {data: arrayToJson(data)};
+
+                $.get("{:url('product/index')}",param,function(data) {
+                    _this.list = data.rows;
+                });
+
+            },
+            addLine: function(index){
+
+                var num = parseInt( this.list[index].num );
+
+                if( num >0 && !isNaN(num) ){
+                    this.unique_list(index);
+                    layer.close(layer_index);
+                }else{
+                    layer.msg('请填写数量');
+                }  
+
+            },
+            unique_list: function(index){
+                // list.forEach(function(v,k){
+                //     if( v.id == this.list[index].id ){
+                //         v.num = parseInt(v.num) + parseInt(this.list[index].num);
+                //     }
+                // });
+                list.push( this.list[index] );
+                list = uniq(list);
+            }
+
+        }
+
+    });
+
+// 去重
+    function uniq(array){
+        var temp = [];
+        for(var i = 0; i < array.length; i++) {
+            //如果当前数组的第i项在当前数组中第一次出现的位置是i，才存入数组；否则代表是重复的
+            if(array.indexOf(array[i]) == i){
+                temp.push(array[i])
+            }
+        }
+        return temp;
+    }
+
+
+});
+</script>

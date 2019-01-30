@@ -137,4 +137,18 @@ class Product extends Base
 		]);
 	}	
 
+	public function select(){
+		$list = model('cate')->select();
+		$list = $this->_tree($list);
+		
+		$this->assign([
+			'list'	=>	$list,
+			'brand'	=>	model('brand')->where([ 'status'=>0 ])->select(),
+			'color'	=>	model('color')->where([ 'status'=>0 ])->select(),
+			'depot'	=>	model('depot')::with('location')->where([ 'status'=>0 ])->select()
+		]);
+		return view();
+	}
+
+
 }
