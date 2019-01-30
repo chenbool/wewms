@@ -14,13 +14,13 @@
             <tr v-for="(item,k) in list">
                 <td></td>
                 <td>
-                    <span v-text="item.name"></span>
+                    <span v-text="item.name?item.name:item.product.name"></span>
                 </td>
                 <td>
-                    <span v-text="item.model"></span>
+                    <span v-text="item.model?item.model:item.product.model"></span>
                 </td>
                 <td>
-                    <span v-text="item.spec"></span>
+                    <span v-text="item.spec?item.spec:item.product.spec"></span>
                 </td>
                 <td>
                     <span v-text="item.color.name"></span>
