@@ -88,7 +88,7 @@
                                 <span v-text="item.color.name"></span>
                             </td>
                             <td> 
-                                <input type="text" class="form-control" v-model="item.num" style="height: 25px;" >
+                                <input type="text" class="form-control" v-model="item.num" style="height:25px;width:60px;padding:3px;" >
                             </td>
                             <td> 
                                 <span v-text="item.unit.name"></span>
@@ -157,20 +157,16 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'], function () {
 
             },
             unique_list: function(index){
-                // list.forEach(function(v,k){
-                //     if( v.id == this.list[index].id ){
-                //         v.num = parseInt(v.num) + parseInt(this.list[index].num);
-                //     }
-                // });
+                // console.log( this.list[index] );
                 list.push( this.list[index] );
-                list = uniq(list);
+                // list = uniq(list);
             }
 
         }
 
     });
 
-// 去重
+    // 去重
     function uniq(array){
         var temp = [];
         for(var i = 0; i < array.length; i++) {

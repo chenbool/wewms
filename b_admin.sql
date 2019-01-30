@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-25 17:27:06
+Date: 2019-01-30 14:11:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -38,7 +38,7 @@ CREATE TABLE `b_admin` (
 -- ----------------------------
 -- Records of b_admin
 -- ----------------------------
-INSERT INTO `b_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'https://avatars1.githubusercontent.com/u/37901036?v=4', '管理员', '17052850083', '81001985@qq.com', '2', '1548402900', '127.0.0.1', '1320981071');
+INSERT INTO `b_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'https://avatars1.githubusercontent.com/u/37901036?v=4', '管理员', '17052850083', '81001985@qq.com', '2', '1548811532', '127.0.0.1', '1320981071');
 INSERT INTO `b_admin` VALUES ('2', 'seho', '126dfa8c609fc04f3aa38c015a862fec', null, 'seho', '2222', '111@qq.com', null, '1540196808', '127.0.0.1', '1540193412');
 INSERT INTO `b_admin` VALUES ('3', 'admin1231111', '0192023a7bbd73250516f069df18b500', null, '1111', '', '', '0', null, null, '1540540637');
 
@@ -112,8 +112,28 @@ CREATE TABLE `b_admin_role` (
 -- Records of b_admin_role
 -- ----------------------------
 INSERT INTO `b_admin_role` VALUES ('1', '2', '角色', '0', '3,4,1,2,6,7,j2_1', '222', '1542093926');
-INSERT INTO `b_admin_role` VALUES ('2', '0', '测试', '0', '3,4,1,2,6,7,j1_1', '', '1542093926');
+INSERT INTO `b_admin_role` VALUES ('2', '3', '测试', '0', '3,4,1,2,6,7,j1_1', '', '1542093926');
 INSERT INTO `b_admin_role` VALUES ('3', '0', '123', '0', '', '', '1542180791');
+
+-- ----------------------------
+-- Table structure for b_brand
+-- ----------------------------
+DROP TABLE IF EXISTS `b_brand`;
+CREATE TABLE `b_brand` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL COMMENT '名称',
+  `tel` varchar(15) DEFAULT NULL COMMENT '电话',
+  `url` varchar(200) DEFAULT NULL COMMENT '网址',
+  `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态: 0正常 1禁用',
+  `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='快递物流';
+
+-- ----------------------------
+-- Records of b_brand
+-- ----------------------------
+INSERT INTO `b_brand` VALUES ('1', '小米', '95338', 'http://www.sf-express.com', '0', '1548662771');
+INSERT INTO `b_brand` VALUES ('2', '华为', '', '', '0', '1548723862');
 
 -- ----------------------------
 -- Table structure for b_cate
@@ -134,7 +154,25 @@ CREATE TABLE `b_cate` (
 -- ----------------------------
 INSERT INTO `b_cate` VALUES ('1', '0', '测试', '0', null, '1544518700');
 INSERT INTO `b_cate` VALUES ('2', '1', '测试2', '0', '', '1544519834');
-INSERT INTO `b_cate` VALUES ('3', '2', '123', '0', '', '1544575809');
+INSERT INTO `b_cate` VALUES ('3', '1', '123', '0', '', '1544575809');
+
+-- ----------------------------
+-- Table structure for b_color
+-- ----------------------------
+DROP TABLE IF EXISTS `b_color`;
+CREATE TABLE `b_color` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL COMMENT '单位名称',
+  `code` varchar(20) DEFAULT NULL COMMENT '颜色码',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0正常 1禁用',
+  `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='颜色';
+
+-- ----------------------------
+-- Records of b_color
+-- ----------------------------
+INSERT INTO `b_color` VALUES ('1', '黑色', '#808000', '0', '1548726184');
 
 -- ----------------------------
 -- Table structure for b_customer
@@ -167,7 +205,7 @@ CREATE TABLE `b_customer` (
 -- ----------------------------
 -- Records of b_customer
 -- ----------------------------
-INSERT INTO `b_customer` VALUES ('1', '1', '苏州智慧龙', '测试', '0512-5689107', '0512-5689107', '1111', 'test@bigzhl.com', '北京市', '北京城区', '朝阳区', '', '', '', '11111111', null, '', '', '0', '1542779833');
+INSERT INTO `b_customer` VALUES ('1', '1', '苏州智慧龙', '测试', '0512-5689107', '0512-5689107', '1111', 'test@bigzhl.com', '北京市', '北京城区', '朝阳区', '', '', '', '11111111', '中国银行', '', '', '0', '1542779833');
 INSERT INTO `b_customer` VALUES ('2', '0', '', '111', '', '', '11', '111', '山东省', '临沂市', '兰山区', '', '', '', '', '中国银行', '', '', null, '1544493865');
 
 -- ----------------------------
@@ -193,8 +231,27 @@ CREATE TABLE `b_depot` (
 -- ----------------------------
 -- Records of b_depot
 -- ----------------------------
-INSERT INTO `b_depot` VALUES ('1', '华北仓库', '布尔', '17052850085', '30024167@qq.com', '河北省', '石家庄市', '长安区', '河北省石家庄市', '111', '0', '1544424818');
+INSERT INTO `b_depot` VALUES ('1', '华北仓库', '布尔', '17052850085', '30024167@qq.com', '河北省', '石家庄市', '井陉矿区', '河北省石家庄市', '111', '0', '1544424818');
 INSERT INTO `b_depot` VALUES ('2', '华东仓库', '华东', '111', 'admin@qq.com', '上海市', '上海城区', '黄浦区', '1111', 'beizhu', '0', '1544427134');
+
+-- ----------------------------
+-- Table structure for b_express
+-- ----------------------------
+DROP TABLE IF EXISTS `b_express`;
+CREATE TABLE `b_express` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(20) DEFAULT NULL COMMENT '名称',
+  `tel` varchar(15) DEFAULT NULL COMMENT '电话',
+  `url` varchar(200) DEFAULT NULL COMMENT '网址',
+  `status` tinyint(1) unsigned DEFAULT '0' COMMENT '状态: 0正常 1禁用',
+  `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='快递物流';
+
+-- ----------------------------
+-- Records of b_express
+-- ----------------------------
+INSERT INTO `b_express` VALUES ('1', '顺丰快递', '95338', 'http://www.sf-express.com', '0', '1548662771');
 
 -- ----------------------------
 -- Table structure for b_location
@@ -209,12 +266,13 @@ CREATE TABLE `b_location` (
   `desc` varchar(200) DEFAULT NULL COMMENT '备注',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='库位管理';
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='库位管理';
 
 -- ----------------------------
 -- Records of b_location
 -- ----------------------------
-INSERT INTO `b_location` VALUES ('1', '1', 'A区', '0', '', '', '1544513047');
+INSERT INTO `b_location` VALUES ('1', '1', 'A区', '0', 'A,B,C,D', '', '1544513047');
+INSERT INTO `b_location` VALUES ('2', '1', 'B区', '0', '', '', '1548658491');
 
 -- ----------------------------
 -- Table structure for b_plug
@@ -237,7 +295,7 @@ CREATE TABLE `b_plug` (
 -- Records of b_plug
 -- ----------------------------
 INSERT INTO `b_plug` VALUES ('6', 'GitHub', 'github', 'bool', 'oauth', '1', 'plug/oauth/github', '1540285355');
-INSERT INTO `b_plug` VALUES ('19', 'Coding', 'coding', 'bool', 'oauth', '1', 'D:/phpStudy/WWW/wewms/plug/oauth/coding', '1548405633');
+INSERT INTO `b_plug` VALUES ('19', 'Coding', 'coding', 'bool', 'oauth', '1', 'plug/oauth/coding', '1548405633');
 INSERT INTO `b_plug` VALUES ('12', '码云', 'gitee', 'bool', 'oauth', '1', 'plug/oauth/gitee', '1542331978');
 INSERT INTO `b_plug` VALUES ('13', '开源中国', 'oschina', 'bool', 'oauth', '1', 'plug/oauth/oschina', '1542332030');
 INSERT INTO `b_plug` VALUES ('17', '微信支付', 'wepay', 'bool', 'pay', '1', 'plug/pay/wechat', '1542596813');
@@ -250,24 +308,45 @@ DROP TABLE IF EXISTS `b_product`;
 CREATE TABLE `b_product` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `sn` varchar(100) NOT NULL COMMENT '商品编号',
-  `name` varchar(10) NOT NULL,
+  `unique_sn` varchar(100) DEFAULT NULL COMMENT '内部编号',
+  `name` varchar(10) NOT NULL COMMENT '商品名称',
+  `cate` int(11) unsigned DEFAULT NULL COMMENT '分类id',
+  `brand` int(11) unsigned DEFAULT NULL COMMENT '品牌id',
   `model` varchar(50) DEFAULT NULL COMMENT '型号',
   `spec` varchar(100) DEFAULT NULL COMMENT '规格',
-  `color` varchar(20) DEFAULT NULL COMMENT '颜色',
-  `unit_id` int(11) unsigned DEFAULT NULL COMMENT '单位id',
-  `cate_id` int(11) unsigned DEFAULT NULL COMMENT '分类id',
-  `brand` int(11) unsigned DEFAULT NULL COMMENT '品牌id',
-  `depot_id` int(11) unsigned DEFAULT NULL COMMENT '默认仓库',
-  `supplier_id` int(11) unsigned DEFAULT NULL COMMENT '默认供应商id',
-  `customer_id` int(11) unsigned DEFAULT NULL COMMENT '默认客户id',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0正常 1禁用',
+  `color` int(11) unsigned DEFAULT NULL COMMENT '颜色id',
+  `price` decimal(10,2) unsigned NOT NULL COMMENT '默认价格',
+  `unit` int(11) unsigned DEFAULT NULL COMMENT '单位id',
+  `supplier` int(11) unsigned DEFAULT NULL COMMENT '默认供应商',
+  `customer` int(11) unsigned DEFAULT NULL COMMENT '默认客户',
+  `depot` int(11) unsigned DEFAULT NULL COMMENT '默认仓库',
+  `location` int(11) unsigned DEFAULT NULL COMMENT '默认库位',
   `desc` varchar(200) DEFAULT NULL COMMENT '备注',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='产品表';
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='产品表';
 
 -- ----------------------------
 -- Records of b_product
+-- ----------------------------
+INSERT INTO `b_product` VALUES ('1', '20190129100738252', '', '小米8', '1', '1', 'mi8', '64G', '1', '10.00', '2', '2', '1', '1', '1', '', '1548727700');
+INSERT INTO `b_product` VALUES ('3', '20190130021053962', '', '华为', '0', '2', '', '111', '1', '0.00', '1', '1', '1', '1', '0', '', '1548828664');
+
+-- ----------------------------
+-- Table structure for b_sale
+-- ----------------------------
+DROP TABLE IF EXISTS `b_sale`;
+CREATE TABLE `b_sale` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `sn` varchar(100) NOT NULL COMMENT '编号',
+  `channel` varchar(100) DEFAULT NULL COMMENT '销售渠道',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0正常 1禁用',
+  `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='销售';
+
+-- ----------------------------
+-- Records of b_sale
 -- ----------------------------
 
 -- ----------------------------
@@ -300,7 +379,7 @@ CREATE TABLE `b_supplier` (
 -- ----------------------------
 -- Records of b_supplier
 -- ----------------------------
-INSERT INTO `b_supplier` VALUES ('1', '苏州智慧龙', '测试', '0512-5689107', '0512-5689107', '', 'test@bigzhl.com', '111111111111', null, null, null, null, null, '11111111', null, null, null, '0', '1542779833');
+INSERT INTO `b_supplier` VALUES ('1', '苏州智慧龙', '测试', '0512-5689107', '0512-5689107', '111', 'test@bigzhl.com', '', '', '', '', '', '', '11111111', '华夏银行', '', '', '0', '1542779833');
 INSERT INTO `b_supplier` VALUES ('2', '11', '111', '', '', '11', '111', '山东省', '临沂市', '兰山区', '11111', '1111111111111111111', '111', '', '中国银行', '111', '111', '0', '1544493865');
 
 -- ----------------------------
@@ -314,8 +393,11 @@ CREATE TABLE `b_unit` (
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0正常 1禁用',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='计量单位';
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='计量单位';
 
 -- ----------------------------
 -- Records of b_unit
 -- ----------------------------
+INSERT INTO `b_unit` VALUES ('1', '箱', null, '0', '1548667132');
+INSERT INTO `b_unit` VALUES ('2', '台', null, '0', '1548721738');
+INSERT INTO `b_unit` VALUES ('3', '个', null, '0', '1548721753');
