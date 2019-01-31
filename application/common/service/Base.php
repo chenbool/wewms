@@ -92,10 +92,17 @@ class Base extends Controller
      * @param  [array] $req [要验证的数据]
      * @return [array]      [结果集]
      */
-    protected function _validate($req)
+    protected function _validate($req,$scene=false)
     {
+		$res = false;
+		if($scene){
+			$res = $this->validate->scene($scene)->check( $req );
+		}else{
+			$res = $this->validate->check( $req );
+		}
+		
 		// 验证
-		if( $this->validate->check( $req ) ) {
+		if( $res ) {
 			return ['error'	=>	0,'msg'	=> '验证成功' ];
 		}else{
 			return ['error'	=>	100,'msg'	=>	$this->validate->getError() ];

@@ -28,4 +28,10 @@ class Sale extends Validate
         'sn.unique'        =>  '编号已经存在',
         'data.require'     =>  '请添加产品',
     ];
+
+
+    protected $scene = [
+        'edit'  =>  ['sn.require','data.require'],
+    ];
+
 }
