@@ -7,20 +7,20 @@
 
                 <div class="form-group col-sm-6">
                     <span>编号</span>
-                    <input type="text" class="form-control" placeholder="编号" name="sn" value="{:date('Ymdhis').rand(100,999)}">
+                    <input type="text" class="form-control" placeholder="编号" name="sn" v-model="param.sn">
                 </div>
 
                 <div class="form-group col-sm-6">
                     <span>入库类型</span>
-                    <select name="supplier" class="form-control comboSelect" >
+                    <select name="supplier" class="form-control comboSelect" v-model="param.type" >
                         <option value="1" >采购入库</option>
                         <option value="2" >手动入库</option>
                     </select>
                 </div>
 
-                <div class="form-group col-sm-6">
+                <div class="form-group col-sm-6" v-show="param.type==1">
                     <span>关联订单</span>
-                    <select name="pid" class="form-control comboSelect pid" v-model="pid">
+                    <select name="purchase" class="form-control comboSelect purchase" v-model="param.purchase">
                         {volist name="list" id="vo"}
                             <option value="{$vo.id}" >{$vo.sn}-{$vo.author}</option>
                         {/volist}
@@ -29,12 +29,12 @@
 
                 <div class="form-group col-sm-6">
                     <span>入库人</span>
-                    <input type="text" class="form-control" placeholder="入库人" name="author" value="{$admin_user.nickname}">
+                    <input type="text" class="form-control" placeholder="入库人" name="author" v-model="param.author">
                 </div>
 
                 <div class="form-group col-sm-6">
                     <span>供应商</span>
-                    <select name="supplier" class="form-control comboSelect" >
+                    <select name="supplier" class="form-control comboSelect" v-model="param.supplier">
                         {volist name="supplier" id="vo"}
                             <option value="{$vo.id}" >{$vo.title}</option>
                         {/volist}
@@ -43,7 +43,7 @@
 
                 <div class="form-group col-sm-6">
                     <span>入库日期</span>
-                    <input type="text" class="form-control" placeholder="入库日期" name="in_date" id="in_date" >
+                    <input type="text" class="form-control" placeholder="入库日期" name="in_date" id="in_date" v-model="param.in_date">
                 </div>
 
                 {include file="public/depot-table" /}
@@ -82,9 +82,18 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
         el: '.form-create',
         data: {
             data:data,
-            pid:0,
             count:0,
-            list: list
+            list: list,
+            param:{
+                sn:"{:date('Ymdhis').rand(100,999)}",
+                author:"{$admin_user.nickname}",
+                in_date: "{:date('Y-m-d',time() )}",
+                supplier: "{$supplier[0]['id']}",
+                data: this.list,
+                count: this.count,
+                purchase: this.purchase,
+                type: 1
+            }
         },
         mounted: function (){
             $('.comboSelect').comboSelect();
@@ -96,12 +105,14 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
         },
         methods: {
             save: function () {
-                var param = $('.form-create').serializeArray();
+                this.param.data = this.list;
+                this.param.count = this.count;
+
                 $.ajax({
                     url: "{:url('save')}",
                     method: 'POST',
                     dataType: 'json',
-                    data: param,
+                    data: this.param,
                     success: this.callback
                 });
             },
@@ -116,7 +127,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
             },
             getList:function(){
                 var _this = this;
-                $.getJSON("{:url('purchase/getList')}?id="+this.pid, function(data){
+                $.getJSON("{:url('purchase/getList')}?id="+this.param.purchase, function(data){
                     // console.log(data);
                     list = data;
                     _this.list = data;
@@ -140,13 +151,22 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
     });
 
 
-$('.comboSelect').change(function(){
+// $('.comboSelect').change(function(){
+//     var name = $(this).attr('name');
+//     var val = $(this).val();
+//     console.log(val);
+//     create.param[name] = val;
+//     create.getList();
+// });
+
+$('.purchase').change(function(){
     var name = $(this).attr('name');
     var val = $(this).val();
-    // console.log(val);
-    create[name] = val;
+    console.log(val);
+    create.param[name] = val;
     create.getList();
 });
+
 
 
 

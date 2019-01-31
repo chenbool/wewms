@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-31 14:34:17
+Date: 2019-01-31 16:38:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -266,14 +266,44 @@ CREATE TABLE `b_indepot` (
   `supplier` int(11) unsigned DEFAULT NULL COMMENT '供应商',
   `in_date` varchar(20) DEFAULT NULL COMMENT '入库日期',
   `in_time` int(11) unsigned DEFAULT NULL COMMENT '入库时间',
+  `count` decimal(10,2) unsigned DEFAULT NULL,
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0正常 1禁用',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='入库操作';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='入库操作';
 
 -- ----------------------------
 -- Records of b_indepot
 -- ----------------------------
+INSERT INTO `b_indepot` VALUES ('1', '20190131042106876', '1', '10', '管理员', '1', '2019-01-31', '1548864000', '0.00', '0', '1548923287');
+INSERT INTO `b_indepot` VALUES ('2', '20190131043623279', '1', '11', '管理员', '1', '2019-01-31', '1548864000', '0.00', '0', '1548923798');
+
+-- ----------------------------
+-- Table structure for b_indepot_main
+-- ----------------------------
+DROP TABLE IF EXISTS `b_indepot_main`;
+CREATE TABLE `b_indepot_main` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `pid` int(11) unsigned NOT NULL COMMENT '产品id',
+  `sid` int(11) unsigned NOT NULL COMMENT '采购订单的id',
+  `num` int(11) unsigned NOT NULL COMMENT '数量',
+  `price` decimal(10,2) unsigned NOT NULL COMMENT '价格',
+  `brand` int(11) unsigned DEFAULT NULL COMMENT '品牌id',
+  `color` int(11) unsigned DEFAULT NULL COMMENT '颜色id',
+  `unit` int(11) unsigned DEFAULT NULL COMMENT '单位id',
+  `depot` int(11) unsigned DEFAULT NULL,
+  `location` int(11) unsigned DEFAULT NULL COMMENT '库位',
+  `count` decimal(10,2) unsigned DEFAULT NULL COMMENT '合计',
+  `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='采购明细';
+
+-- ----------------------------
+-- Records of b_indepot_main
+-- ----------------------------
+INSERT INTO `b_indepot_main` VALUES ('15', '1', '12', '10', '10.00', '1', '1', '2', '1', '1', '100.00', '1548923287');
+INSERT INTO `b_indepot_main` VALUES ('16', '1', '14', '20', '999.00', '1', '1', '1', '1', '0', '19980.00', '1548923287');
+INSERT INTO `b_indepot_main` VALUES ('17', '2', '13', '10', '100.00', '2', '1', '1', '1', '0', '1000.00', '1548923798');
 
 -- ----------------------------
 -- Table structure for b_location
@@ -372,12 +402,13 @@ CREATE TABLE `b_purchase` (
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0正常 1禁用',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='采购';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='采购';
 
 -- ----------------------------
 -- Records of b_purchase
 -- ----------------------------
-INSERT INTO `b_purchase` VALUES ('10', '20190131012842253', '天猫', '管理员', '2019-01-31', '1548864000', '2', '100.00', '0', '0', '1548912662');
+INSERT INTO `b_purchase` VALUES ('10', '20190131012842253', '天猫', '管理员', '2019-01-31', '1548864000', '2', '20080.00', '0', '0', '1548912662');
+INSERT INTO `b_purchase` VALUES ('11', '20190131023932798', '天猫', '管理员', '2019-01-31', '1548864000', '1', '1000.00', '0', '0', '1548916791');
 
 -- ----------------------------
 -- Table structure for b_purchase_main
@@ -397,12 +428,14 @@ CREATE TABLE `b_purchase_main` (
   `count` decimal(10,2) unsigned DEFAULT NULL COMMENT '合计',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='采购明细';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='采购明细';
 
 -- ----------------------------
 -- Records of b_purchase_main
 -- ----------------------------
 INSERT INTO `b_purchase_main` VALUES ('12', '1', '10', '10', '10.00', '1', '1', '2', '1', '1', '100.00', '1548912989');
+INSERT INTO `b_purchase_main` VALUES ('13', '3', '11', '10', '100.00', '2', '1', '1', '1', '0', '1000.00', '1548916791');
+INSERT INTO `b_purchase_main` VALUES ('14', '4', '10', '20', '999.00', '1', '1', '1', '1', '0', '19980.00', '1548918662');
 
 -- ----------------------------
 -- Table structure for b_sale

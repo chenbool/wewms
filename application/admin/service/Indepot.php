@@ -21,6 +21,22 @@ class Indepot extends Base
 	}
 
 	/**
+	 * [index 首页]
+	 * @return [type] [结果集]
+	 */
+	public function index()
+	{
+		if( !request()->isAjax() ) return view();
+		// 获取参数
+		$param = input('data');
+		$where = [];
+		( isset($param['name']) && $param['name'] )  && $where[] = [ 'name', 'like','%'.$param['name'].'%' ];		
+		input('keyword') && $where[] = [ 'name', 'like','%'.input('keyword').'%' ];
+		return $this->buildPage($where);
+	}
+
+
+	/**
 	 * [create 添加创建方法]
 	 * @return [bool] [结果集]
 	 */
@@ -57,10 +73,10 @@ class Indepot extends Base
 	public function save()
 	{
 		// 监听钩子函数 保存之前
-		Hook::listen('sale_begin');
+		// Hook::listen('sale_begin');
 
 		$param = input();
-		$param['sale_time'] = strtotime($param['sale_date']);
+		$param['in_time'] = strtotime($param['in_date']);
 		$param['create_time'] = time();
 
 		// 验证数据
@@ -89,6 +105,7 @@ class Indepot extends Base
 		//检测保存类型
 		if( $type == 'add' ){
 
+
 			// 事务操作
 			Db::transaction(function () use($data) {
 
@@ -101,8 +118,8 @@ class Indepot extends Base
 				$temp = [];
 				foreach ($data['data'] as $k => $v) {
 					$temp[] = [
-						'sid' 			=> $id,
-						'pid' 			=> $v['id'],
+						'pid' 			=> $id,
+						'sid' 			=> $v['id'],
 						'num' 			=> $v['num'],
 						'price' 		=> $v['price'],
 						'brand'			=>	$v['brand']['id'],
@@ -115,7 +132,7 @@ class Indepot extends Base
 					];
 				}
 				// 插入全部
-				model('SaleMain')->insertAll($temp);
+				model('IndepotMain')->insertAll($temp);
 
 				return ['error'	=>	0,'msg'	=>	'添加成功' ];
 			});
@@ -165,14 +182,14 @@ class Indepot extends Base
 
 				}
 				// 更新
-				model('SaleMain')->saveAll($temp);
+				model('IndepotMain')->saveAll($temp);
 				// 新增
-				model('SaleMain')->insertAll($addTemp);
+				model('IndepotMain')->insertAll($addTemp);
 
 				// 检测是否有删除的数据
 				isset($data['dels']) || $data['dels'] =[];
 				// 删除
-				model('SaleMain')->destroy($data['dels']);
+				model('IndepotMain')->destroy($data['dels']);
 
 				return ['error'	=>	0,'msg'	=>	'修改成功' ];
 			});
@@ -207,7 +224,41 @@ class Indepot extends Base
 	}
 
 
+	/**
+	 * [buildPage 数据分页筛选查询 ]
+	 * @return [json] [结果集]
+	 */
+	protected function buildPage($where=null)
+	{
+		// 接受参数
+		$pageSize = input('rows/d');
+		$page = input('page/d');
+		$sort = input('sort/s');
+		$order = input('sortOrder/s');
 
+		// 检查搜索字段 supplier.title
+		$res = preg_match('#^[a-z]+\.[a-z]+$#',$sort);
+		if( $res ){
+			$exp = explode(".",$sort);
+			$sort = $exp[0];
+		}
+
+		//总记录数
+		$count = Model::with('supplier')->where($where)->count();
+
+		// 查询
+		$data = Model::with('supplier')
+		->where($where)
+		->order($sort, $order)
+		->page("{$page},{$pageSize}")
+		->select();
+
+		return json([
+			// 总记录数
+			'total' => $count,
+			'rows'	=>	$data
+		]);
+	}	
 
 
 	

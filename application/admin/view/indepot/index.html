@@ -56,6 +56,19 @@
 {block name="js"}
 
 <script>
+
+    Table.formatter.type = function(value, row, index){
+
+        if( value == 0 ){
+
+        }else if( value == 1 ){
+            return '采购入库';
+        }else if( value == 2 ){
+            return '手动入库';
+        }
+
+    }
+
     tableData.columns = [
         {
             checkbox: true,  
@@ -71,14 +84,25 @@
             printIgnore: true
         }, 
         {
-            field: 'depot.name',
-            title: '所属仓库'
+            field: 'sn',
+            title: '编号'
         },
         {
-            field: 'name',
-            title: '库位名称',
+            field: 'author',
+            title: '入库人',
             sortable: true,
-            titleTooltip: '库位名称'
+            titleTooltip: '入库人'
+        },
+        {
+            field: 'type',
+            title: '类型',
+            formatter: Table.formatter.type,
+            printFormatter: Table.formatter.type        
+        },
+        {
+            field: 'supplier.title',
+            title: '供应商',
+            sortable: true
         },
         {
             field: 'status',
@@ -86,6 +110,12 @@
             sortable: true,
             formatter: Table.formatter.status,
             printFormatter: Table.formatter.status
+        },
+        {
+            field: 'in_date',
+            title: '入库日期',
+            sortable: true,
+            class: "hidden-xs hidden-sm"
         },
         {
             field: 'create_time',

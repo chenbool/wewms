@@ -4,7 +4,7 @@ namespace app\admin\model;
 
 use think\Model;
 
-class Indepot extends Model
+class IndepotMain extends Model
 {
 
     // 获取供应商
@@ -16,7 +16,6 @@ class Indepot extends Model
     public function customer()
     {
         return $this->hasOne('Customer','id','customer')->selfRelation();
-    }    
-
+    }
 
 }
