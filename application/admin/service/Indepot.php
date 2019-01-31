@@ -24,7 +24,11 @@ class Indepot extends Base
 	public function create()
 	{
 		return [
-			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
+			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select(),
+			'list'		=>	model('purchase')->where([ 
+				'status'=>0,
+				'state' => [ 'neq',2 ]
+			])->select(),
 		];
 	}
 

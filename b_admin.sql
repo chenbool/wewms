@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-31 13:47:56
+Date: 2019-01-31 14:34:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -254,6 +254,28 @@ CREATE TABLE `b_express` (
 INSERT INTO `b_express` VALUES ('1', '顺丰快递', '95338', 'http://www.sf-express.com', '0', '1548662771');
 
 -- ----------------------------
+-- Table structure for b_indepot
+-- ----------------------------
+DROP TABLE IF EXISTS `b_indepot`;
+CREATE TABLE `b_indepot` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `sn` varchar(100) NOT NULL COMMENT '入库单号',
+  `type` varchar(40) DEFAULT NULL COMMENT '入库类型',
+  `purchase` int(11) unsigned DEFAULT NULL COMMENT '采购订单号',
+  `author` varchar(40) DEFAULT NULL COMMENT '操作人',
+  `supplier` int(11) unsigned DEFAULT NULL COMMENT '供应商',
+  `in_date` varchar(20) DEFAULT NULL COMMENT '入库日期',
+  `in_time` int(11) unsigned DEFAULT NULL COMMENT '入库时间',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0正常 1禁用',
+  `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='入库操作';
+
+-- ----------------------------
+-- Records of b_indepot
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for b_location
 -- ----------------------------
 DROP TABLE IF EXISTS `b_location`;
@@ -346,6 +368,7 @@ CREATE TABLE `b_purchase` (
   `purchase_time` int(11) unsigned NOT NULL COMMENT '销售时间',
   `supplier` int(11) unsigned DEFAULT NULL COMMENT '供应商',
   `count` decimal(10,2) unsigned DEFAULT NULL COMMENT '总价',
+  `state` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否入库',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0正常 1禁用',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
@@ -354,7 +377,7 @@ CREATE TABLE `b_purchase` (
 -- ----------------------------
 -- Records of b_purchase
 -- ----------------------------
-INSERT INTO `b_purchase` VALUES ('10', '20190131012842253', '天猫', '管理员', '2019-01-31', '1548864000', '2', '100.00', '0', '1548912662');
+INSERT INTO `b_purchase` VALUES ('10', '20190131012842253', '天猫', '管理员', '2019-01-31', '1548864000', '2', '100.00', '0', '0', '1548912662');
 
 -- ----------------------------
 -- Table structure for b_purchase_main
@@ -394,6 +417,7 @@ CREATE TABLE `b_sale` (
   `sale_time` int(11) unsigned NOT NULL COMMENT '销售时间',
   `customer` int(11) unsigned DEFAULT NULL COMMENT '客户id',
   `count` decimal(10,2) unsigned DEFAULT NULL COMMENT '总价',
+  `state` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否出库',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0正常 1禁用',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
@@ -402,9 +426,9 @@ CREATE TABLE `b_sale` (
 -- ----------------------------
 -- Records of b_sale
 -- ----------------------------
-INSERT INTO `b_sale` VALUES ('5', '20190130051206785', '淘宝', '管理员', '2019-01-30', '1548777600', '1', '119.00', '0', '1548839571');
-INSERT INTO `b_sale` VALUES ('8', '20190131112041263', '天猫', '管理员', '2019-01-31', '1548864000', '1', '100.00', '0', '1548904855');
-INSERT INTO `b_sale` VALUES ('9', '20190131112152552', '天猫', '管理员', '2019-01-31', '1548864000', '1', '100.00', '0', '1548904998');
+INSERT INTO `b_sale` VALUES ('5', '20190130051206785', '淘宝', '管理员', '2019-01-30', '1548777600', '1', '119.00', '0', '0', '1548839571');
+INSERT INTO `b_sale` VALUES ('8', '20190131112041263', '天猫', '管理员', '2019-01-31', '1548864000', '1', '100.00', '0', '0', '1548904855');
+INSERT INTO `b_sale` VALUES ('9', '20190131112152552', '天猫', '管理员', '2019-01-31', '1548864000', '1', '100.00', '0', '0', '1548904998');
 
 -- ----------------------------
 -- Table structure for b_sale_main

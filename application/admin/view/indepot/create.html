@@ -18,9 +18,13 @@
                     </select>
                 </div>
 
-                <div class="form-group col-sm-12">
+                <div class="form-group col-sm-6">
                     <span>关联订单</span>
-                    <input type="text" class="form-control" placeholder="关联订单" name="author">
+                    <select name="supplier" class="form-control comboSelect" >
+                        {volist name="list" id="vo"}
+                            <option value="{$vo.id}" >{$vo.sn}-{$vo.author}</option>
+                        {/volist}
+                    </select>
                 </div>
 
                 <div class="form-group col-sm-6">
@@ -37,6 +41,10 @@
                     </select>
                 </div>                
 
+                <div class="form-group col-sm-6">
+                    <span>入库日期</span>
+                    <input type="text" class="form-control" placeholder="入库日期" name="in_date" id="in_date" >
+                </div>
 
                 <div class="form-group col-sm-12">
                     <button type="button" class="btn btn-sm btn btn-primary" @click="save">  保 存 </button>
@@ -59,10 +67,10 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
         data: {},
         mounted: function (){
             $('.comboSelect').comboSelect();
-            // laydate.render({
-            //     elem: '#purchase_date',
-            //     theme: '#2DCB73'
-            // });
+            laydate.render({
+                elem: '#in_date',
+                theme: '#2DCB73'
+            });
         },
         methods: {
             save: function () {
