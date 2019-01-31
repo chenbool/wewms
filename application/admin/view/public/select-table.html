@@ -3,16 +3,16 @@
     <table class="table table-bordered table-striped table-hover table-condensed no-margin col-sm-12">
         <thead>
             <tr>
-                <th>
+                <th width="25px">
                     <i class="fa fa-plus btn btn-xs" @click="addLine"></i>
                 </th>
                 <th v-for="item in data" v-text="item"></th>
-                <th> 删除 </th>
+                <th width="30px"> </th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="(item,k) in list">
-                <td></td>
+                <td :rowspan="list.length" v-show="k==0"> </td>
                 <td>
                     <span v-text="item.name?item.name:item.product.name"></span>
                 </td>
@@ -44,12 +44,17 @@
                     <i class="fa fa-trash btn btn-xs" @click="delLine(k)"></i>
                 </td>
             </tr>
-            <tr v-show="list.length>0">
-                <td colspan="7"></td>
-                <td>总价</td>
-                <td v-text="count"></td>
-                <td></td>
-            </tr>
+
         </tbody>
+        <tfoot v-show="list.length>0">
+            <tr>
+                <th colspan="7"></th>
+                <th>总价</td>
+                <th v-text="count"></th>
+                <th></th>
+            </tr>
+        </tfoot>
+
+
     </table>
 </div>
