@@ -2,8 +2,8 @@
 namespace app\admin\service;
 use think\Db,
 	app\common\service\Base,
-	app\admin\model\Sale as Model,
-	app\admin\validate\Sale as Validate;
+	app\admin\model\Purchase as Model,
+	app\admin\validate\Purchase as Validate;
 
 use think\facade\Hook;
 
@@ -11,7 +11,7 @@ use think\facade\Hook;
  * 作者:bool
  * QQ  :30024167
  */
-class Sale extends Base
+class Purchase extends Base
 {
 	/**
 	 * [__construct 构造方法]
@@ -53,7 +53,7 @@ class Sale extends Base
 
 		// 验证数据
 		$this->validate = new Validate();
-		$this->_save($param);
+		return $this->_save($param);
 	}	
 
 	/**
@@ -63,7 +63,7 @@ class Sale extends Base
 	public function create()
 	{
 		return [
-			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
+			'customer'	=>	model('customer')->where([ 'status'=>0 ])->select()
 		];
 	}
 
@@ -74,37 +74,26 @@ class Sale extends Base
 	 */
 	public function edit($id)
 	{
-		$list = model('SaleMain')
-			->with(['product'=>['unit','brand','color'] ])
-			->where([ 'sid' => $id ])->select();
-
-		$temp = [];
-		foreach ($list as $k => $v) {
-			$temp[] = [
-				'id'	=>	$v['id'],
-				'pid'	=>	$v['pid'],
-				'sid'	=>	$v['sid'],
-				'num'	=>	$v['num'],
-				'price'	=>	$v['price'],
-				'model'	=>	$v['product']['model'],
-				'spec'	=>	$v['product']['spec'],
-				'name'	=>	$v['product']['name'],
-				'brand'	=>	$v['product']['brand']['name'],
-				'unit'	=>	$v['product']['unit']['name'],
-				'color'	=>	$v['product']['color']['name'],
-			];
-		}
-
-		dump($temp[0] );
-		dump($list[0]['product']->brand );
-		die;
-
 		return [
-			'row'	=>	$this->model->find($id),
-			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select(),
-			'list'	=> json($temp)
+			'row'		=>	$this->model->with([ 
+				'list' => ['brand','unit','color','product'],
+			])->find($id),
+			'customer'	=>	model('customer')->where([ 'status'=>0 ])->select()
 		];
 	}
+
+/* 	public function getList($id){
+		$list = model('SaleMain')
+			->alias('a')
+			->field('a.*,b.name,b.model,b.spec,c.name as unit,d.name as color')
+			->join('product b','a.pid = b.id')
+			->join('unit c','b.unit = c.id')
+			->join('color d','b.color = d.id')
+			->where([ 'sid' => $id ])
+			->select();
+		return json_encode($list);
+	} */
+
 
 	/**
 	 * [update 更新数据]
@@ -126,10 +115,16 @@ class Sale extends Base
      */
     public function _save($data,$type='add')
     {
-    	// 验证数据
-		$res = $this->_validate($data);
+
+		// 验证数据
+		$res = false;
+		if( $type=='add' ){
+			$res = $this->_validate($data);
+		}else{
+			$res = $this->_validate($data,'edit');
+		}
 		if( $res['error'] > 0 ) return $res;
-		
+
 		//检测保存类型
 		if( $type == 'add' ){
 
@@ -149,15 +144,78 @@ class Sale extends Base
 						'pid' 			=> $v['id'],
 						'num' 			=> $v['num'],
 						'price' 		=> $v['price'],
+						'brand'			=>	$v['brand']['id'],
+						'color'			=>	$v['color']['id'],
+						'unit'			=>	$v['unit']['id'],
+						'depot'			=>	$v['depot'],
+						'location'		=>	$v['location'],
+						'count'			=>	$v['count'],
 						'create_time'	=>	time()
 					];
 				}
+				// 插入全部
 				model('SaleMain')->insertAll($temp);
+
+				return ['error'	=>	0,'msg'	=>	'添加成功' ];
 			});
 
 			return ['error'	=>	0,'msg'	=>	'添加成功' ];
 		}else{
-			$this->model->update($data);
+			
+			// 事务操作
+			Db::transaction(function () use($data) {
+
+				//保存全部
+				$this->model->update($data);
+
+				// 组装插入的数据
+				$temp = $addTemp = [];
+				foreach ($data['data'] as $k => $v) {
+					// 检测是否有该产品
+					if( isset($v['sid']) ){
+						$temp[] = [
+							'id'			=> $v['id'],	
+							'sid' 			=> $v['sid'],
+							'pid' 			=> $v['pid'],
+							'num' 			=> $v['num'],
+							'price' 		=> $v['price'],
+							'brand'			=>	$v['brand']['id'],
+							'color'			=>	$v['color']['id'],
+							'unit'			=>	$v['unit']['id'],
+							'depot'			=>	$v['depot'],
+							'location'		=>	$v['location'],
+							'count'			=>	$v['count'],
+						];
+					}else{
+						$addTemp[] = [
+							'sid' 			=> $data['id'],
+							'pid' 			=> $v['id'],
+							'num' 			=> $v['num'],
+							'price' 		=> $v['price'],
+							'brand'			=>	$v['brand']['id'],
+							'color'			=>	$v['color']['id'],
+							'unit'			=>	$v['unit']['id'],
+							'depot'			=>	$v['depot'],
+							'location'		=>	$v['location'],
+							'count'			=>	$v['count'],
+							'create_time'	=>	time()
+						];
+					}
+
+				}
+				// 更新
+				model('SaleMain')->saveAll($temp);
+				// 新增
+				model('SaleMain')->insertAll($addTemp);
+
+				// 检测是否有删除的数据
+				isset($data['dels']) || $data['dels'] =[];
+				// 删除
+				model('SaleMain')->destroy($data['dels']);
+
+				return ['error'	=>	0,'msg'	=>	'修改成功' ];
+			});
+
 			return ['error'	=>	0,'msg'	=>	'修改成功'];
 		}
 

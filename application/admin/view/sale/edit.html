@@ -22,7 +22,7 @@
 
             <div class="form-group col-sm-6">
                 <span>客户</span>
-                <select name="customer" class="form-control comboSelect customer">
+                <select name="customer" class="form-control comboSelect customer" v-model="param.customer">
                     {volist name="customer" id="vo"}
                         <option value="{$vo.id}" >{$vo.title}</option>
                     {/volist}
@@ -92,6 +92,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/lay
                 author:"{$row.author}",
                 channel: "{$row.channel}",
                 sale_date: "{$row.sale_date}",
+                customer: "{$row.customer}",
                 count: this.count,
                 data: this.list,
                 dels:[]
