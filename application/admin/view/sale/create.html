@@ -97,7 +97,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel'], function(
                     success: this.callback
                 });
             },
-            callback:function(){
+            callback:function(data){
                 if( data.error >0 ){
                     toastr.error(data.msg);
                 }else{

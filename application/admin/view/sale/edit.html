@@ -78,7 +78,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel'], function(
         };
 
     // vue
-    var create = new Vue({
+    var edit = new Vue({
         el: '.create',
         data: {
             data: data,
@@ -109,7 +109,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel'], function(
                     success: this.callback
                 });
             },
-            callback:function(){
+            callback:function(data){
                 if( data.error >0 ){
                     toastr.error(data.msg);
                 }else{
@@ -142,8 +142,14 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel'], function(
     });
 
     $('.comboSelect').change(function(){
-        // console.log( $(this).val() );
-        $(this).val( $(this).val() );
+        
+        var name = $(this).attr('name');
+        var val = $(this).val();
+        // $(this).change();
+        // console.log( name );
+        // console.log( val );
+        edit.param[name] = val;
+        // console.log( edit.param );
     });
     
 
