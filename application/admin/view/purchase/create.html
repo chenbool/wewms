@@ -11,21 +11,21 @@
             </div>
 
             <div class="form-group col-sm-6">
-                <span>销售人</span>
-                <input type="text" class="form-control" placeholder="销售人" name="author" v-model="param.author">
+                <span>采购人</span>
+                <input type="text" class="form-control" placeholder="采购人" name="author" v-model="param.author">
             </div>
 
             <div class="form-group col-sm-6">
-                <span>客户</span>
-                <select name="customer" class="form-control comboSelect">
-                    {volist name="customer" id="vo"}
+                <span>供应商</span>
+                <select name="supplier" class="form-control comboSelect">
+                    {volist name="supplier" id="vo"}
                         <option value="{$vo.id}" >{$vo.title}</option>
                     {/volist}
                 </select>
             </div>
 
             <div class="form-group col-sm-6">
-                <span>销售渠道</span>
+                <span>采购渠道</span>
                 <select name="channel" class="form-control comboSelect" v-model="param.channel">
                     <option value="默认">默认</option>
                     <option :value="item" v-for="item in channel" v-text="item"></option>
@@ -33,8 +33,8 @@
             </div>
 
             <div class="form-group col-sm-6">
-                <span>销售日期</span>
-                <input type="text" class="form-control" placeholder="销售日期" name="date" v-model="param.sale_date" id="sale_date">
+                <span>采购日期</span>
+                <input type="text" class="form-control" placeholder="采购日期" name="date" v-model="param.purchase_date" id="purchase_date">
             </div>
 
             {include file="public/select-table" /}
@@ -81,7 +81,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/lay
                 sn:"{:date('Ymdhis').rand(100,999)}",
                 author:"{$admin_user.nickname}",
                 channel: this.channel[0],
-                sale_date: "{:date('Y-m-d',time() )}",
+                purchase_date: "{:date('Y-m-d',time() )}",
                 data: this.list,
                 count: this.count
             }
@@ -89,7 +89,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/lay
         mounted: function (){
             $('.comboSelect').comboSelect();
             laydate.render({
-                elem: '#sale_date',
+                elem: '#purchase_date',
                 theme: '#2DCB73'
             });
         },

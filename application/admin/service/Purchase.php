@@ -45,10 +45,10 @@ class Purchase extends Base
 	public function save()
 	{
 		// 监听钩子函数 保存之前
-		Hook::listen('sale_begin');
+		// Hook::listen('purchase_begin');
 
 		$param = input();
-		$param['sale_time'] = strtotime($param['sale_date']);
+		$param['purchase_time'] = strtotime($param['purchase_date']);
 		$param['create_time'] = time();
 
 		// 验证数据
@@ -63,7 +63,7 @@ class Purchase extends Base
 	public function create()
 	{
 		return [
-			'customer'	=>	model('customer')->where([ 'status'=>0 ])->select()
+			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
 		];
 	}
 
@@ -78,7 +78,7 @@ class Purchase extends Base
 			'row'		=>	$this->model->with([ 
 				'list' => ['brand','unit','color','product'],
 			])->find($id),
-			'customer'	=>	model('customer')->where([ 'status'=>0 ])->select()
+			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
 		];
 	}
 
@@ -154,7 +154,7 @@ class Purchase extends Base
 					];
 				}
 				// 插入全部
-				model('SaleMain')->insertAll($temp);
+				model('PurchaseMain')->insertAll($temp);
 
 				return ['error'	=>	0,'msg'	=>	'添加成功' ];
 			});
@@ -204,14 +204,14 @@ class Purchase extends Base
 
 				}
 				// 更新
-				model('SaleMain')->saveAll($temp);
+				model('PurchaseMain')->saveAll($temp);
 				// 新增
-				model('SaleMain')->insertAll($addTemp);
+				model('PurchaseMain')->insertAll($addTemp);
 
 				// 检测是否有删除的数据
 				isset($data['dels']) || $data['dels'] =[];
 				// 删除
-				model('SaleMain')->destroy($data['dels']);
+				model('PurchaseMain')->destroy($data['dels']);
 
 				return ['error'	=>	0,'msg'	=>	'修改成功' ];
 			});
@@ -236,7 +236,7 @@ class Purchase extends Base
 		Db::transaction(function () use($id) {
 			// 判断是否删除成功
 			if( $this->model->destroy($id) ){
-				model('SaleMain')->where([ 'sid'=>$id ])->delete();;	
+				model('PurchaseMain')->where([ 'sid'=>$id ])->delete();;	
 			}else{
 				return ['error'	=>	100,'msg'	=>	'删除失败'];	
 			}
