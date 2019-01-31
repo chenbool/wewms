@@ -17,7 +17,7 @@
 
             <div class="form-group col-sm-6">
                 <span>供应商</span>
-                <select name="supplier" class="form-control comboSelect">
+                <select name="supplier" class="form-control comboSelect" v-model="param.supplier">
                     {volist name="supplier" id="vo"}
                         <option value="{$vo.id}" >{$vo.title}</option>
                     {/volist}
@@ -82,6 +82,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/lay
                 author:"{$admin_user.nickname}",
                 channel: this.channel[0],
                 purchase_date: "{:date('Y-m-d',time() )}",
+                supplier: "{$supplier[0]['id']}",
                 data: this.list,
                 count: this.count
             }

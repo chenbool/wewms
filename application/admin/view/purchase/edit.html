@@ -18,7 +18,7 @@
 
             <div class="form-group col-sm-6">
                 <span>供应商</span>
-                <select name="supplier" class="form-control comboSelect supplier">
+                <select name="supplier" class="form-control comboSelect supplier" v-model="param.supplier">
                     {volist name="supplier" id="vo"}
                         <option value="{$vo.id}" >{$vo.title}</option>
                     {/volist}
@@ -86,6 +86,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/lay
                 author:"{$row.author}",
                 channel: "{$row.channel}",
                 purchase_date: "{$row.purchase_date}",
+                supplier: "{$row.supplier}",
                 count: this.count,
                 data: this.list,
                 dels:[]
@@ -93,11 +94,13 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/lay
         },
         mounted: function (){
             $('.comboSelect').comboSelect();
+
             laydate.render({
                 elem: '#purchase_date', //指定元素
                 value:"{$row.purchase_date}",
                 theme: '#2DCB73'
             });
+
         },
         methods: {
             save: function () {

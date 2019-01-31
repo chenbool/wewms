@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-30 14:11:32
+Date: 2019-01-31 13:47:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -38,7 +38,7 @@ CREATE TABLE `b_admin` (
 -- ----------------------------
 -- Records of b_admin
 -- ----------------------------
-INSERT INTO `b_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'https://avatars1.githubusercontent.com/u/37901036?v=4', '管理员', '17052850083', '81001985@qq.com', '2', '1548811532', '127.0.0.1', '1320981071');
+INSERT INTO `b_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'https://avatars1.githubusercontent.com/u/37901036?v=4', '管理员', '17052850083', '81001985@qq.com', '2', '1548830533', '127.0.0.1', '1320981071');
 INSERT INTO `b_admin` VALUES ('2', 'seho', '126dfa8c609fc04f3aa38c015a862fec', null, 'seho', '2222', '111@qq.com', null, '1540196808', '127.0.0.1', '1540193412');
 INSERT INTO `b_admin` VALUES ('3', 'admin1231111', '0192023a7bbd73250516f069df18b500', null, '1111', '', '', '0', null, null, '1540540637');
 
@@ -324,13 +324,62 @@ CREATE TABLE `b_product` (
   `desc` varchar(200) DEFAULT NULL COMMENT '备注',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='产品表';
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='产品表';
 
 -- ----------------------------
 -- Records of b_product
 -- ----------------------------
 INSERT INTO `b_product` VALUES ('1', '20190129100738252', '', '小米8', '1', '1', 'mi8', '64G', '1', '10.00', '2', '2', '1', '1', '1', '', '1548727700');
-INSERT INTO `b_product` VALUES ('3', '20190130021053962', '', '华为', '0', '2', '', '111', '1', '0.00', '1', '1', '1', '1', '0', '', '1548828664');
+INSERT INTO `b_product` VALUES ('3', '20190130021053962', '', '华为', '0', '2', 'huawei', '111', '1', '100.00', '1', '1', '1', '1', '0', '', '1548828664');
+INSERT INTO `b_product` VALUES ('4', '20190131105334658', '', '荣耀', '0', '1', 'HONOR', 'HONOR', '1', '999.00', '1', '1', '1', '1', '0', '', '1548903506');
+
+-- ----------------------------
+-- Table structure for b_purchase
+-- ----------------------------
+DROP TABLE IF EXISTS `b_purchase`;
+CREATE TABLE `b_purchase` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `sn` varchar(100) NOT NULL COMMENT '编号',
+  `channel` varchar(100) DEFAULT NULL COMMENT '销售渠道',
+  `author` varchar(40) DEFAULT NULL COMMENT '销售人',
+  `purchase_date` varchar(20) DEFAULT NULL COMMENT '销售日期',
+  `purchase_time` int(11) unsigned NOT NULL COMMENT '销售时间',
+  `supplier` int(11) unsigned DEFAULT NULL COMMENT '供应商',
+  `count` decimal(10,2) unsigned DEFAULT NULL COMMENT '总价',
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0正常 1禁用',
+  `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='采购';
+
+-- ----------------------------
+-- Records of b_purchase
+-- ----------------------------
+INSERT INTO `b_purchase` VALUES ('10', '20190131012842253', '天猫', '管理员', '2019-01-31', '1548864000', '2', '100.00', '0', '1548912662');
+
+-- ----------------------------
+-- Table structure for b_purchase_main
+-- ----------------------------
+DROP TABLE IF EXISTS `b_purchase_main`;
+CREATE TABLE `b_purchase_main` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `pid` int(11) unsigned NOT NULL COMMENT '产品id',
+  `sid` int(11) unsigned NOT NULL COMMENT '采购订单的id',
+  `num` int(11) unsigned NOT NULL COMMENT '数量',
+  `price` decimal(10,2) unsigned NOT NULL COMMENT '价格',
+  `brand` int(11) unsigned DEFAULT NULL COMMENT '品牌id',
+  `color` int(11) unsigned DEFAULT NULL COMMENT '颜色id',
+  `unit` int(11) unsigned DEFAULT NULL COMMENT '单位id',
+  `depot` int(11) unsigned DEFAULT NULL,
+  `location` int(11) unsigned DEFAULT NULL COMMENT '库位',
+  `count` decimal(10,2) unsigned DEFAULT NULL COMMENT '合计',
+  `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='采购明细';
+
+-- ----------------------------
+-- Records of b_purchase_main
+-- ----------------------------
+INSERT INTO `b_purchase_main` VALUES ('12', '1', '10', '10', '10.00', '1', '1', '2', '1', '1', '100.00', '1548912989');
 
 -- ----------------------------
 -- Table structure for b_sale
@@ -340,14 +389,47 @@ CREATE TABLE `b_sale` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sn` varchar(100) NOT NULL COMMENT '编号',
   `channel` varchar(100) DEFAULT NULL COMMENT '销售渠道',
+  `author` varchar(40) DEFAULT NULL COMMENT '销售人',
+  `sale_date` varchar(20) DEFAULT NULL COMMENT '销售日期',
+  `sale_time` int(11) unsigned NOT NULL COMMENT '销售时间',
+  `customer` int(11) unsigned DEFAULT NULL COMMENT '客户id',
+  `count` decimal(10,2) unsigned DEFAULT NULL COMMENT '总价',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0正常 1禁用',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='销售';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='销售';
 
 -- ----------------------------
 -- Records of b_sale
 -- ----------------------------
+INSERT INTO `b_sale` VALUES ('5', '20190130051206785', '淘宝', '管理员', '2019-01-30', '1548777600', '1', '119.00', '0', '1548839571');
+INSERT INTO `b_sale` VALUES ('8', '20190131112041263', '天猫', '管理员', '2019-01-31', '1548864000', '1', '100.00', '0', '1548904855');
+INSERT INTO `b_sale` VALUES ('9', '20190131112152552', '天猫', '管理员', '2019-01-31', '1548864000', '1', '100.00', '0', '1548904998');
+
+-- ----------------------------
+-- Table structure for b_sale_main
+-- ----------------------------
+DROP TABLE IF EXISTS `b_sale_main`;
+CREATE TABLE `b_sale_main` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `pid` int(11) unsigned NOT NULL COMMENT '产品id',
+  `sid` int(11) unsigned NOT NULL COMMENT '销售订单的id',
+  `num` int(11) unsigned NOT NULL COMMENT '数量',
+  `price` decimal(10,2) unsigned NOT NULL COMMENT '价格',
+  `brand` int(11) unsigned DEFAULT NULL COMMENT '品牌id',
+  `color` int(11) unsigned DEFAULT NULL COMMENT '颜色id',
+  `unit` int(11) unsigned DEFAULT NULL COMMENT '单位id',
+  `depot` int(11) unsigned DEFAULT NULL,
+  `location` int(11) unsigned DEFAULT NULL COMMENT '库位',
+  `count` decimal(10,2) unsigned DEFAULT NULL COMMENT '合计',
+  `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='销售明细';
+
+-- ----------------------------
+-- Records of b_sale_main
+-- ----------------------------
+INSERT INTO `b_sale_main` VALUES ('12', '3', '10', '10', '100.00', '2', '1', '1', '1', '0', '1000.00', '1548912662');
 
 -- ----------------------------
 -- Table structure for b_supplier
@@ -380,7 +462,7 @@ CREATE TABLE `b_supplier` (
 -- Records of b_supplier
 -- ----------------------------
 INSERT INTO `b_supplier` VALUES ('1', '苏州智慧龙', '测试', '0512-5689107', '0512-5689107', '111', 'test@bigzhl.com', '', '', '', '', '', '', '11111111', '华夏银行', '', '', '0', '1542779833');
-INSERT INTO `b_supplier` VALUES ('2', '11', '111', '', '', '11', '111', '山东省', '临沂市', '兰山区', '11111', '1111111111111111111', '111', '', '中国银行', '111', '111', '0', '1544493865');
+INSERT INTO `b_supplier` VALUES ('2', '苏州格力', '111', '', '', '11', '111', '山东省', '临沂市', '兰山区', '11111', '1111111111111111111', '111', '', '中国银行', '111', '111', '0', '1544493865');
 
 -- ----------------------------
 -- Table structure for b_unit
