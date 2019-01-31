@@ -12,13 +12,13 @@
 
                 <div class="form-group col-sm-6">
                     <span>入库类型</span>
-                    <select name="supplier" class="form-control comboSelect" v-model="param.type" >
+                    <select name="supplier" class="form-control" v-model="param.type" >
                         <option value="1" >采购入库</option>
                         <option value="2" >手动入库</option>
                     </select>
                 </div>
 
-                <div class="form-group col-sm-6" v-show="param.type==1">
+                <div class="form-group col-sm-6" v-show="param.type == 1 ">
                     <span>关联订单</span>
                     <select name="purchase" class="form-control comboSelect purchase" v-model="param.purchase">
                         {volist name="list" id="vo"}
@@ -162,7 +162,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
 $('.purchase').change(function(){
     var name = $(this).attr('name');
     var val = $(this).val();
-    console.log(val);
+    // console.log(val);
     create.param[name] = val;
     create.getList();
 });
