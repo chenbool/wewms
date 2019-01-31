@@ -161,7 +161,7 @@ class Sale extends Base
 
 			return ['error'	=>	0,'msg'	=>	'添加成功' ];
 		}else{
-
+			
 			// 事务操作
 			Db::transaction(function () use($data) {
 

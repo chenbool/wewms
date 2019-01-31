@@ -34,7 +34,7 @@
 
             <div class="form-group col-sm-6">
                 <span>销售日期</span>
-                <input type="text" class="form-control" placeholder="销售日期" name="date" v-model="param.date" id="sale_date">
+                <input type="text" class="form-control" placeholder="销售日期" name="date" v-model="param.sale_date" id="sale_date">
             </div>
 
             {include file="public/select-table" /}
@@ -96,6 +96,8 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/lay
         methods: {
             save: function () {
                 this.param.data = this.list;
+                this.param.count = this.count;
+
                 $.ajax({
                     url: "{:url('save')}",
                     method: 'POST',
@@ -121,7 +123,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/lay
                     　　shadeClose: true,
                     　　shade: 0.4,
                         anim: 5,
-                        area: ['100%','400px'],
+                        area: ['100%','500px'],
                     　　content: data
                     });
                 });

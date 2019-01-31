@@ -39,7 +39,7 @@
 
             <div class="form-group col-sm-6">
                 <span>销售日期</span>
-                <input type="text" class="form-control" placeholder="销售日期" name="date" v-model="param.date" id="sale_date">
+                <input type="text" class="form-control" placeholder="销售日期" name="date" v-model="param.sale_date" id="sale_date">
             </div>
 
             {include file="public/select-table" /}
@@ -92,8 +92,8 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/lay
                 author:"{$row.author}",
                 channel: "{$row.channel}",
                 sale_date: "{$row.sale_date}",
-                data: this.list,
                 count: this.count,
+                data: this.list,
                 dels:[]
             }
         },
@@ -104,12 +104,12 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/lay
                 value:"{$row.sale_date}",
                 theme: '#2DCB73'
             });
-            // console.log(  JSON.parse( "{$row.list}" ) );
-
         },
         methods: {
             save: function () {
                 this.param.data = this.list;
+                this.param.count = this.count;
+
                 $.ajax({
                     url: "{:url('update')}",
                     method: 'POST',
@@ -135,7 +135,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/lay
                     　　shadeClose: true,
                     　　shade: 0.4,
                         anim: 5,
-                        area: ['80%','300px'],
+                        area: ['80%','400px'],
                     　　content: data
                     });
                 });
