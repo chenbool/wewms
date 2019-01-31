@@ -148,10 +148,10 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'], function () {
 
             },
             addLine: function(index){
-
                 var num = parseInt( this.list[index].num );
-
+                console.log(num);
                 if( num >0 && !isNaN(num) ){
+                    
                     this.unique_list(index);
                     layer.close(layer_index);
                 }else{
@@ -160,7 +160,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select'], function () {
 
             },
             unique_list: function(index){
-                // console.log( this.list[index] );
+                console.log( this.list[index] );
                 list.push( this.list[index] );
                 // list = uniq(list);
             }
