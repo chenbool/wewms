@@ -34,7 +34,7 @@
 
             <div class="form-group col-sm-6">
                 <span>销售日期</span>
-                <input type="date" class="form-control" placeholder="销售日期" name="date" v-model="param.date">
+                <input type="text" class="form-control" placeholder="销售日期" name="date" v-model="param.date" id="sale_date">
             </div>
 
             {include file="public/select-table" /}
@@ -56,7 +56,7 @@
  var layer_index = 0;
 
 // seajs
-seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel'], function() {
+seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/laydate/laydate'], function() {
 
         var data = {
             name: '名称',
@@ -66,6 +66,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel'], function(
             num: '数量',
             unit: '单位',
             price: '单价',
+            count: '合计',
         };
 
     // vue
@@ -74,17 +75,23 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel'], function(
         data: {
             data: data,
             list: list,
+            count:0,
             channel:channel,
             param:{
                 sn:"{:date('Ymdhis').rand(100,999)}",
                 author:"{$admin_user.nickname}",
                 channel: this.channel[0],
                 sale_date: "{:date('Y-m-d',time() )}",
-                data: this.list
+                data: this.list,
+                count: this.count
             }
         },
         mounted: function (){
             $('.comboSelect').comboSelect();
+            laydate.render({
+                elem: '#sale_date',
+                theme: '#2DCB73'
+            });
         },
         methods: {
             save: function () {
@@ -123,9 +130,25 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel'], function(
             delLine:function(index){
                 this.list.splice(index,1);
                 // delete this.list[index];
+            },
+            changeSum:function(index){
+                this.list[index].count = this.list[index].num * this.list[index].price;
+                this.SumCount();
+            },
+            SumCount:function(){
+                this.count = 0;
+                for(var index in this.list) {  
+                    this.count += parseFloat( this.list[index].count );
+                };  
             }
 
-        }
+        },
+        watch: {
+            list:function(val,old){
+                this.SumCount();
+            }
+        },
+
 
     });
 

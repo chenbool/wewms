@@ -26,25 +26,30 @@
                     <span v-text="item.color.name"></span>
                 </td>
                 <td>
-                    <input type="text" class="form-control" v-model="item.num" style="height:25px;width:60px;padding:3px;">
+                    <input type="text" class="form-control" v-model="item.num" @input="changeSum(k)" style="height:25px;width:60px;padding:3px;">
                 </td>
                 <td>
                     <span v-text="item.unit.name"></span>
                 </td>
+
                 <td>
-                    <input type="text" class="form-control" v-model="item.price" style="height:25px;width:60px;padding:3px;">
+                    <input type="text" class="form-control" v-model="item.price"  @input="changeSum(k)" style="height:25px;width:60px;padding:3px;">
+                </td>
+
+                <td>
+                    <span v-text="item.count"></span>
                 </td>
 
                 <td>
                     <i class="fa fa-trash btn btn-xs" @click="delLine(k)"></i>
                 </td>
             </tr>
+            <tr>
+                <td colspan="7"></td>
+                <td>总价</td>
+                <td v-text="count"></td>
+                <td></td>
+            </tr>
         </tbody>
     </table>
 </div>
-
-<style>
-.table-hover tr:nth-child(even){
-    background: #ccc;
-}
-</style>

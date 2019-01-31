@@ -13,7 +13,7 @@ class Product extends Validate
      * @var array
      */	
 	protected $rule = [
-        'name'           =>  'require|unique:sale',
+        'name'           =>  'require|unique:product',
     ];
     
     /**

@@ -53,7 +53,7 @@ class Sale extends Base
 
 		// 验证数据
 		$this->validate = new Validate();
-		$this->_save($param);
+		return $this->_save($param);
 	}	
 
 	/**
@@ -115,6 +115,7 @@ class Sale extends Base
      */
     public function _save($data,$type='add')
     {
+
 		// 验证数据
 		$res = false;
 		if( $type=='add' ){
@@ -148,9 +149,11 @@ class Sale extends Base
 						'unit'			=>	$v['unit']['id'],
 						'depot'			=>	$v['depot'],
 						'location'		=>	$v['location'],
+						'count'			=>	$v['count'],
 						'create_time'	=>	time()
 					];
 				}
+				// 插入全部
 				model('SaleMain')->insertAll($temp);
 
 				return ['error'	=>	0,'msg'	=>	'添加成功' ];
@@ -180,7 +183,8 @@ class Sale extends Base
 							'color'			=>	$v['color']['id'],
 							'unit'			=>	$v['unit']['id'],
 							'depot'			=>	$v['depot'],
-							'location'		=>	$v['location']
+							'location'		=>	$v['location'],
+							'count'			=>	$v['count'],
 						];
 					}else{
 						$addTemp[] = [
@@ -193,6 +197,7 @@ class Sale extends Base
 							'unit'			=>	$v['unit']['id'],
 							'depot'			=>	$v['depot'],
 							'location'		=>	$v['location'],
+							'count'			=>	$v['count'],
 							'create_time'	=>	time()
 						];
 					}
@@ -203,10 +208,13 @@ class Sale extends Base
 				// 新增
 				model('SaleMain')->insertAll($addTemp);
 
+				// 检测是否有删除的数据
+				isset($data['dels']) || $data['dels'] =[];
+				// 删除
+				model('SaleMain')->destroy($data['dels']);
+
 				return ['error'	=>	0,'msg'	=>	'修改成功' ];
 			});
-			
-			// $this->model->update($data);
 
 			return ['error'	=>	0,'msg'	=>	'修改成功'];
 		}

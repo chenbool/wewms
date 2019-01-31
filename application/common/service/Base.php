@@ -120,7 +120,7 @@ class Base extends Controller
     	// 验证数据
 		$res = $this->_validate($data);
 		if( $res['error'] > 0 ) return $res;
-		
+
 		//检测保存类型
 		if( $type == 'add' ){
 			$data['add_time'] = time();
