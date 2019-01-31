@@ -1,0 +1,79 @@
+<!-- start-->
+<div class=" edit">
+
+    <!-- 表单 -->   
+    <section class="panel-body">
+        <form role="form" class="form-edit">
+            <input type="hidden" name="id" value="{:$row.id}">
+
+            <div class="form-group col-sm-12">
+                <span>库位名称</span>
+                <input type="text" class="form-control" placeholder="库位名称" name="name" value="{:$row.name}">
+            </div>
+
+            <div class="form-group col-sm-12">
+                <span>状态</span>
+                <div class="radio">
+                    <label><input type="radio" name="status" value="0" {$row->status== 0 ? 'checked="checked"' : null } >正常</label>
+                </div>
+                <div class="radio">
+                    <label><input type="radio" name="status" value="1" {$row->status== 1 ? 'checked="checked"' : null } >禁用</label>
+                </div>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <span>货架</span>
+                <textarea class="form-control" cols="5" name="shelve">{$row.shelve}</textarea>
+                <span>请以英文,号分割,例如: A,B,C,D</span>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <span>备注</span>
+                <textarea class="form-control" cols="5" name="desc">{$row.desc}</textarea>
+            </div>
+
+            <div class="form-group col-sm-12">
+                <button type="button" class="btn btn-sm btn-primary " @click="save"> 保 存 </button>
+                <button type="reset" class="btn btn-sm btn-success "> 重 置 </button>
+            </div>
+
+        </form>
+
+    </section>
+</div>
+<!-- end -->
+
+<script>
+
+// seajs
+seajs.use([],function() {
+
+    var edit = new Vue({
+        el: '.form-edit',
+        data: {},
+        methods:{
+            save: function () {
+                var param = $('.form-edit').serializeArray();
+                $.ajax({
+                    url: "{:url('update')}",
+                    method: 'POST',
+                    dataType: 'json',
+                    data: param,
+                    success: this.callback
+                });
+            },
+            callback:function (data) {
+                if( data.error >0 ){
+                    toastr.error(data.msg);
+                }else{
+                    toastr.success(data.msg);
+                    Table.methods.refresh();
+                    layer.closeAll('page');
+                }
+            }
+        }
+    });
+
+});
+
+</script>
