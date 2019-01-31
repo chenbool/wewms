@@ -44,7 +44,7 @@
                     <i class="fa fa-trash btn btn-xs" @click="delLine(k)"></i>
                 </td>
             </tr>
-            <tr>
+            <tr v-show="list.length>0">
                 <td colspan="7"></td>
                 <td>总价</td>
                 <td v-text="count"></td>
