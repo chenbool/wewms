@@ -245,6 +245,15 @@ class Purchase extends Base
 		return ['error'	=>	0,'msg'	=>	'删除成功'];
 	}
 
+	// 获取列表
+    public function getList(){
+
+		return model('PurchaseMain')->with('product,brand,unit,color')
+		->where([ 'sid'	=> input('id') ])
+		->select();
+
+    }
+
 
 
 }

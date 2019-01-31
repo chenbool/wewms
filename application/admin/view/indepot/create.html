@@ -20,7 +20,7 @@
 
                 <div class="form-group col-sm-6">
                     <span>关联订单</span>
-                    <select name="supplier" class="form-control comboSelect" >
+                    <select name="pid" class="form-control comboSelect pid" v-model="pid">
                         {volist name="list" id="vo"}
                             <option value="{$vo.id}" >{$vo.sn}-{$vo.author}</option>
                         {/volist}
@@ -46,6 +46,8 @@
                     <input type="text" class="form-control" placeholder="入库日期" name="in_date" id="in_date" >
                 </div>
 
+                {include file="public/depot-table" /}
+
                 <div class="form-group col-sm-12">
                     <button type="button" class="btn btn-sm btn btn-primary" @click="save">  保 存 </button>
                     <button type="reset" class="btn btn-sm btn-success ">  重 置 </button> 
@@ -59,18 +61,37 @@
 
 <script>
 
+var list = [];
+var layer_index = 0;
+
 // seajs
 seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],function() {
 
+    var data = {
+        name: '名称',
+        model: '型号',
+        spec: '规格',
+        color: '颜色',
+        num: '数量',
+        unit: '单位',
+        price: '单价',
+        count: '合计',
+    };
+
     var create = new Vue({
         el: '.form-create',
-        data: {},
+        data: {
+            data:data,
+            pid:0,
+            list: list
+        },
         mounted: function (){
             $('.comboSelect').comboSelect();
             laydate.render({
                 elem: '#in_date',
                 theme: '#2DCB73'
             });
+
         },
         methods: {
             save: function () {
@@ -83,7 +104,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
                     success: this.callback
                 });
             },
-            callback:function (data) {
+            callback: function (data) {
                 if( data.error >0 ){
                     toastr.error(data.msg);
                 }else{
@@ -91,10 +112,31 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
                     Table.methods.refresh();
                     layer.closeAll('page');
                 }
+            },
+            getList:function(){
+                var _this = this;
+                $.getJSON("{:url('purchase/getList')}?id="+this.pid, function(data){
+                    // console.log(data);
+                    list = data;
+                    _this.list = data;
+                });
+            },
+            addLine: function(){
             }
         }
 
     });
+
+
+$('.comboSelect').change(function(){
+    var name = $(this).attr('name');
+    var val = $(this).val();
+    console.log(val);
+    create[name] = val;
+    create.getList();
+});
+
+
 
 });
 
