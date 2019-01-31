@@ -139,7 +139,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/lay
 
             },
             delLine:function(index){
-                // 记录删除的数据 判断是否有 sid 销售id
+                // 记录删除的数据 判断是否有 sid 采购id
                 if( this.list[index].hasOwnProperty('sid') ){
                     this.param.dels.push( this.list[index].id );
                 }
