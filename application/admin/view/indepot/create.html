@@ -5,31 +5,38 @@
     <section class="panel-body" >
             <form role="form" class="form-create">
 
-                <div class="form-group col-sm-12">
-                    <span>库位名称</span>
-                    <input type="text" class="form-control" placeholder="库位名称" name="name">
+                <div class="form-group col-sm-6">
+                    <span>编号</span>
+                    <input type="text" class="form-control" placeholder="编号" name="sn" value="{:date('Ymdhis').rand(100,999)}">
+                </div>
+
+                <div class="form-group col-sm-6">
+                    <span>入库类型</span>
+                    <select name="supplier" class="form-control comboSelect" >
+                        <option value="1" >采购入库</option>
+                        <option value="2" >手动入库</option>
+                    </select>
                 </div>
 
                 <div class="form-group col-sm-12">
-                    <span>状态</span>
-                    <div class="radio">
-                        <label><input type="radio" name="status" value="0" checked="checked">正常</label>
-                    </div>
-                    <div class="radio">
-                        <label><input type="radio" name="status" value="1" >禁用</label>
-                    </div>
+                    <span>关联订单</span>
+                    <input type="text" class="form-control" placeholder="关联订单" name="author">
                 </div>
 
-                <div class="form-group col-sm-12">
-                    <span>货架</span>
-                    <textarea class="form-control" cols="5" name="shelve"></textarea>
-                    <span>请以英文,号分割,例如: A,B,C,D</span>
+                <div class="form-group col-sm-6">
+                    <span>入库人</span>
+                    <input type="text" class="form-control" placeholder="入库人" name="author" value="{$admin_user.nickname}">
                 </div>
 
-                <div class="form-group col-sm-12">
-                    <span>备注</span>
-                    <textarea class="form-control" cols="5" name="desc"></textarea>
-                </div>
+                <div class="form-group col-sm-6">
+                    <span>供应商</span>
+                    <select name="supplier" class="form-control comboSelect" >
+                        {volist name="supplier" id="vo"}
+                            <option value="{$vo.id}" >{$vo.title}</option>
+                        {/volist}
+                    </select>
+                </div>                
+
 
                 <div class="form-group col-sm-12">
                     <button type="button" class="btn btn-sm btn btn-primary" @click="save">  保 存 </button>
@@ -45,11 +52,18 @@
 <script>
 
 // seajs
-seajs.use([],function() {
+seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],function() {
 
     var create = new Vue({
         el: '.form-create',
         data: {},
+        mounted: function (){
+            $('.comboSelect').comboSelect();
+            // laydate.render({
+            //     elem: '#purchase_date',
+            //     theme: '#2DCB73'
+            // });
+        },
         methods: {
             save: function () {
                 var param = $('.form-create').serializeArray();

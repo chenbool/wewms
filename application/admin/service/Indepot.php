@@ -17,4 +17,31 @@ class Indepot extends Base
 		// $this->model 	= new Model();
 	}
 
+	/**
+	 * [create 添加创建方法]
+	 * @return [bool] [结果集]
+	 */
+	public function create()
+	{
+		return [
+			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
+		];
+	}
+
+	/**
+	 * [edit 编辑页面]
+	 * @param  [int] $id 	[id]
+	 * @return [array]     	[结果集]
+	 */
+	public function edit($id)
+	{
+		return [
+			'row'		=>	$this->model->with([ 
+				'list' => ['brand','unit','color','product'],
+			])->find($id),
+			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
+		];
+	}
+
+	
 }
