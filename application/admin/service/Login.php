@@ -52,7 +52,7 @@ class Login extends Base
 	 * @param  [type] $param [提交的数据]
 	 * @return [array]      [结果集]
 	 */
-	protected function _validate($param)
+	protected function _validate($param,$scene=false)
 	{
 		// 检测验证码
 		// $captcha = input('captcha');
