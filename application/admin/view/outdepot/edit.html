@@ -138,7 +138,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
             },
             getList:function(){
                 var _this = this;
-                $.getJSON("{:url('purchase/getList')}?model=indepot&id={$row.id}", function(data){
+                $.getJSON("{:url('purchase/getList')}?model=outdepot&id={$row.id}", function(data){
                     list = data;
                     _this.list = data;
                     _this.SumCount();
