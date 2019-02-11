@@ -130,11 +130,14 @@ class Indepot extends Base
 				unset($res['date']);
 				$id = $this->model->insertGetId($res);
 
+
+
 				// 组装插入的数据
 				$temp = [];
 				foreach ($data['data'] as $k => $v) {
 					$temp[] = [
-						'pid' 			=> $id,
+						'fid' 			=> $id,
+						'pid' 			=>  $v['id'],
 						'sid' 			=> $v['id'],
 						'num' 			=> $v['num'],
 						'price' 		=> $v['price'],
@@ -198,6 +201,7 @@ class Indepot extends Base
 						];
 					}else{
 						$addTemp[] = [
+							'fid'			=> $data['id'],
 							'sid' 			=> $data['id'],
 							'pid' 			=> $v['id'],
 							'num' 			=> $v['num'],

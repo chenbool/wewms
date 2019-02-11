@@ -252,7 +252,12 @@ class Purchase extends Base
 
 		$model= model( request()->controller().'Main' );
 
-		input('?model') && $model = model( input('model').'Main' );
+		if( input('?model') ){
+			$model = model( input('model').'Main' );
+			return $model->with('product,brand,unit,color')
+				->where([ 'fid'	=> input('id') ])
+				->select();
+		}
 
 		return $model->with('product,brand,unit,color')
 		->where([ 'sid'	=> input('id') ])

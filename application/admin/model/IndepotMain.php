@@ -39,5 +39,4 @@ class IndepotMain extends Model
         return $this->hasOne('Color','id','color')->selfRelation();
     }
 
-
 }
