@@ -220,7 +220,7 @@ class Indepot extends Base
 		Db::transaction(function () use($id) {
 			// 判断是否删除成功
 			if( $this->model->destroy($id) ){
-				model('SaleMain')->where([ 'sid'=>$id ])->delete();;	
+				model('IndepotMain')->where([ 'sid'=>$id ])->delete();;	
 			}else{
 				return ['error'	=>	100,'msg'	=>	'删除失败'];	
 			}
