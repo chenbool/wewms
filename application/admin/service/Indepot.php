@@ -134,6 +134,12 @@ class Indepot extends Base
 				// 插入全部
 				model('IndepotMain')->insertAll($temp);
 
+				// 更新订单状态
+				model('purchase')->save(
+					[ 'state' => 1 ],
+					[ 'id'=> $data['purchase'] ] 
+				);
+
 				return ['error'	=>	0,'msg'	=>	'添加成功' ];
 			});
 

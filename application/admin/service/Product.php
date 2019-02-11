@@ -1,6 +1,7 @@
 <?php
 namespace app\admin\service;
-use app\common\service\Base,
+use think\Db,
+	app\common\service\Base,
 	app\admin\model\Product as Model,
 	app\admin\validate\Product as Validate;
 
@@ -106,6 +107,7 @@ class Product extends Base
 		// 验证数据
 		$this->validate = new Validate();
 		return $this->_save( $param, 'update' );
+		// Stock
 	}
 
 	/**
@@ -144,6 +146,7 @@ class Product extends Base
 		]);
 	}	
 
+	// 选择产品
 	public function select(){
 		$list = model('cate')->select();
 		$list = $this->_tree($list);
@@ -156,6 +159,67 @@ class Product extends Base
 		]);
 		return view();
 	}
+
+
+    /**
+     * [_save 添加/更新数据 ]
+     * @param  [array]  $data [添加的数据]
+     * @param  [string] $type [默认add update是更新数据]
+     * @return [array]       [结果集]
+     */
+    public function _save($data,$type='add')
+    {
+    	// 验证数据
+		$res = $this->_validate($data);
+		if( $res['error'] > 0 ) return $res;
+
+		//检测保存类型
+		if( $type == 'add' ){
+			$data['create_time'] = time();
+
+			// 添加库存表
+			Db::transaction(function () use($data) {
+
+				$id = $this->model->insertGetId($data);
+
+				model('stock')->create([
+					'pid'	=>	$id,
+					'num'	=>	0,
+					'update_time' => time(),
+					'create_time' => time()
+				]);
+
+			});
+
+			return ['error'	=>	0,'msg'	=>	'添加成功' ];
+		}else{
+			$this->model->update($data);
+			return ['error'	=>	0,'msg'	=>	'修改成功'];
+		}
+    }
+
+
+	/**
+	 * [delete 删除数据]
+	 * @param  [int]  $id  [删除数据唯一id]
+	 * @return [array]     [结果集]
+	 */
+    public function delete($id)
+    {
+		// 删除库存表
+		Db::transaction(function () use($id) {
+
+			if( $this->model->destroy($id) ){
+				model('stock')->where([ 'pid'	=>	$id ])->delete();
+			}else{
+				return ['error'	=>	100,'msg'	=>	'删除失败'];	
+			}
+
+		});
+
+		return ['error'	=>	0,'msg'	=>	'删除成功'];
+    }	
+
 
 
 }

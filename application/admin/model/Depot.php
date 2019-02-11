@@ -10,4 +10,5 @@ class Depot extends Model
     {
         return $this->hasMany('Location','id')->selfRelation();
     }
+
 }
