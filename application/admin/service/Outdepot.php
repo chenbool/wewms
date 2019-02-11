@@ -45,7 +45,7 @@ class Outdepot extends Base
 	{
 		return [
 			'customer'	=>	model('customer')->where([ 'status'=>0 ])->select(),
-			'list'		=>	model('purchase')->where([ 
+			'list'		=>	model('sale')->where([ 
 				'status'=>0,
 				'state' => [ 'neq',2 ]
 			])->select(),
@@ -63,7 +63,7 @@ class Outdepot extends Base
 			'row'		=>	$this->model->with([ 
 				'list' => ['brand','unit','color','product'],
 			])->find($id),
-			'list'		=>	model('purchase')->where([ 
+			'list'		=>	model('sale')->where([ 
 				'status'=>0,
 				// 'state' => [ 'neq',2 ]
 			])->select(),
@@ -150,17 +150,17 @@ class Outdepot extends Base
 					];
 				}
 				// 插入全部
-				model('IndepotMain')->insertAll($temp);
+				model('OutdepotMain')->insertAll($temp);
 
 				// 更新订单状态
-				model('purchase')->save(
+				model('sale')->save(
 					[ 'state' => 1 ],
 					[ 'id'=> $data['purchase'] ] 
 				);	
 
 				// 修改仓库库存
 				$stock = new Stock();
-				$stock->setNum($data['data']);
+				$stock->setNum($data['data'],'out');
 
 				return ['error'	=>	0,'msg'	=>	'添加成功' ];
 			});
@@ -211,18 +211,18 @@ class Outdepot extends Base
 
 				}
 				// 更新
-				model('IndepotMain')->saveAll($temp);
+				model('OutdepotMain')->saveAll($temp);
 				// 新增
-				model('IndepotMain')->insertAll($addTemp);
+				model('OutdepotMain')->insertAll($addTemp);
 
 				// 检测是否有删除的数据
 				isset($data['dels']) || $data['dels'] =[];
 				// 删除
-				model('IndepotMain')->destroy($data['dels']);
+				model('OutdepotMain')->destroy($data['dels']);
 
 				// 修改仓库库存
 				$stock = new Stock();
-				$stock->setUpdateNum($data['data'], model('IndepotMain') );
+				$stock->setUpdateNum($data['data'], model('OutdepotMain') );
 
 				return ['error'	=>	0,'msg'	=>	'修改成功' ];
 			});
@@ -251,9 +251,9 @@ class Outdepot extends Base
 				
 				// 重置库存
 				$stock = new Stock();
-				$stock->resetNum($id,model('IndepotMain'));
+				$stock->resetNum($id,model('OutdepotMain'));
 
-				model('IndepotMain')->where([ 'fid'=>$id ])->delete();;	
+				model('OutdepotMain')->where([ 'fid'=>$id ])->delete();;	
 			}else{
 				return ['error'	=>	100,'msg'	=>	'删除失败'];	
 			}

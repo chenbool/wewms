@@ -127,7 +127,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
             },
             getList:function(){
                 var _this = this;
-                $.getJSON("{:url('purchase/getList')}?id="+this.param.purchase, function(data){
+                $.getJSON("{:url('sale/getList')}?id="+this.param.purchase, function(data){
                     // console.log(data);
                     list = data;
                     _this.list = data;

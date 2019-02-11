@@ -17,26 +17,35 @@ class Stock extends Base
 	}
 
 	// 改写仓库库存
-    public function setNum($data,$sum=0){
-        if( is_array($data) ){
+    public function setNum($data,$type="in"){
+		
 			// 事务操作
-			Db::transaction(function () use($data) {
+			Db::transaction(function () use($data,$type) {
 
 				foreach ($data as $k => $v) {
 					// 更新库存
-					if(  $v['num'] >0 ){
-						// 自增
-						model('stock')->where(['pid' => $v['pid']])->setInc('num', $v['num']);
-					}else {
-						// 自减
-						model('stock')->where(['pid' => $v['pid']])->setDec('num', $v['num']);
+					if( $type=="in" ){
+						if(  $v['num'] >0 ){
+							// 自增
+							model('stock')->where(['pid' => $v['pid']])->setInc('num', $v['num']);
+						}else {
+							// 自减
+							model('stock')->where(['pid' => $v['pid']])->setDec('num', $v['num']);
+						}
+					}else{
+						if(  $v['num'] < 0 ){
+							// 自增
+							model('stock')->where(['pid' => $v['pid']])->setInc('num', $v['num']);
+						}else {
+							// 自减
+							model('stock')->where(['pid' => $v['pid']])->setDec('num', $v['num']);
+						}
 					}
+
 				}
 
 			});
-        }else{
-
-		}
+ 
 	}
 	
 	// 更新库存
@@ -65,14 +74,6 @@ class Stock extends Base
 			$res = $model->where([ 'fid'=>$fid ])->select();
 			// 遍历
 			foreach ($res as $k => $v) {
-
-				// dump($v);
-
-				// $this->setNum([
-				// 	$v['pid'],
-				// 	-$v['num']
-				// ]);
-
 				model('stock')->where(['pid' => $v['pid']])->setDec('num', $v['num']);
 			}
 

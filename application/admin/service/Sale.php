@@ -249,4 +249,22 @@ class Sale extends Base
 
 
 
+	// 获取列表
+    public function getList(){
+
+		$model= model( request()->controller().'Main' );
+
+		if( input('?model') ){
+			$model = model( input('model').'Main' );
+			return $model->with('product,brand,unit,color')
+				->where([ 'fid'	=> input('id') ])
+				->select();
+		}
+
+		return $model->with('product,brand,unit,color')
+		->where([ 'sid'	=> input('id') ])
+		->select();
+    }
+
+
 }
