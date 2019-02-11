@@ -1,6 +1,6 @@
 {extend name="base" /}
 
-{block name="title"} 库位管理 {/block}
+{block name="title"} 出库管理 {/block}
 
 {block name="body"}
 
@@ -20,8 +20,8 @@
             <form class="form-inline form-search" role="form">
 
                 <div class="form-group mg-t-xs">
-                    <label>仓库名称</label>
-                    <input type="text" class="form-control" name="name" placeholder="库位名称">
+                    <label>名称</label>
+                    <input type="text" class="form-control" name="name" placeholder="名称">
                 </div>
 
                 <div class="form-group col-xs-12 col-md-12 mg-t-xs">
@@ -46,6 +46,9 @@
 
     {include file="public/bootstrap-table" /}
 
+    <!-- comboSelect样式 -->
+    <link href="/static/admin/vendor/comboSelect/combo.select.css" rel="stylesheet">
+
 {/block}
 
 
@@ -53,6 +56,19 @@
 {block name="js"}
 
 <script>
+
+    Table.formatter.type = function(value, row, index){
+
+        if( value == 0 ){
+
+        }else if( value == 1 ){
+            return '销售出库';
+        }else if( value == 2 ){
+            return '手动出库';
+        }
+
+    }
+
     tableData.columns = [
         {
             checkbox: true,  
@@ -68,14 +84,25 @@
             printIgnore: true
         }, 
         {
-            field: 'depot.name',
-            title: '所属仓库'
+            field: 'sn',
+            title: '编号'
         },
         {
-            field: 'name',
-            title: '库位名称',
+            field: 'author',
+            title: '出库人',
             sortable: true,
-            titleTooltip: '库位名称'
+            titleTooltip: '出库人'
+        },
+        {
+            field: 'type',
+            title: '类型',
+            formatter: Table.formatter.type,
+            printFormatter: Table.formatter.type        
+        },
+        {
+            field: 'customer.title',
+            title: '客户',
+            sortable: true
         },
         {
             field: 'status',
@@ -84,12 +111,12 @@
             formatter: Table.formatter.status,
             printFormatter: Table.formatter.status
         },
-        // {
-        //     field: 'desc',
-        //     title: '备注',
-        //     sortable: true,
-        //     class: "hidden-xs hidden-sm"
-        // },
+        {
+            field: 'in_date',
+            title: '出库日期',
+            sortable: true,
+            class: "hidden-xs hidden-sm"
+        },
         {
             field: 'create_time',
             title: '添加时间',
@@ -106,7 +133,7 @@
      ];
 
     // 导出表格名称
-    tableData.exportOptions.tableName = tableData.exportOptions.fileName = "库位列表";
+    tableData.exportOptions.tableName = tableData.exportOptions.fileName = "出库管理";
 
     // 忽略导出列
     tableData.exportOptions.ignoreColumn = [0,-1];
