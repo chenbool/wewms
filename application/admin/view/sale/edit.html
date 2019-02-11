@@ -4,7 +4,7 @@
 
     <!-- 表单 -->   
     <section class="panel-body" >
-        <form role="form" class="form-create">
+        <form role="form" class="form-edit">
 
             <div class="form-group col-sm-12">
                 <span>编号</span>
@@ -55,28 +55,25 @@
 
 <script>
  var list = {:json_encode($row->list) };
-
-// console.log( list );
-
  var layer_index = 0;
 
 // seajs
 seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/channel','vendor/laydate/laydate'], function() {
 
-        var data = {
-            name: '名称',
-            model: '型号',
-            spec: '规格',
-            color: '颜色',
-            num: '数量',
-            unit: '单位',
-            price: '单价',
-            count: '合计',
-        };
+    var data = {
+        name: '名称',
+        model: '型号',
+        spec: '规格',
+        color: '颜色',
+        num: '数量',
+        unit: '单位',
+        price: '单价',
+        count: '合计',
+    };
 
     // vue
     var edit = new Vue({
-        el: '.edit',
+        el: '.form-edit',
         data: {
             data: data,
             list: list,
