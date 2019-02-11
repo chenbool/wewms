@@ -2,6 +2,7 @@
 namespace app\admin\service;
 use think\Db,
 	app\common\service\Base,
+	app\admin\service\Stock,
 	app\admin\model\Indepot as Model,
 	app\admin\validate\Indepot as Validate;
 
@@ -105,7 +106,6 @@ class Indepot extends Base
 		//检测保存类型
 		if( $type == 'add' ){
 
-
 			// 事务操作
 			Db::transaction(function () use($data) {
 
@@ -138,7 +138,11 @@ class Indepot extends Base
 				model('purchase')->save(
 					[ 'state' => 1 ],
 					[ 'id'=> $data['purchase'] ] 
-				);
+				);	
+
+				// 修改仓库库存
+				$stock = new Stock();
+				$stock->setNum($data['data']);
 
 				return ['error'	=>	0,'msg'	=>	'添加成功' ];
 			});
@@ -203,7 +207,7 @@ class Indepot extends Base
 			return ['error'	=>	0,'msg'	=>	'修改成功'];
 		}
 
-		// Hook::listen('sale_begin');
+		// Hook::listen('sale_end');
     }
 
 	/**
