@@ -3,51 +3,17 @@
     <table class="table table-bordered table-striped table-hover table-condensed no-margin col-sm-12">
         <thead>
             <tr>
-                <th width="25px">
+                <th width="25px" v-show="param.type == 2">
                     <i class="fa fa-plus btn btn-xs" @click="addLine"></i>
                 </th>
                 <th v-for="item in data" v-text="item"></th>
-                <th width="30px"> </th>
+                <th width="30px" > </th>
             </tr>
         </thead>
         <tbody>
-            <!-- <tr >
-                <td > </td>
-                <td>
-                    <span ></span>
-                </td>
-                <td>
-                    <span ></span>
-                </td>
-                <td>
-                    <span ></span>
-                </td>
-                <td>
-                    <span ></span>
-                </td>
-                <td>
-                    <input type="text" class="form-control" style="height:25px;width:60px;padding:3px;">
-                </td>
-                <td>
-                    <span ></span>
-                </td>
-
-                <td>
-                    <input type="text" class="form-control" style="height:25px;width:60px;padding:3px;">
-                </td>
-
-                <td>
-                    <span ></span>
-                </td>
-
-                <td>
-                    <i class="fa fa-trash btn btn-xs" ></i>
-                </td>
-            </tr> -->
-
 
             <tr v-for="(item,k) in list">
-                <td :rowspan="list.length" v-show="k==0"> </td>
+                <td :rowspan="list.length"  v-show="param.type == 2 && k==0"> </td>
                 <td>
                     <span v-text="item.name?item.name:item.product.name"></span>
                 </td>
@@ -75,8 +41,8 @@
                     <span v-text="item.count"></span>
                 </td>
 
-                <td>
-                    <i class="fa fa-trash btn btn-xs" @click="delLine(k)"></i>
+                <td v-show="param.type == 2" >
+                    <i class="fa fa-trash btn btn-xs" @click="delLine(k)" ></i>
                 </td>
             </tr>
 
@@ -86,8 +52,8 @@
             <tr>
                 <th colspan="7"></th>
                 <th>总价</td>
-                <th ></th>
-                <th></th>
+                <th  v-text="count"></th>
+                <th v-show="param.type == 2" ></th>
             </tr>
         </tfoot>
 

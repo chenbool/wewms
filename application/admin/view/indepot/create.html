@@ -101,7 +101,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
                 elem: '#in_date',
                 theme: '#2DCB73'
             });
-
+            
         },
         methods: {
             save: function () {
@@ -131,6 +131,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
                     // console.log(data);
                     list = data;
                     _this.list = data;
+                    _this.SumCount();
                 });
             },
             addLine: function(){
