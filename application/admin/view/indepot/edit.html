@@ -62,12 +62,15 @@
 </div>
 <!-- end -->
 
+
 <script>
+
+
+
 
 var list = [];
 var layer_index = 0;
 
-// seajs
 // seajs
 seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],function() {
 
@@ -86,7 +89,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
         el: '.form-edit',
         data: {
             data:data,
-            count:0,
+            count: '{$row.count}',
             list: list,
             param:{
                 sn:"{$row.sn}",
@@ -116,7 +119,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
                 this.param.count = this.count;
 
                 $.ajax({
-                    url: "{:url('save')}",
+                    url: "{:url('update')}",
                     method: 'POST',
                     dataType: 'json',
                     data: this.param,
@@ -134,8 +137,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
             },
             getList:function(){
                 var _this = this;
-                $.getJSON("{:url('purchase/getList')}?id="+this.param.purchase, function(data){
-                    // console.log(data);
+                $.getJSON("{:url('purchase/getList')}?model=indepot&id="+this.param.purchase, function(data){
                     list = data;
                     _this.list = data;
                     _this.SumCount();

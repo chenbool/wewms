@@ -250,10 +250,13 @@ class Purchase extends Base
 	// 获取列表
     public function getList(){
 
-		return model('PurchaseMain')->with('product,brand,unit,color')
+		$model= model( request()->controller().'Main' );
+
+		input('?model') && $model = model( input('model').'Main' );
+
+		return $model->with('product,brand,unit,color')
 		->where([ 'sid'	=> input('id') ])
 		->select();
-
     }
 
 

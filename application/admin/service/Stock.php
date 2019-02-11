@@ -34,6 +34,21 @@ class Stock extends Base
 				}
 			});
         }
-    }
+	}
+	
+	public function setUpdateNum($data,$model){
+		// 事务操作
+		Db::transaction(function () use($data,$model) {
+			// 更新库存			
+			foreach ($data as $k => $v) {
+				$id = $model->find($v['id']);
+				dump($id);
+				dump($v);
+			}
+		});
+	}
+
+
+
 
 }

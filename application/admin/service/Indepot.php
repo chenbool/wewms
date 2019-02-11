@@ -89,6 +89,18 @@ class Indepot extends Base
 		return $this->_save($param);
 	}	
 
+	/**
+	 * [update 更新数据]
+	 * @return [json] [结果集]
+	 */
+	public function update(){
+		$param = input('post.');
+		$param['in_time'] = strtotime($param['in_date']);
+		// 验证数据
+		$this->validate = new Validate();
+		return $this->_save( $param, 'update' );
+	}
+
     /**
      * [_save 添加/更新数据 ]
      * @param  [array]  $data [添加的数据]
@@ -154,6 +166,12 @@ class Indepot extends Base
 			return ['error'	=>	0,'msg'	=>	'添加成功' ];
 		}else{
 			
+
+				// 修改仓库库存
+				$stock = new Stock();
+				$stock->setUpdateNum($data['data'], model('IndepotMain') );
+				die;
+
 			// 事务操作
 			Db::transaction(function () use($data) {
 
@@ -204,6 +222,7 @@ class Indepot extends Base
 				isset($data['dels']) || $data['dels'] =[];
 				// 删除
 				model('IndepotMain')->destroy($data['dels']);
+
 
 				return ['error'	=>	0,'msg'	=>	'修改成功' ];
 			});
