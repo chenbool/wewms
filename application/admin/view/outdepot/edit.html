@@ -12,10 +12,10 @@
                 </div>
 
                 <div class="form-group col-sm-6">
-                    <span>入库类型</span>
+                    <span>出库类型</span>
                     <select name="supplier" class="form-control" v-model="param.type" disabled="disabled" >
-                        <option value="1" >采购入库</option>
-                        <option value="2" >手动入库</option>
+                        <option value="1" >销售出库</option>
+                        <option value="2" >手动出库</option>
                     </select>
                 </div>
 
@@ -29,22 +29,22 @@
                 </div>
 
                 <div class="form-group col-sm-6">
-                    <span>入库人</span>
-                    <input type="text" class="form-control" placeholder="入库人" name="author" v-model="param.author">
+                    <span>出库人</span>
+                    <input type="text" class="form-control" placeholder="出库人" name="author" v-model="param.author">
                 </div>
 
                 <div class="form-group col-sm-6">
-                    <span>供应商</span>
-                    <select name="supplier" class="form-control comboSelect" v-model="param.supplier">
-                        {volist name="supplier" id="vo"}
+                    <span>客户</span>
+                    <select name="customer" class="form-control comboSelect" v-model="param.customer">
+                        {volist name="customer" id="vo"}
                             <option value="{$vo.id}" >{$vo.title}</option>
                         {/volist}
                     </select>
                 </div>                
 
                 <div class="form-group col-sm-6">
-                    <span>入库日期</span>
-                    <input type="text" class="form-control" placeholder="入库日期" name="in_date" id="in_date" v-model="param.in_date">
+                    <span>出库日期</span>
+                    <input type="text" class="form-control" placeholder="出库日期" name="in_date" id="in_date" v-model="param.in_date">
                 </div>
 
                 {include file="public/depot-table" /}
@@ -95,7 +95,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
                 sn:"{$row.sn}",
                 author:"{$row.author}",
                 in_date: "{$row.in_date}",
-                supplier: "{$row.supplier}",
+                customer: "{$row.customer}",
                 data: this.list,
                 count: this.count,
                 id:'{$row.id}',
