@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-31 16:53:57
+Date: 2019-02-10 18:28:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -38,7 +38,7 @@ CREATE TABLE `b_admin` (
 -- ----------------------------
 -- Records of b_admin
 -- ----------------------------
-INSERT INTO `b_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'https://avatars1.githubusercontent.com/u/37901036?v=4', '管理员', '17052850083', '81001985@qq.com', '2', '1548830533', '127.0.0.1', '1320981071');
+INSERT INTO `b_admin` VALUES ('1', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'https://avatars1.githubusercontent.com/u/37901036?v=4', '管理员', '17052850083', '81001985@qq.com', '2', '1548978362', '127.0.0.1', '1320981071');
 INSERT INTO `b_admin` VALUES ('2', 'seho', '126dfa8c609fc04f3aa38c015a862fec', null, 'seho', '2222', '111@qq.com', null, '1540196808', '127.0.0.1', '1540193412');
 INSERT INTO `b_admin` VALUES ('3', 'admin1231111', '0192023a7bbd73250516f069df18b500', null, '1111', '', '', '0', null, null, '1540540637');
 
@@ -454,14 +454,13 @@ CREATE TABLE `b_sale` (
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '状态: 0正常 1禁用',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='销售';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='销售';
 
 -- ----------------------------
 -- Records of b_sale
 -- ----------------------------
-INSERT INTO `b_sale` VALUES ('5', '20190130051206785', '淘宝', '管理员', '2019-01-30', '1548777600', '1', '119.00', '0', '0', '1548839571');
-INSERT INTO `b_sale` VALUES ('8', '20190131112041263', '天猫', '管理员', '2019-01-31', '1548864000', '1', '100.00', '0', '0', '1548904855');
-INSERT INTO `b_sale` VALUES ('9', '20190131112152552', '天猫', '管理员', '2019-01-31', '1548864000', '1', '100.00', '0', '0', '1548904998');
+INSERT INTO `b_sale` VALUES ('5', '20190130051206785', '淘宝', '管理员', '2019-01-30', '1548777600', '1', '100.00', '0', '0', '1548839571');
+INSERT INTO `b_sale` VALUES ('8', '20190131112041263', '天猫', '管理员', '2019-01-31', '1548864000', '1', '2000.00', '0', '0', '1548904855');
 
 -- ----------------------------
 -- Table structure for b_sale_main
@@ -481,12 +480,14 @@ CREATE TABLE `b_sale_main` (
   `count` decimal(10,2) unsigned DEFAULT NULL COMMENT '合计',
   `create_time` int(11) unsigned NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='销售明细';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='销售明细';
 
 -- ----------------------------
 -- Records of b_sale_main
 -- ----------------------------
 INSERT INTO `b_sale_main` VALUES ('12', '3', '10', '10', '100.00', '2', '1', '1', '1', '0', '1000.00', '1548912662');
+INSERT INTO `b_sale_main` VALUES ('13', '1', '5', '10', '10.00', '1', '1', '2', '1', '1', '100.00', '1548978442');
+INSERT INTO `b_sale_main` VALUES ('14', '3', '8', '20', '100.00', '2', '1', '1', '1', '0', '2000.00', '1548978455');
 
 -- ----------------------------
 -- Table structure for b_supplier
