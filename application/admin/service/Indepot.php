@@ -131,8 +131,6 @@ class Indepot extends Base
 				unset($res['date']);
 				$id = $this->model->insertGetId($res);
 
-
-
 				// 组装插入的数据
 				$temp = [];
 				foreach ($data['data'] as $k => $v) {
@@ -169,11 +167,6 @@ class Indepot extends Base
 
 			return ['error'	=>	0,'msg'	=>	'添加成功' ];
 		}else{
-			
-				// 修改仓库库存
-				$stock = new Stock();
-				$stock->setUpdateNum($data['data'], model('IndepotMain') );
-				die;
 
 			// 事务操作
 			Db::transaction(function () use($data) {
@@ -227,6 +220,9 @@ class Indepot extends Base
 				// 删除
 				model('IndepotMain')->destroy($data['dels']);
 
+				// 修改仓库库存
+				$stock = new Stock();
+				$stock->setUpdateNum($data['data'], model('IndepotMain') );
 
 				return ['error'	=>	0,'msg'	=>	'修改成功' ];
 			});
@@ -249,9 +245,15 @@ class Indepot extends Base
 
 		// 事务操作
 		Db::transaction(function () use($id) {
+
 			// 判断是否删除成功
 			if( $this->model->destroy($id) ){
-				model('IndepotMain')->where([ 'sid'=>$id ])->delete();;	
+				
+				// 重置库存
+				$stock = new Stock();
+				$stock->resetNum($id,model('IndepotMain'));
+
+				model('IndepotMain')->where([ 'fid'=>$id ])->delete();;	
 			}else{
 				return ['error'	=>	100,'msg'	=>	'删除失败'];	
 			}
