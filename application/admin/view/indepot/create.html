@@ -134,6 +134,24 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
                 });
             },
             addLine: function(){
+
+                if( this.param.type == 2 ){
+                    $.get("{:url('product/select')}", function(data) {
+                        layer_index = layer.open({
+                            type: 1,
+                        　　title: "选择产品",
+                        　　shadeClose: true,
+                        　　shade: 0.4,
+                            anim: 5,
+                            area: ['150%','500px'],
+                        　　content: data
+                        });
+                    });
+                }
+
+            },
+            delLine:function(index){
+                this.param.type == 2 && this.list.splice(index,1);
             },
             changeSum:function(index){
                 this.list[index].count = this.list[index].num * this.list[index].price;
@@ -147,6 +165,7 @@ seajs.use(['vendor/comboSelect/jquery.combo.select','vendor/laydate/laydate'],fu
             }
 
         }
+
 
     });
 
