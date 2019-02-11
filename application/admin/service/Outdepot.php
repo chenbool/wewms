@@ -251,7 +251,7 @@ class Outdepot extends Base
 				
 				// 重置库存
 				$stock = new Stock();
-				$stock->resetNum($id,model('OutdepotMain'));
+				$stock->resetNum($id,model('OutdepotMain'),'out');
 
 				model('OutdepotMain')->where([ 'fid'=>$id ])->delete();;	
 			}else{
