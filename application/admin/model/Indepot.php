@@ -18,5 +18,10 @@ class Indepot extends Model
         return $this->hasOne('Customer','id','customer')->selfRelation();
     }    
 
+    public function list()
+    {
+        return $this->hasMany('IndepotMain','sid')->selfRelation();
+    }
+
 
 }

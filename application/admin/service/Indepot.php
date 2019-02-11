@@ -63,6 +63,10 @@ class Indepot extends Base
 			'row'		=>	$this->model->with([ 
 				'list' => ['brand','unit','color','product'],
 			])->find($id),
+			'list'		=>	model('purchase')->where([ 
+				'status'=>0,
+				// 'state' => [ 'neq',2 ]
+			])->select(),
 			'supplier'	=>	model('supplier')->where([ 'status'=>0 ])->select()
 		];
 	}
