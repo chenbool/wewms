@@ -122,6 +122,7 @@ class Indepot extends Base
 		//检测保存类型
 		if( $type == 'add' ){
 
+
 			// 事务操作
 			Db::transaction(function () use($data) {
 
@@ -137,7 +138,7 @@ class Indepot extends Base
 				foreach ($data['data'] as $k => $v) {
 					$temp[] = [
 						'fid' 			=> $id,
-						'pid' 			=>  $v['id'],
+						'pid' 			=>  $v['pid'],
 						'sid' 			=> $v['id'],
 						'num' 			=> $v['num'],
 						'price' 		=> $v['price'],
@@ -169,7 +170,6 @@ class Indepot extends Base
 			return ['error'	=>	0,'msg'	=>	'添加成功' ];
 		}else{
 			
-
 				// 修改仓库库存
 				$stock = new Stock();
 				$stock->setUpdateNum($data['data'], model('IndepotMain') );
