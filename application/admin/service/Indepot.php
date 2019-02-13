@@ -61,7 +61,7 @@ class Indepot extends Base
 	{
 		return [
 			'row'		=>	$this->model->with([ 
-				'list' => ['brand','unit','color','product'],
+				'lists' => ['brand','unit','color','product'],
 			])->find($id),
 			'list'		=>	model('purchase')->where([ 
 				'status'=>0,
