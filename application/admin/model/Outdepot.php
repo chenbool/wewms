@@ -18,7 +18,7 @@ class Outdepot extends Model
         return $this->hasOne('Customer','id','customer')->selfRelation();
     }    
 
-    public function list()
+    public function lists()
     {
         return $this->hasMany('IndepotMain','sid')->selfRelation();
     }    

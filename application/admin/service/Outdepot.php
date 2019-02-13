@@ -61,7 +61,7 @@ class Outdepot extends Base
 	{
 		return [
 			'row'		=>	$this->model->with([ 
-				'list' => ['brand','unit','color','product'],
+				'lists' => ['brand','unit','color','product'],
 			])->find($id),
 			'list'		=>	model('sale')->where([ 
 				'status'=>0,

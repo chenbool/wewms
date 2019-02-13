@@ -6,7 +6,7 @@ use think\Model;
 
 class Sale extends Model
 {
-    public function list()
+    public function lists()
     {
         return $this->hasMany('SaleMain','sid')->selfRelation();
     }
